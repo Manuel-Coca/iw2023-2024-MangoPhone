@@ -1,4 +1,4 @@
-package com.example.application.views.main;
+package es.uca.iw.mangophone.views.main;
 
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;

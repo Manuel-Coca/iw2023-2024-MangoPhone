@@ -25,7 +25,7 @@ public class RegisterView extends Div {
 
     public RegisterView() {
 
-        // Layouts del bloque de registro
+        // Layout del bloque de registro
         VerticalLayout registerLayout = new VerticalLayout();
         VerticalLayout column1Layout = new VerticalLayout();
         VerticalLayout column2Layout = new VerticalLayout();
@@ -56,7 +56,7 @@ public class RegisterView extends Div {
             String sPassword = passwordField.getValue();
             String sConfirmPassword = confirmPasswordField.getValue();
             if (sPassword.equals(sConfirmPassword)) {
-                UI.getCurrent().navigate("welcome");        
+                UI.getCurrent().navigate("home");        
             }
         });
         
@@ -72,7 +72,7 @@ public class RegisterView extends Div {
         });
 
         // Enlace "Ir a inicio"
-        Anchor backToHome = new Anchor("welcome", "Inicio");
+        Anchor backToHome = new Anchor("home", "Inicio");
         backToHome.addClassName(LumoUtility.Margin.Top.LARGE);
 
         // Agregar componentes al contenedor del formulario

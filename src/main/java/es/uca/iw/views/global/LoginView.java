@@ -41,11 +41,11 @@ public class LoginView extends Div {
         loginButton.addClickListener(event -> {
             // String sMail = emailField.getValue();
             // String sPassword = passwordField.getValue();
-            UI.getCurrent().navigate("welcome");        
+            UI.getCurrent().navigate("home");        
         });
         
         // Enlace "Olvidar contraseña"
-        Anchor forgotPwText = new Anchor("welcome", "¿Olvidaste tu contraseña?");
+        Anchor forgotPwText = new Anchor("home", "¿Olvidaste tu contraseña?");
         forgotPwText.addClassName(LumoUtility.Margin.Bottom.LARGE);
         
         // Texto "Nuevo cliente"
@@ -60,7 +60,7 @@ public class LoginView extends Div {
         });
 
         // Enlace "Ir a inicio"
-        Anchor backToHome = new Anchor("welcome", "Inicio");
+        Anchor backToHome = new Anchor("home", "Inicio");
         backToHome.addClassName(LumoUtility.Margin.Top.LARGE);
 
         // Agregar componentes al contenedor del formulario

@@ -1,5 +1,7 @@
 package es.uca.iw.views.global;
 
+import com.vaadin.flow.component.ClickEvent;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H1;
@@ -31,6 +33,7 @@ public class WelcomeView extends Div {
         H1 globalTitle = new H1("Mango");
         globalTitle.addClassName("titulo-custom");
         
+        // Añadir elementos al bloque de titulo
         titleLayout.add(globalTitle, new Paragraph("Tu compañia de confianza con precios tan frescos como un mango"));
         titleLayout.setSizeFull();
         titleLayout.setAlignItems(Alignment.CENTER);
@@ -40,6 +43,7 @@ public class WelcomeView extends Div {
         VerticalLayout fibraCard = new VerticalLayout();
         VerticalLayout movilCard = new VerticalLayout();
         VerticalLayout fijoCard = new VerticalLayout();
+        HorizontalLayout servicesButtons = new HorizontalLayout();
         
         H1 servicesTitle = new H1("Nuestros servicios");
         
@@ -49,9 +53,7 @@ public class WelcomeView extends Div {
         Paragraph fibraPrice = new Paragraph("Desde 15€ / mes"); // Cambiar por llamada a base datos
         
         fibraCard.add(fibraTitle, fibraDescription, fibraPrice);
-        fibraCard.addClassName("card-prueba");
-        fibraCard.setJustifyContentMode(JustifyContentMode.CENTER);
-        fibraCard.setAlignItems(Alignment.CENTER);
+        fibraCard.addClassName("card");
 
         // Movil
         H2 movilTitle = new H2("Movil");
@@ -59,9 +61,7 @@ public class WelcomeView extends Div {
         Paragraph movilPrice = new Paragraph("Desde 7.99€ / mes"); // Cambiar por llamada a base datos
         
         movilCard.add(movilTitle, movilDescription, movilPrice);
-        movilCard.addClassName("card-prueba");
-        movilCard.setJustifyContentMode(JustifyContentMode.CENTER);
-        movilCard.setAlignItems(Alignment.CENTER);
+        movilCard.addClassName("card");
 
         // Fijo
         H2 fijoTitle = new H2("Fijo");
@@ -69,16 +69,31 @@ public class WelcomeView extends Div {
         Paragraph fijoPrice = new Paragraph("Desde 2.50€ / mes"); // Cambiar por llamada a base datos
         
         fijoCard.add(fijoTitle, fijoDescription, fijoPrice);
-        fijoCard.addClassNames("card-prueba");
-        fijoCard.setJustifyContentMode(JustifyContentMode.CENTER);
-        fijoCard.setAlignItems(Alignment.CENTER);
+        fijoCard.addClassNames("card");
         
-        servicesCardsLayout.add(fibraCard, movilCard, fijoCard);
-        servicesCardsLayout.addClassName("card-flex-box");
+        // Botones
+        Button contratarButton = new Button("Contrata nuestros servicios");
+        contratarButton.addClassName("boton-naranja-primary");
+        contratarButton.addAttachListener(event -> {
+            //if(usuario loggeado) navigate a pantalla de contratar 
+            UI.getCurrent().navigate("home");
+            //else navigate a login 
+            //UI.getCurrent().navigate("register");
+        });
 
-        globalViewLayout.add(titleLayout, servicesTitle, servicesCardsLayout);
+        Button saberMasButton = new Button("Más detalles");
+        saberMasButton.addClassName("boton-verde-primary");
+        saberMasButton.addAttachListener(event -> { 
+            UI.getCurrent().navigate("home"); // Cambiar a saber más
+        });
+
+        servicesButtons.add(contratarButton, saberMasButton);
+
+        // Añadir elementos al bloque de servicios
+        servicesCardsLayout.add(fibraCard, movilCard, fijoCard);
+
+        globalViewLayout.add(titleLayout, servicesTitle, servicesCardsLayout, servicesButtons);
 
         add(globalViewLayout);
-
     }
 }

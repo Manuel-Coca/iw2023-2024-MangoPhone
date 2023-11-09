@@ -2,16 +2,31 @@
 
 .boton-naranja-primary {
     background-color: rgba(255, 165, 0);  
-    color: rgb(0, 0, 0) /*Cambiar el color del texto si es necesario */
+    color: rgb(0, 0, 0) /*Texto*/
 }
 
 .boton-naranja-secondary {
     background-color: rgba(255, 165, 0, 0.3); /* Color naranja semi-transparente */    
-    color: rgb(0, 0, 0) /*Cambiar el color del texto si es necesario */
+    color: rgb(0, 0, 0) /*Texto*/
 }
 
 .boton-naranja-secondary:hover {
     background-color: rgba(255, 165, 0, 0.6); /* Color naranja semi-transparente */    
+    color: rgb(0, 0, 0) /*Cambiar el color del texto si es necesario */
+}
+
+.boton-verde-primary {
+    background-color: rgba(0, 100, 0);  
+    color: rgb(255, 255, 255) /*Texto*/
+}
+
+.boton-verde-secondary {
+    background-color: rgba(0, 100, 0, 0.3); /* Color verde semi-transparente */    
+    color: rgb(0, 0, 0) /*Texto*/
+}
+
+.boton-verde-secondary:hover {
+    background-color: rgba(0, 100, 0, 0.6); /* Color verde semi-transparente */    
     color: rgb(0, 0, 0) /*Cambiar el color del texto si es necesario */
 }
 
@@ -26,12 +41,12 @@
     color: darkgreen;
 }
 
-.card-prueba {
-    border-width:2px;
-    border-style:solid;
+.card {
+    display: flex;
+    flex-direction: column;
+    border-width: 2px;
+    border-style: solid;
     border-color:black;
-}
-
-.card-flex-box {
     justify-content: space-between;
+    align-items: center;
 }

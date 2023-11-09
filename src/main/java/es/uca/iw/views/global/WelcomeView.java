@@ -1,6 +1,5 @@
 package es.uca.iw.views.global;
 
-import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Div;
@@ -8,7 +7,6 @@ import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
-import com.vaadin.flow.component.orderedlayout.FlexComponent.JustifyContentMode;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
@@ -93,7 +91,6 @@ public class WelcomeView extends Div {
         servicesCardsLayout.add(fibraCard, movilCard, fijoCard);
 
         globalViewLayout.add(titleLayout, servicesTitle, servicesCardsLayout, servicesButtons);
-
         add(globalViewLayout);
     }
 }

@@ -2,7 +2,7 @@ package es.uca.iw.model;
 
 import java.util.Date;
 import java.util.UUID;
-import com.vaadin.flow.component.template.Id;
+import jakarta.persistence.Id;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;

@@ -1,15 +1,18 @@
 package es.uca.iw.model;
 
 import java.util.UUID;
-import com.vaadin.flow.component.template.Id;
+import jakarta.persistence.Id;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name="cliente")
 public class Cliente {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private UUID uId = UUID.randomUUID();
 

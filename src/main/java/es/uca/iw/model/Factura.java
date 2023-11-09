@@ -5,13 +5,16 @@ import java.util.UUID;
 import jakarta.persistence.Id;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="factura")
+@Table(name="Factura")
 public class Factura {
     public enum Estado{Pagado,NoPagado}; //Se incluiran mas estados
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private UUID uId = UUID.randomUUID();
 

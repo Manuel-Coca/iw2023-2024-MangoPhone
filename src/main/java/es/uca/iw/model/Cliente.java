@@ -8,8 +8,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Table;
 
+
 @Entity
-@Table(name="cliente")
+@Table(name="Cliente")
 public class Cliente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,37 +49,37 @@ public class Cliente {
     }
 
     /**
-     * Retorna el id del cliente
+     * Retorna el id del Cliente
      * @return uId
      */
     public UUID getId(){return uId;}
 
     /**
-     * Retorna el nombre del cliente
+     * Retorna el nombre del Cliente
      * @return sNombre
      */
     public String getNombre(){return sNombre;}
 
     /**
-     * Retorna el apellidos del cliente
+     * Retorna el apellidos del Cliente
      * @return sApellidos
      */
     public String getApellidos(){return sApellidos;}
 
     /**
-     * Retorna el correo electronico del cliente
+     * Retorna el correo electronico del Cliente
      * @return sCorreoElectronico
      */
     public String getCorreoElectronico(){return sCorreoElectronico;}
 
     /**
-     * Retorna el contrasena electronico del cliente
+     * Retorna el contrasena electronico del Cliente
      * @return contrasena electronico
      */
     //public String getContrasena(){return contrasena;}
 
     /**
-     * Retorna el telefono del cliente
+     * Retorna el telefono del Cliente
      * @return sTelefono
      */
     public String getTelefono(){return sTelefono;}

@@ -4,12 +4,15 @@ import java.util.UUID;
 import jakarta.persistence.Id;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="servicio")
+@Table(name="Servicio")
 public class Servicio {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private UUID uId = UUID.randomUUID();
 
@@ -30,19 +33,19 @@ public class Servicio {
     }
 
     /**
-     * Retorna el id del servicio
+     * Retorna el id del Servicio
      * @return uId
      */
     public UUID getId(){return uId;}
 
     /**
-     * Retorna el nombre del servicio
+     * Retorna el nombre del Servicio
      * @return sNombre
      */
     public String getNombre(){return sNombre;}
 
     /**
-     * Retorna el precio del servicio
+     * Retorna el precio del Servicio
      * @return fPrecio
      */
     public float getPrecio(){return fPrecio;}

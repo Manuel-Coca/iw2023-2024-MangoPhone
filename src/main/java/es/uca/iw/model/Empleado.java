@@ -4,14 +4,17 @@ import java.util.UUID;
 import jakarta.persistence.Id;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="empleado")
+@Table(name="Empleado")
 public class Empleado {
     public enum Departamentos{Marketing,Finanzas,SAC};
     
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private UUID uId = UUID.randomUUID();
 
@@ -47,37 +50,37 @@ public class Empleado {
     }
 
     /**
-     * Retorna el id del empleado
+     * Retorna el id del Empleado
      * @return uId
      */
     public UUID getId(){return uId;}
 
     /**
-     * Retorna el nombre del empleado
+     * Retorna el nombre del Empleado
      * @return sNombre
      */
     public String getNombre(){return sNombre;}
 
     /**
-     * Retorna el apellidos del empleado
+     * Retorna el apellidos del Empleado
      * @return sApellidos
      */
     public String getApellidos(){return sApellidos;}
 
     /**
-     * Retorna el correo electronico del empleado
+     * Retorna el correo electronico del Empleado
      * @return sCorreoElectronico
      */
     public String getCorreoElectronico(){return sCorreoElectronico;}
 
     /**
-     * Retorna el contrasena electronico del empleado
+     * Retorna el contrasena electronico del Empleado
      * @return contrasena electronico
      */
     //public String getContrasena(){return contrasena;}
 
     /**
-     * Retorna el departamento del empleado
+     * Retorna el departamento del Empleado
      * @return eDepartamento
      */
     public Departamentos getDepartamento(){return eDepartamento;}

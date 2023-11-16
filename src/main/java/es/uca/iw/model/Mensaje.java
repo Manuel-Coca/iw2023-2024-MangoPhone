@@ -1,7 +1,6 @@
 package es.uca.iw.model;
 
 import java.util.Date;
-import java.util.UUID;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -16,14 +15,14 @@ public class Mensaje {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private int uId;
+    @Column(name = "id", columnDefinition = "int(32)")
+    private int id;
 
     @Column(name = "tipo")
-    private Tipo eTipo;
+    private Tipo tipo;
 
     @Column(name = "fechaEmision")
-    private Date dFechaEmision;
+    private Date fechaEmision;
 
     /**
      * Contructor Parametrizado de Mensaje
@@ -31,19 +30,19 @@ public class Mensaje {
      * @param fecha
      */
     public Mensaje(Tipo tipo, Date fecha){
-        this.eTipo = tipo;
-        this.dFechaEmision = fecha;
+        this.tipo = tipo;
+        this.fechaEmision = fecha;
     }
 
     /**
      * Retorna el tipo del Mensaje
-     * @return eTipo
+     * @return tipo
      */
-    public Tipo getEstado(){return eTipo;}
+    public Tipo getEstado(){return tipo;}
 
     /**
      * Retorna el fecha emision del Mensaje
-     * @return dFechaEmision
+     * @return fechaEmision
      */
-    public Date getFechaInicio(){return dFechaEmision;}
+    public Date getFechaInicio(){return fechaEmision;}
 }

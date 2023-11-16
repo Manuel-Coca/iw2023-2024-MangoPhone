@@ -1,6 +1,5 @@
 package es.uca.iw.model;
 
-import java.util.UUID;
 import jakarta.persistence.Id;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,17 +13,17 @@ import java.util.Date;
 public class Contrato {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private int uId;
+    @Column(name = "id", columnDefinition = "int(32)")
+    private int id;
 
     @Column(name = "numero")
-    private int iNumero;
+    private int numero;
 
     @Column(name = "precio")
-    private float fPrecio;
+    private float precio;
 
     @Column(name = "fechaInicio")
-    private Date dFechaInicio;
+    private Date fechaInicio;
 
     /**
      * Constructor Parametrizado de Contrato
@@ -33,32 +32,32 @@ public class Contrato {
      * @param fecha
      */
     public Contrato(int numero, float precio, Date fecha){
-        this.iNumero = numero;
-        this.fPrecio = precio;
-        this.dFechaInicio = fecha;
+        this.numero = numero;
+        this.precio = precio;
+        this.fechaInicio = fecha;
     }
 
     /**
      * Retorna el id del Contrato
-     * @return uId
+     * @return id
      */
-    public int getId(){return uId;}
+    public int getId(){return id;}
 
     /**
      * Retorna el numero del Contrato
-     * @return iNumero
+     * @return numero
      */
-    public int getNumero(){return iNumero;}
+    public int getNumero(){return numero;}
 
     /**
      * Retorna el precio del Contrato
-     * @return fPrecio
+     * @return precio
      */
-    public float getPrecio(){return fPrecio;}
+    public float getPrecio(){return precio;}
 
     /**
      * Retorna el fecha inicio del Contrato
-     * @return dFechaInicio
+     * @return fechaInicio
      */
-    public Date getFechaInicio(){return dFechaInicio;}
+    public Date getFechaInicio(){return fechaInicio;}
 }

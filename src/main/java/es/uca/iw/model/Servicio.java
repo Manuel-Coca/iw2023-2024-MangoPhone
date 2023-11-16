@@ -1,6 +1,5 @@
 package es.uca.iw.model;
 
-import java.util.UUID;
 import jakarta.persistence.Id;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,14 +12,14 @@ import jakarta.persistence.Table;
 public class Servicio {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private int uId;
+    @Column(name = "id", columnDefinition = "int(32)")
+    private int id;
 
     @Column(name = "nombre", length = 32)
-    private String sNombre;
+    private String nombre;
     
     @Column(name = "precio")
-    private float fPrecio;
+    private float precio;
 
     /**
      * Constructor Parametrizado de Servicio
@@ -28,25 +27,25 @@ public class Servicio {
      * @param precio
      */
     public Servicio(String nombre, float precio){
-        this.sNombre = nombre;
-        this.fPrecio = precio;
+        this.nombre = nombre;
+        this.precio = precio;
     }
 
     /**
      * Retorna el id del Servicio
-     * @return uId
+     * @return id
      */
-    public int getId(){return uId;}
+    public int getId(){return id;}
 
     /**
      * Retorna el nombre del Servicio
-     * @return sNombre
+     * @return nombre
      */
-    public String getNombre(){return sNombre;}
+    public String getNombre(){return nombre;}
 
     /**
      * Retorna el precio del Servicio
-     * @return fPrecio
+     * @return precio
      */
-    public float getPrecio(){return fPrecio;}
+    public float getPrecio(){return precio;}
 }

@@ -13,23 +13,23 @@ import jakarta.persistence.Table;
 public class Cliente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private int uId;
+    @Column(name = "id", columnDefinition = "int(32)")
+    private int id;
 
     @Column(name = "nombre", length = 32)
-    private String sNombre;
+    private String nombre;
 
     @Column(name = "apellidos", length = 64)
-    private String sApellidos;
+    private String apellidos;
 
     @Column(name = "correoElectronico", length = 128)
-    private String sCorreoElectronico;
+    private String correoElectronico;
 
     @Column(name = "contrasena", length = 128)
-    private String sContrasena;
+    private String contrasena;
 
     @Column(name = "telefono", length = 9)
-    private String sTelefono;
+    private String telefono;
 
     /**
      * Constructor Parametrizado de Cliente
@@ -40,36 +40,36 @@ public class Cliente {
      * @param telefono
      */
     public Cliente(String nombre, String apellidos, String correoElectronico, String contrasena, String telefono){
-        this.sNombre = nombre;
-        this.sApellidos = apellidos;
-        this.sCorreoElectronico = correoElectronico;
-        this.sContrasena = contrasena;
-        this.sTelefono = telefono;
+        this.nombre = nombre;
+        this.apellidos = apellidos;
+        this.correoElectronico = correoElectronico;
+        this.contrasena = contrasena;
+        this.telefono = telefono;
     }
 
     /**
      * Retorna el id del Cliente
-     * @return uId
+     * @return id
      */
-    public int getId(){return uId;}
+    public int getId(){return id;}
 
     /**
      * Retorna el nombre del Cliente
-     * @return sNombre
+     * @return nombre
      */
-    public String getNombre(){return sNombre;}
+    public String getNombre(){return nombre;}
 
     /**
      * Retorna el apellidos del Cliente
-     * @return sApellidos
+     * @return apellidos
      */
-    public String getApellidos(){return sApellidos;}
+    public String getApellidos(){return apellidos;}
 
     /**
      * Retorna el correo electronico del Cliente
-     * @return sCorreoElectronico
+     * @return correoElectronico
      */
-    public String getCorreoElectronico(){return sCorreoElectronico;}
+    public String getCorreoElectronico(){return correoElectronico;}
 
     /**
      * Retorna el contrasena electronico del Cliente
@@ -79,7 +79,7 @@ public class Cliente {
 
     /**
      * Retorna el telefono del Cliente
-     * @return sTelefono
+     * @return telefono
      */
-    public String getTelefono(){return sTelefono;}
+    public String getTelefono(){return telefono;}
 }

@@ -1,6 +1,5 @@
 package es.uca.iw.model;
 
-import java.util.UUID;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,14 +14,14 @@ public class Opcion {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private int uId;
+    @Column(name = "id", columnDefinition = "int(32)")
+    private int id;
 
     @Column(name = "nombre")
-    private Tipo eTipo;
+    private Tipo nombre;
 
     @Column(name = "estado")
-    private boolean bEstado;
+    private boolean estado;
 
     /**
      * Contructor Parametrizado de Opcion
@@ -30,19 +29,19 @@ public class Opcion {
      * @param activo
      */
     public Opcion(Tipo tipo, boolean estado){
-        this.eTipo = tipo;
-        this.bEstado = estado;
+        this.nombre = tipo;
+        this.estado = estado;
     }
 
     /**
      * Retorna el tipo del Opcion
-     * @return eTipo
+     * @return nombre
      */
-    public Tipo getTipo(){return eTipo;}
+    public Tipo getTipo(){return nombre;}
 
     /**
      * Retorna el estado del Opcion
-     * @return bEstado
+     * @return estado
      */
-    public boolean getEstado(){return bEstado;}
+    public boolean getEstado(){return estado;}
 }

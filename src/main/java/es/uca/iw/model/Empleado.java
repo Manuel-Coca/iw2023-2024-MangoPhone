@@ -1,6 +1,5 @@
 package es.uca.iw.model;
 
-import java.util.UUID;
 import jakarta.persistence.Id;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,23 +14,23 @@ public class Empleado {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "id", columnDefinition = "int(32)")
     private int id;
 
     @Column(name = "nombre", length = 32)
-    private String sNombre;
+    private String nombre;
 
     @Column(name = "apellidos", length = 64)
-    private String sApellidos;
+    private String apellidos;
 
     @Column(name = "correoElectronico", length = 128)
-    private String sCorreoElectronico;
+    private String correoElectronico;
 
     @Column(name = "contrasena", length = 128)
-    private String sContrasena;
+    private String contrasena;
 
     @Column(name = "departamento", length = 32)
-    private Departamentos eDepartamento;
+    private Departamentos departamento;
 
     /**
      * Constructor Parametrizado de Empleado
@@ -42,36 +41,36 @@ public class Empleado {
      * @param departamento
      */
     public Empleado(String nombre, String apellidos, String correoElectronico, String contrasena, Departamentos departamento){
-        this.sNombre=nombre;
-        this.sApellidos=apellidos;
-        this.sCorreoElectronico=correoElectronico;
-        this.sContrasena=contrasena;
-        this.eDepartamento=departamento;
+        this.nombre=nombre;
+        this.apellidos=apellidos;
+        this.correoElectronico=correoElectronico;
+        this.contrasena=contrasena;
+        this.departamento=departamento;
     }
 
     /**
      * Retorna el id del Empleado
-     * @return uId
+     * @return id
      */
     public int getId(){return id;}
 
     /**
      * Retorna el nombre del Empleado
-     * @return sNombre
+     * @return nombre
      */
-    public String getNombre(){return sNombre;}
+    public String getNombre(){return nombre;}
 
     /**
      * Retorna el apellidos del Empleado
-     * @return sApellidos
+     * @return apellidos
      */
-    public String getApellidos(){return sApellidos;}
+    public String getApellidos(){return apellidos;}
 
     /**
      * Retorna el correo electronico del Empleado
-     * @return sCorreoElectronico
+     * @return correoElectronico
      */
-    public String getCorreoElectronico(){return sCorreoElectronico;}
+    public String getCorreoElectronico(){return correoElectronico;}
 
     /**
      * Retorna el contrasena electronico del Empleado
@@ -81,7 +80,7 @@ public class Empleado {
 
     /**
      * Retorna el departamento del Empleado
-     * @return eDepartamento
+     * @return departamento
      */
-    public Departamentos getDepartamento(){return eDepartamento;}
+    public Departamentos getDepartamento(){return departamento;}
 }

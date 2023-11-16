@@ -1,6 +1,5 @@
 package es.uca.iw.model;
 
-import java.util.UUID;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,23 +12,23 @@ import jakarta.persistence.Table;
 public class LineaFactura {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private int uId;
+    @Column(name = "id", columnDefinition = "int(32)")
+    private int id;
 
     @Column(name = "precio")
-    private float fPrecio;
+    private float precio;
 
     /**
      * Constructor Parametrizado de LineaFactura
      * @param precio
      */
     public LineaFactura(float precio){
-        this.fPrecio = precio;
+        this.precio = precio;
     }
 
     /**
      * Retorna el precio del LineaFactura
-     * @return fPrecio
+     * @return precio
      */
-    public float getPrecio(){return fPrecio;}
+    public float getPrecio(){return precio;}
 }

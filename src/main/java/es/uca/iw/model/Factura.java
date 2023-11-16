@@ -1,7 +1,6 @@
 package es.uca.iw.model;
 
 import java.util.Date;
-import java.util.UUID;
 import jakarta.persistence.Id;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,20 +14,20 @@ public class Factura {
     public enum Estado{Pagado,NoPagado}; //Se incluiran mas estados
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private int uId;
+    @Column(name = "id", columnDefinition = "int(32)")
+    private int id;
 
     @Column(name = "numero")
-    private int iNumero;
+    private int numero;
 
-    @Column(name = "nombre")
-    private float fPrecio;
+    @Column(name = "precio")
+    private float precio;
 
     @Column(name = "fechaEmision")
-    private Date dFechaEmision;
+    private Date fechaEmision;
 
     @Column(name = "estado")
-    private Estado eEstado;
+    private Estado estado;
 
     /**
      * Constructor Parametrizado de Factura
@@ -38,39 +37,39 @@ public class Factura {
      * @param estado
      */
     public Factura(int numero, float precio, Date fechaEmision, Estado estado){
-        this.iNumero = numero;
-        this.fPrecio = precio;
-        this.dFechaEmision = fechaEmision;
-        this.eEstado = estado; 
+        this.numero = numero;
+        this.precio = precio;
+        this.fechaEmision = fechaEmision;
+        this.estado = estado; 
     }
 
     /**
      * Retorna el id del Factura
-     * @return uId
+     * @return id
      */
-    public int getId(){return uId;}
+    public int getId(){return id;}
 
     /**
      * Retorna el numero del Factura
-     * @return iNumero
+     * @return numero
      */
-    public int getNumero(){return iNumero;}
+    public int getNumero(){return numero;}
 
     /**
      * Retorna el precio del Factura
-     * @return fPrecio
+     * @return precio
      */
-    public float getPrecio(){return fPrecio;}
+    public float getPrecio(){return precio;}
 
     /**
      * Retorna el fecha emision del Factura
-     * @return dFechaEmision
+     * @return fechaEmision
      */
-    public Date getFechaInicio(){return dFechaEmision;}
+    public Date getFechaInicio(){return fechaEmision;}
 
     /**
      * Retorna el estado del Factura
-     * @return eEstado
+     * @return estado
      */
-    public Estado getEstado(){return eEstado;}
+    public Estado getEstado(){return estado;}
 }

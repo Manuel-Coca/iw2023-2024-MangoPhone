@@ -14,7 +14,7 @@ public class LineaFactura {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private UUID uId = UUID.randomUUID();
+    private int uId;
 
     @Column(name = "precio")
     private float fPrecio;

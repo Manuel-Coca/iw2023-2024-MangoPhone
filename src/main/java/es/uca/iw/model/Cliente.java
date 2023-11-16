@@ -1,6 +1,5 @@
 package es.uca.iw.model;
 
-import java.util.UUID;
 import jakarta.persistence.Id;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,7 +14,7 @@ public class Cliente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private UUID uId = UUID.randomUUID();
+    private int uId;
 
     @Column(name = "nombre", length = 32)
     private String sNombre;
@@ -52,7 +51,7 @@ public class Cliente {
      * Retorna el id del Cliente
      * @return uId
      */
-    public UUID getId(){return uId;}
+    public int getId(){return uId;}
 
     /**
      * Retorna el nombre del Cliente

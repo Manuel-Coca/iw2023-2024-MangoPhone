@@ -16,7 +16,7 @@ public class Empleado {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private UUID uId = UUID.randomUUID();
+    private int id;
 
     @Column(name = "nombre", length = 32)
     private String sNombre;
@@ -53,7 +53,7 @@ public class Empleado {
      * Retorna el id del Empleado
      * @return uId
      */
-    public UUID getId(){return uId;}
+    public int getId(){return id;}
 
     /**
      * Retorna el nombre del Empleado

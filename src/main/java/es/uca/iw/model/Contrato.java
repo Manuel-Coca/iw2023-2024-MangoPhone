@@ -15,7 +15,7 @@ public class Contrato {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private UUID uId = UUID.randomUUID();
+    private int uId;
 
     @Column(name = "numero")
     private int iNumero;
@@ -42,7 +42,7 @@ public class Contrato {
      * Retorna el id del Contrato
      * @return uId
      */
-    public UUID getId(){return uId;}
+    public int getId(){return uId;}
 
     /**
      * Retorna el numero del Contrato

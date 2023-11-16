@@ -17,7 +17,7 @@ public class Mensaje {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private UUID uId = UUID.randomUUID();
+    private int uId;
 
     @Column(name = "tipo")
     private Tipo eTipo;

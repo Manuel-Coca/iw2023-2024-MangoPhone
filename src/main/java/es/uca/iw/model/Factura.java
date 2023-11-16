@@ -16,7 +16,7 @@ public class Factura {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private UUID uId = UUID.randomUUID();
+    private int uId;
 
     @Column(name = "numero")
     private int iNumero;
@@ -48,7 +48,7 @@ public class Factura {
      * Retorna el id del Factura
      * @return uId
      */
-    public UUID getId(){return uId;}
+    public int getId(){return uId;}
 
     /**
      * Retorna el numero del Factura

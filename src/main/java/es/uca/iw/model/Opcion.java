@@ -16,7 +16,7 @@ public class Opcion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private UUID uId = UUID.randomUUID();
+    private int uId;
 
     @Column(name = "nombre")
     private Tipo eTipo;

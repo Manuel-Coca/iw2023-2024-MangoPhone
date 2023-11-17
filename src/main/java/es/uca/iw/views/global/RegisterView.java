@@ -18,7 +18,6 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 
-import es.uca.iw.model.Cliente;
 
 @PageTitle("Crear Cuenta")
 @Route(value = "register")

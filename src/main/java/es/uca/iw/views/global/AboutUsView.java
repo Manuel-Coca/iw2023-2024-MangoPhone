@@ -7,7 +7,6 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
-import com.vaadin.flow.theme.lumo.LumoUtility.Margin;
 
 import es.uca.iw.views.templates.MainLayout;
 
@@ -18,9 +17,9 @@ public class AboutUsView extends VerticalLayout{
     public AboutUsView() {
         setSpacing(false);
 
-        H1 header = new H1("Sobre MangoPhone");
-        header.addClassNames(Margin.Top.XLARGE, Margin.Bottom.MEDIUM);
-        add(header);
+        H1 globalTitle = new H1("Sobre Mango");
+        globalTitle.addClassName("titulo-custom");
+        add(globalTitle);
 
         add(new Paragraph("MangoPhone es una destacada empresa en el sector de las telecomunicaciones, reconocida por su excelencia en servicios y su compromiso con la innovación. Como líder en el mercado, MangoPhone se posiciona como una compañía integral de telecomunicaciones, ofreciendo soluciones avanzadas en redes fijas, móviles y de banda ancha."));
         add(new Paragraph("Con una presencia global en diversos mercados, MangoPhone se destaca por su enfoque hacia la transformación digital, consolidándose como una verdadera 'Telco Digital'. Esta estrategia la sitúa de manera óptima para satisfacer las cambiantes necesidades de sus clientes y capitalizar el crecimiento en nuevos segmentos del mercado."));

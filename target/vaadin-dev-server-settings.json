@@ -1,0 +1,17 @@
+{
+  "frontendFolder": "F:/Proyectos/Github/iw2023-2024-MangoPhone/frontend",
+  "themeFolder": "themes",
+  "themeResourceFolder": "F:/Proyectos/Github/iw2023-2024-MangoPhone/frontend/generated/jar-resources",
+  "staticOutput": "target/classes/META-INF/VAADIN/webapp/VAADIN/static",
+  "generatedFolder": "generated",
+  "statsOutput": "target/classes/META-INF/VAADIN/webapp/../config/",
+  "frontendBundleOutput": "target/classes/META-INF/VAADIN/webapp/",
+  "devBundleOutput": "F:/Proyectos/Github/iw2023-2024-MangoPhone/src/main/dev-bundle/webapp",
+  "devBundleStatsOutput": "F:/Proyectos/Github/iw2023-2024-MangoPhone/src/main/dev-bundle/config",
+  "jarResourcesFolder": "F:/Proyectos/Github/iw2023-2024-MangoPhone/frontend/generated/jar-resources",
+  "themeName": "",
+  "clientServiceWorkerSource": "F:\\Proyectos\\Github\\iw2023-2024-MangoPhone\\target\\sw.ts",
+  "pwaEnabled": false,
+  "offlineEnabled": false,
+  "offlinePath": "'offline.html'"
+}

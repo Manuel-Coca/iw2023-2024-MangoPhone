@@ -18,6 +18,8 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 
+import es.uca.iw.model.Cliente;
+
 @PageTitle("Crear Cuenta")
 @Route(value = "register")
 @RouteAlias(value = "register")
@@ -39,6 +41,7 @@ public class RegisterView extends Div {
         // Inputs
         TextField nameField = new TextField("Nombre");
         TextField surnameField = new TextField("Apellidos");
+        TextField dniField = new TextField("DNI");
         TextField phoneNumberPhield = new TextField("Teléfono");
         EmailField emailField = new EmailField("Correo electónico");
         PasswordField passwordField = new PasswordField("Contraseña");
@@ -49,14 +52,15 @@ public class RegisterView extends Div {
         registerButton.addClassName("boton-naranja-primary");
         registerButton.addClassName(LumoUtility.Margin.Bottom.LARGE);
         registerButton.addClickListener(event -> {
-            // String sName = nameField.getValue();
-            // String sSurname = surnameField.getValue();
-            // String sPhoneNumber = phoneNumberPhield.getValue();
-            // String sMail = emailField.getValue();
+            String sName = nameField.getValue();
+            String sSurname = surnameField.getValue();
+            String sPhoneNumber = phoneNumberPhield.getValue();
+            String sMail = emailField.getValue();
             String sPassword = passwordField.getValue();
             String sConfirmPassword = confirmPasswordField.getValue();
+
             if (sPassword.equals(sConfirmPassword)) {
-                UI.getCurrent().navigate("home");        
+                //Cliente.
             }
         });
         
@@ -76,7 +80,7 @@ public class RegisterView extends Div {
         backToHome.addClassName(LumoUtility.Margin.Top.LARGE);
 
         // Agregar componentes al contenedor del formulario
-        column1Layout.add(nameField, surnameField, phoneNumberPhield);
+        column1Layout.add(nameField, surnameField, dniField, phoneNumberPhield);
         column2Layout.add(emailField, passwordField, confirmPasswordField);
         fieldsLayout.add(column1Layout, column2Layout);
         registerLayout.add(titulo, fieldsLayout, registerButton, question, loginButton, backToHome);

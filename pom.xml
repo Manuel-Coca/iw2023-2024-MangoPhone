@@ -63,7 +63,6 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.28</version> <!-- Reemplaza con la versión de MySQL que desees usar -->
         </dependency>
-        
 
         <dependency>
             <groupId>org.springframework.boot</groupId>

@@ -12,11 +12,8 @@ import com.vaadin.flow.component.sidenav.SideNavItem;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 
-import es.uca.iw.views.global.AboutUsView;
-import es.uca.iw.views.global.LoginView;
-import es.uca.iw.views.global.ServicesInfoView;
-import es.uca.iw.views.global.WelcomeView;
-
+import es.uca.iw.views.about.AbaoutUsView;
+import es.uca.iw.views.helloworld.HelloWorldView;
 import org.vaadin.lineawesome.LineAwesomeIcon;
 
 /**

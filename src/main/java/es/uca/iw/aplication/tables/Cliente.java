@@ -18,6 +18,7 @@ public class Cliente {
     @Column(name = "id", columnDefinition = "int(32)")
     private UUID id;
     public UUID getId() { return id; }
+    public void setId(UUID newId) { this.id = newId; }
 
     @Column(name = "nombre", length = 32)
     private String nombre;
@@ -50,6 +51,7 @@ public class Cliente {
     public String getTelefono() { return telefono; }
     public void setTelefono(String telefono) { this.telefono = telefono; }
 
+    /*
     public Cliente(String nombre, String apellidos, String correoElectronico, String contrasena, String telefono){
         this.nombre = nombre;
         this.apellidos = apellidos;
@@ -57,4 +59,5 @@ public class Cliente {
         this.contrasena = contrasena;
         this.telefono = telefono;
     }
+    */
 }

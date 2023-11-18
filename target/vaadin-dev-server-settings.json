@@ -1,7 +1,6 @@
 {
-  "frontendFolder": "C:/Users/falil/Documents/GitHub/iw2023-2024-MangoPhone/frontend",
+  "frontendFolder": "F:/Proyectos/Github/iw2023-2024-MangoPhone/frontend",
   "themeFolder": "themes",
-<<<<<<< Updated upstream
   "themeResourceFolder": "F:/Proyectos/Github/iw2023-2024-MangoPhone/frontend/generated/jar-resources",
   "staticOutput": "F:/Proyectos/Github/iw2023-2024-MangoPhone/target/classes/META-INF/VAADIN/webapp/VAADIN/static",
   "generatedFolder": "generated",
@@ -12,18 +11,6 @@
   "jarResourcesFolder": "F:/Proyectos/Github/iw2023-2024-MangoPhone/frontend/generated/jar-resources",
   "themeName": "mangophone",
   "clientServiceWorkerSource": "F:\\Proyectos\\Github\\iw2023-2024-MangoPhone\\target\\sw.ts",
-=======
-  "themeResourceFolder": "C:/Users/falil/Documents/GitHub/iw2023-2024-MangoPhone/frontend/generated/jar-resources",
-  "staticOutput": "target/classes/META-INF/VAADIN/webapp/VAADIN/static",
-  "generatedFolder": "generated",
-  "statsOutput": "target/classes/META-INF/VAADIN/webapp/../config/",
-  "frontendBundleOutput": "target/classes/META-INF/VAADIN/webapp/",
-  "devBundleOutput": "C:/Users/falil/Documents/GitHub/iw2023-2024-MangoPhone/src/main/dev-bundle/webapp",
-  "devBundleStatsOutput": "C:/Users/falil/Documents/GitHub/iw2023-2024-MangoPhone/src/main/dev-bundle/config",
-  "jarResourcesFolder": "C:/Users/falil/Documents/GitHub/iw2023-2024-MangoPhone/frontend/generated/jar-resources",
-  "themeName": "",
-  "clientServiceWorkerSource": "C:\\Users\\falil\\Documents\\GitHub\\iw2023-2024-MangoPhone\\target\\sw.ts",
->>>>>>> Stashed changes
   "pwaEnabled": false,
   "offlineEnabled": false,
   "offlinePath": "'offline.html'"

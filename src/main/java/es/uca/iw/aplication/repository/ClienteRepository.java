@@ -1,6 +1,5 @@
 package es.uca.iw.aplication.repository;
 
-import java.time.LocalDate;
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -23,5 +22,4 @@ public interface ClienteRepository extends JpaRepository<Cliente, UUID> {
                     @Param("correoElectronico") String correoElectronico,
                     @Param("contrasena") String contrasena
     );
-
 }

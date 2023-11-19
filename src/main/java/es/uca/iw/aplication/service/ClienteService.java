@@ -13,8 +13,9 @@ public class ClienteService {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public ClienteService(ClienteRepository clienteRepository){
+    public ClienteService(ClienteRepository clienteRepository,PasswordEncoder passwordEncoder){
         this.clienteRepository = clienteRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public void createCliente(Cliente cliente) {       

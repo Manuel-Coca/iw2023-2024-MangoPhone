@@ -1,6 +1,9 @@
 package es.uca.iw.aplication.tables;
 
 import java.util.UUID;
+
+import org.apache.commons.lang3.ObjectUtils.Null;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -16,7 +19,7 @@ public class LineaFactura {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id")
-    private UUID id;
+    private UUID id = null;
     public UUID getId() { return id; }
     public void setId(UUID newId) { this.id = newId; }
 

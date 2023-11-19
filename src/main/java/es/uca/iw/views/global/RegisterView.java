@@ -4,10 +4,12 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
+import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H1;
@@ -61,6 +63,7 @@ public class RegisterView extends Div {
         TextField dniField = new TextField("DNI");
         TextField phoneNumberField = new TextField("Teléfono");
         EmailField emailField = new EmailField("Correo electónico");
+        DatePicker birthDateField = new DatePicker("Fecha de nacimiento");
         PasswordField passwordField = new PasswordField("Contraseña");
         PasswordField confirmPasswordField = new PasswordField("Confirmar contraseña");
         
@@ -85,20 +88,20 @@ public class RegisterView extends Div {
             .asRequired("El teléfono es obligatorio")
             .bind(Cliente::getTelefono, Cliente::setTelefono);
 
-        /* 
-        binderRegister.forField(birthDate)
+        
+        binderRegister.forField(birthDateField)
             .asRequired("La fecha de nacimiento es obligatoria")
             .withValidator(birthDate1 -> birthDate1.isBefore((java.time.LocalDate.now().minusYears(18).plusDays(1))), "El Cliente ha de ser mayor de edad")
             .bind(Cliente::getFechaNacimiento, Cliente::setFechaNacimiento);
-        */
+        
         
         binderRegister.forField(passwordField)
             .asRequired("La contraseña es obligatoria")
-            //.withValidator(password1 -> password1.length() >= 8, "La contraseña debe tener al menos 8 caracteres")
-            //.withValidator(password1 -> password1.matches(".*[A-Z].*"), "La contraseña debe tener al menos una mayúscula")
+            .withValidator(password1 -> password1.length() >= 8, "La contraseña debe tener al menos 8 caracteres")
+            .withValidator(password1 -> password1.matches(".*[A-Z].*"), "La contraseña debe tener al menos una mayúscula")
             .withValidator(password1 -> password1.matches(".*[a-z].*"), "La contraseña debe tener al menos una minúscula")
             .withValidator(password1 -> password1.matches(".*[0-9].*"), "La contraseña debe tener al menos un número")
-            //.withValidator(password1 -> password1.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?].*"), "La contraseña debe tener al menos un caracter especial")
+            .withValidator(password1 -> password1.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?].*"), "La contraseña debe tener al menos un caracter especial")
             .withValidator(password1 -> password1.equals(confirmPasswordField.getValue()), "Las contraseñas no coinciden")
             .bind(Cliente::getContrasena, Cliente::setContrasena);
 
@@ -116,7 +119,7 @@ public class RegisterView extends Div {
         Button registerButton = new Button("Crear cuenta");
         registerButton.addClassName("boton-naranja-primary");
         registerButton.addClassName(LumoUtility.Margin.Bottom.LARGE);
-        //registerButton.addClickShortcut(Key.ENTER);
+        registerButton.addClickShortcut(Key.ENTER);
         registerButton.addClickListener(event -> {
             if(binderRegister.validate().isOk()) {
                 Cliente cliente = new Cliente();
@@ -125,7 +128,7 @@ public class RegisterView extends Div {
                 cliente.setApellidos(surnameField.getValue());
                 cliente.setDNI(dniField.getValue());
                 cliente.setTelefono(phoneNumberField.getValue());
-                //cliente.setFechaNacimiento(birthDate.getValue());
+                cliente.setFechaNacimiento(birthDateField.getValue());
                 cliente.setCorreoElectronico(emailField.getValue());
                 cliente.setContrasena(passwordField.getValue());
                 cliente.setActivo(false);
@@ -151,7 +154,7 @@ public class RegisterView extends Div {
 
         // Agregar componentes al contenedor del formulario
         column1Layout.add(nameField, surnameField, dniField, phoneNumberField);
-        column2Layout.add(emailField, passwordField, confirmPasswordField);
+        column2Layout.add(emailField, birthDateField, passwordField, confirmPasswordField);
         fieldsLayout.add(column1Layout, column2Layout);
         registerLayout.add(titulo, fieldsLayout, registerButton, question, loginButton, backToHome);
         
@@ -170,7 +173,7 @@ public class RegisterView extends Div {
                 UI.getCurrent().navigate("/login");
             });
             confirmDialog.open();
-        } 
+        }
         catch (Exception e) {
             ConfirmDialog errorDialog = new ConfirmDialog("Error", "Error al registrar cliente", "Aceptar", event -> { 
                 UI.getCurrent().navigate("/register");

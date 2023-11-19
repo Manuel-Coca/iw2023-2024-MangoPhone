@@ -16,13 +16,13 @@ public class LineaFactura {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id")
-    private UUID id = null;
+    private UUID id;
     public UUID getId() { return id; }
     public void setId(UUID newId) { this.id = newId; }
 
-    @ManyToOne
+    /*@ManyToOne
     @JoinColumn(name = "factura_id")
-    private Factura factura;
+    private Factura factura;*/
 
     @Column(name = "precio")
     private float precio;

@@ -1,5 +1,8 @@
 package es.uca.iw.aplication.service;
 
+import java.util.Optional;
+
+import org.antlr.v4.runtime.atn.SemanticContext.AND;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,5 +25,11 @@ public class ClienteService {
         cliente.setContrasena(passwordEncoder.encode(cliente.getContrasena()));   
         
         clienteRepository.save(cliente);     
+    }
+
+    public boolean validarCredenciales(String correo, String contrasena) {
+        Optional<Cliente> cliente = clienteRepository.findByCorreoElectronico(correo) ;
+        
+        return cliente != null && passwordEncoder.matches(contrasena, cliente.get().getContrasena());
     }
 }

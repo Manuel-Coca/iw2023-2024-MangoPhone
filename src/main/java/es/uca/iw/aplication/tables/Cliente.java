@@ -1,10 +1,8 @@
 package es.uca.iw.aplication.tables;
 
 import jakarta.persistence.Id;
-
 import java.sql.Date;
 import java.util.UUID;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

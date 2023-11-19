@@ -1,7 +1,6 @@
 package es.uca.iw.aplication.tables;
 
 import java.util.UUID;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

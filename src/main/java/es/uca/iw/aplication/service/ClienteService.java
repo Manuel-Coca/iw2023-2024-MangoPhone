@@ -10,7 +10,7 @@ import es.uca.iw.aplication.tables.Cliente;
 public class ClienteService {
     private final ClienteRepository clienteRepository;
 
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
     public ClienteService(ClienteRepository clienteRepository,PasswordEncoder passwordEncoder){

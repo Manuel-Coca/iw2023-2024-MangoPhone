@@ -4,7 +4,6 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
@@ -165,16 +164,17 @@ public class RegisterView extends Div {
 
     private void SaveRequest(Cliente cliente) {
         try {
-            clienteService.saveCliente(cliente);
+            clienteService.createCliente(cliente);
             ConfirmDialog confirmDialog = new ConfirmDialog("Registro Correcto", "Registro realizado correctamente", "Aceptar", event1 -> {
                 UI.getCurrent().navigate("/login");
             });
             confirmDialog.open();
         } 
         catch (Exception e) {
-            ConfirmDialog error = new ConfirmDialog("Error", "Ha ocurrido un error al crear la solicitud. Comunique al adminsitrador del sitio el error.\n" +
-                    "Error: " + e, "Aceptar", null);
-            error.open();
+            ConfirmDialog errorDialog = new ConfirmDialog("Error", "Error al registrar cliente", "Aceptar", event -> { 
+                UI.getCurrent().navigate("/register");
+            });
+            errorDialog.open();
         }
     }
 }

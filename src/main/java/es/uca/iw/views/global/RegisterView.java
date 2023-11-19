@@ -128,6 +128,7 @@ public class RegisterView extends Div {
                 //cliente.setFechaNacimiento(birthDate.getValue());
                 cliente.setCorreoElectronico(emailField.getValue());
                 cliente.setContrasena(passwordField.getValue());
+                cliente.setActivo(false);
 
                 SaveRequest(cliente);
             }

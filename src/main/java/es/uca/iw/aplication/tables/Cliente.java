@@ -14,9 +14,9 @@ import jakarta.persistence.Table;
 @Table(name="Cliente")
 public class Cliente {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", columnDefinition = "int(32)")
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "id")
+    private UUID id = null;
     public UUID getId() { return id; }
     public void setId(UUID newId) { this.id = newId; }
 

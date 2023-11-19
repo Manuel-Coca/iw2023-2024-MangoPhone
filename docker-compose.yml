@@ -6,7 +6,6 @@ services:
     environment:
       # ALLOW_EMPTY_PASSWORD is recommended only for development.
       - MYSQL_ALLOW_EMPTY_PASSWORD=yes
-      - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=mangophone
   
   phpmyadmin:

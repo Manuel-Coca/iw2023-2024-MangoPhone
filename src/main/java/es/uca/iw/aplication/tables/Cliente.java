@@ -51,6 +51,11 @@ public class Cliente {
     public String getTelefono() { return telefono; }
     public void setTelefono(String telefono) { this.telefono = telefono; }
 
+    @Column(name = "activo")
+    private boolean activo = false;
+    public boolean getActivo() { return this.activo; }
+    public void setActivo(boolean activo) { this.activo = activo; }
+
     /*
     public Cliente(String nombre, String apellidos, String correoElectronico, String contrasena, String telefono){
         this.nombre = nombre;

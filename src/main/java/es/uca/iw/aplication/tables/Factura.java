@@ -1,6 +1,7 @@
 package es.uca.iw.aplication.tables;
 
 import java.util.Date;
+import java.util.UUID;
 import jakarta.persistence.Id;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,10 +15,11 @@ public class Factura {
     public enum Estado{Pagado,NoPagado}; //Se incluiran mas estados
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", columnDefinition = "int(32)")
-    private int id;
-    public int getId() { return id; }
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "id")
+    private UUID id = null;
+    public UUID getId() { return id; }
+    public void setId(UUID newId) { this.id = newId; }
 
     @Column(name = "numero")
     private int numero;

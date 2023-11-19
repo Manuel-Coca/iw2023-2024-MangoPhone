@@ -1,6 +1,7 @@
 package es.uca.iw.aplication.tables;
 
 import jakarta.persistence.Id;
+import java.util.UUID;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,10 +14,11 @@ public class Empleado {
     public enum Departamentos{Marketing,Finanzas,SAC};
     
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", columnDefinition = "int(32)")
-    private int id;
-    public int getId() { return id; }
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "id")
+    private UUID id = null;
+    public UUID getId() { return id; }
+    public void setId(UUID newId) { this.id = newId; }
 
     @Column(name = "nombre", length = 32)
     private String nombre;

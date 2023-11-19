@@ -1,9 +1,8 @@
 package es.uca.iw.aplication.tables;
 
 import jakarta.persistence.Id;
-
+import java.time.LocalDate;
 import java.util.UUID;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -39,6 +38,11 @@ public class Cliente {
     private String correoElectronico;
     public String getCorreoElectronico() { return correoElectronico; }
     public void setCorreoElectronico(String correoElectronico) { this.correoElectronico = correoElectronico; }
+
+    @Column(name = "fechaNacimiento")
+    private LocalDate fechaNacimiento;
+    public LocalDate getFechaNacimiento() { return fechaNacimiento; }
+    public void setFechaNacimiento(LocalDate fechaNacimiento) { this.fechaNacimiento = fechaNacimiento; }
 
     @Column(name = "contrasena", length = 128)
     private String contrasena;

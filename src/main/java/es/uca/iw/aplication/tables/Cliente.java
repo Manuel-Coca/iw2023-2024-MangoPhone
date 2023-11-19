@@ -2,6 +2,7 @@ package es.uca.iw.aplication.tables;
 
 import jakarta.persistence.Id;
 
+import java.sql.Date;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
@@ -39,6 +40,11 @@ public class Cliente {
     private String correoElectronico;
     public String getCorreoElectronico() { return correoElectronico; }
     public void setCorreoElectronico(String correoElectronico) { this.correoElectronico = correoElectronico; }
+
+    @Column(name = "fechaNacimiento")
+    private Date fechaNacimiento;
+    public Date getFechaNacimiento() { return fechaNacimiento; }
+    public void setFechaNacimiento(Date fechaNacimiento) { this.fechaNacimiento = fechaNacimiento; }
 
     @Column(name = "contrasena", length = 128)
     private String contrasena;

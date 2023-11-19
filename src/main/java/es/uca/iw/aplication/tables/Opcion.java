@@ -1,5 +1,7 @@
 package es.uca.iw.aplication.tables;
 
+import java.util.UUID;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,35 +15,24 @@ public class Opcion {
     public enum Tipo{Roaming,CompartirDatos,Bloquear};
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", columnDefinition = "int(32)")
-    private int id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "id")
+    private UUID id = null;
+    public UUID getId() { return id; }
+    public void setId(UUID newId) { this.id = newId; }
 
     @Column(name = "nombre")
     private Tipo nombre;
+    public Tipo getTipo() { return nombre; }
+    public void setTipo(Tipo nombre) { this.nombre = nombre; }
 
     @Column(name = "estado")
     private boolean estado;
+    public boolean getEstado() { return estado; }
+    public void setTipo(boolean estado) { this.estado = estado; }
 
-    /**
-     * Contructor Parametrizado de Opcion
-     * @param tipo
-     * @param activo
-     */
     public Opcion(Tipo tipo, boolean estado){
         this.nombre = tipo;
         this.estado = estado;
-    }
-
-    /**
-     * Retorna el tipo del Opcion
-     * @return nombre
-     */
-    public Tipo getTipo(){return nombre;}
-
-    /**
-     * Retorna el estado del Opcion
-     * @return estado
-     */
-    public boolean getEstado(){return estado;}
+    }    
 }

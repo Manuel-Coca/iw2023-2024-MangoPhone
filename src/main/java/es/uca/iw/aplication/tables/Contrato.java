@@ -7,15 +7,17 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Table;
 import java.util.Date;
+import java.util.UUID;
 
 @Entity
 @Table(name="Contrato")
 public class Contrato {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", columnDefinition = "int(32)")
-    private int id;
-    public int getId() { return id; }
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "id")
+    private UUID id = null;
+    public UUID getId() { return id; }
+    public void setId(UUID newId) { this.id = newId; }
 
     @Column(name = "numero")
     private int numero;

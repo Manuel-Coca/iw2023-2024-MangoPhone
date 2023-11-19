@@ -30,6 +30,11 @@ public class Empleado {
     public String getApellidos() { return apellidos; }
     public void setApellidos(String apellidos) { this.apellidos = apellidos; }
 
+    @Column(name = "dni", length = 9, unique = true)
+    private String dni;
+    public String getDNI() { return dni; }
+    public void setDNI(String dni) { this.dni = dni; }
+
     @Column(name = "correoElectronico", length = 128)
     private String correoElectronico;
     public String getCorreoElectronico() { return correoElectronico; }

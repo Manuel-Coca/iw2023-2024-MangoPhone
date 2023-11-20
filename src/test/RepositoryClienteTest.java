@@ -1,4 +1,4 @@
-package es.uca.iw.aplication.Test;
+package es.uca.iw.aplication.test;
 
 import es.uca.iw.aplication.repository.ClienteRepository;
 import es.uca.iw.aplication.service.ClienteService;

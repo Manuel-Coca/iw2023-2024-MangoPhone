@@ -30,4 +30,8 @@ public class ClienteService {
         
         return cliente != null && passwordEncoder.matches(contrasena, cliente.get().getContrasena());
     }
+
+    public Optional<Cliente> findByCorreoElectronico(String email) {
+        return clienteRepository.findByCorreoElectronico(email);
+    }
 }

@@ -1,5 +1,4 @@
 es\uca\iw\aplication\tables\Factura$Estado.class
-es\uca\iw\aplication\repository\ClienteRepository.class
 es\uca\iw\aplication\tables\LineaFactura.class
 es\uca\iw\aplication\tables\Opcion.class
 es\uca\iw\Application.class
@@ -13,7 +12,6 @@ es\uca\iw\aplication\tables\Mensaje.class
 es\uca\iw\aplication\tables\Opcion$Tipo.class
 es\uca\iw\views\global\LoginView.class
 es\uca\iw\aplication\tables\Factura.class
-es\uca\iw\aplication\service\ClienteService.class
 es\uca\iw\aplication\tables\Servicio.class
 es\uca\iw\views\global\RegisterView.class
 es\uca\iw\views\templates\MainLayout.class

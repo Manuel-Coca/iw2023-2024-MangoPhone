@@ -2,10 +2,12 @@ F:\Proyectos\Github\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\aplication\ta
 F:\Proyectos\Github\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\aplication\tables\usuarios\Usuario.java
 F:\Proyectos\Github\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\views\global\LoginView.java
 F:\Proyectos\Github\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\aplication\tables\Factura.java
+F:\Proyectos\Github\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\aplication\repository\UsuarioRepository.java
 F:\Proyectos\Github\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\aplication\tables\usuarios\SAC.java
 F:\Proyectos\Github\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\aplication\tables\usuarios\Finanzas.java
 F:\Proyectos\Github\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\aplication\tables\usuarios\Root.java
 F:\Proyectos\Github\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\aplication\tables\Servicio.java
+F:\Proyectos\Github\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\aplication\service\UsuarioService.java
 F:\Proyectos\Github\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\Application.java
 F:\Proyectos\Github\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\aplication\tables\Opcion.java
 F:\Proyectos\Github\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\views\global\ServicesInfoView.java
@@ -16,10 +18,8 @@ F:\Proyectos\Github\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\views\global\
 F:\Proyectos\Github\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\aplication\tables\usuarios\Marketing.java
 F:\Proyectos\Github\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\aplication\tables\Rol.java
 F:\Proyectos\Github\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\aplication\repository\ContratoRepository.java
-F:\Proyectos\Github\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\aplication\repository\ClienteRepository.java
 F:\Proyectos\Github\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\aplication\tables\Contrato.java
 F:\Proyectos\Github\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\views\global\RegisterView.java
 F:\Proyectos\Github\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\aplication\tables\Empleado.java
-F:\Proyectos\Github\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\aplication\service\ClienteService.java
 F:\Proyectos\Github\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\views\templates\MainLayout.java
 F:\Proyectos\Github\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\aplication\tables\Mensaje.java

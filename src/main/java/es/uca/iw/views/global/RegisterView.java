@@ -27,8 +27,10 @@ import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 
-import es.uca.iw.aplication.service.ClienteService;
+import es.uca.iw.aplication.service.UsuarioService;
+import es.uca.iw.aplication.tables.Rol;
 import es.uca.iw.aplication.tables.usuarios.Cliente;
+import es.uca.iw.aplication.tables.usuarios.Usuario;
 
 
 @PageTitle("Crear Cuenta")
@@ -38,7 +40,7 @@ import es.uca.iw.aplication.tables.usuarios.Cliente;
 public class RegisterView extends Div {
 
     @Autowired
-    private ClienteService clienteService;
+    private UsuarioService usuarioService;
 
     public RegisterView() {
         add(RegisterLayout());        
@@ -122,18 +124,19 @@ public class RegisterView extends Div {
         registerButton.addClickShortcut(Key.ENTER);
         registerButton.addClickListener(event -> {
             if(binderRegister.validate().isOk()) {
-                Cliente cliente = new Cliente();
-                cliente.setId(UUID.randomUUID());
-                cliente.setNombre(nameField.getValue());
-                cliente.setApellidos(surnameField.getValue());
-                cliente.setDNI(dniField.getValue());
-                cliente.setTelefono(phoneNumberField.getValue());
-                cliente.setFechaNacimiento(birthDateField.getValue());
-                cliente.setCorreoElectronico(emailField.getValue());
-                cliente.setContrasena(passwordField.getValue());
-                cliente.setActivo(false);
+                Usuario Usuario = new Usuario();
+                Usuario.setId(UUID.randomUUID());
+                Usuario.setRol(Rol.FINANZAS);
+                Usuario.setNombre(nameField.getValue());
+                Usuario.setApellidos(surnameField.getValue());
+                Usuario.setDNI(dniField.getValue());
+                Usuario.setTelefono(phoneNumberField.getValue());
+                Usuario.setFechaNacimiento(birthDateField.getValue());
+                Usuario.setCorreoElectronico(emailField.getValue());
+                Usuario.setContrasena(passwordField.getValue());
+                Usuario.setActivo(false);
 
-                SaveRequest(cliente);
+                SaveRequest(Usuario);
             }
         });
         
@@ -166,16 +169,16 @@ public class RegisterView extends Div {
         return registerLayout;
     }
 
-    private void SaveRequest(Cliente cliente) {
+    private void SaveRequest(Usuario usuario) {
         try {
-            clienteService.createCliente(cliente);
+            usuarioService.createUsuario(usuario);
             ConfirmDialog confirmDialog = new ConfirmDialog("Registro Correcto", "Registro realizado correctamente", "Aceptar", event1 -> {
                 UI.getCurrent().navigate("/login");
             });
             confirmDialog.open();
         }
         catch (Exception e) {
-            ConfirmDialog errorDialog = new ConfirmDialog("Error", "Error al registrar cliente", "Aceptar", event -> { 
+            ConfirmDialog errorDialog = new ConfirmDialog("Error", "Error al registrar el usuario", "Aceptar", event -> { 
                 UI.getCurrent().navigate("/register");
             });
             errorDialog.open();

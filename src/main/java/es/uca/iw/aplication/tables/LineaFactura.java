@@ -1,16 +1,11 @@
 package es.uca.iw.aplication.tables;
 
 import java.util.UUID;
-
-import org.apache.commons.lang3.ObjectUtils.Null;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity

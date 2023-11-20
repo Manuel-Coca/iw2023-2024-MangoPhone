@@ -7,8 +7,6 @@ import es.uca.iw.aplication.tables.Rol;
 import jakarta.persistence.*;
 
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "rol")
 public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -58,8 +56,8 @@ public class Usuario {
     public boolean getActivo() { return this.activo; }
     public void setActivo(boolean activo) { this.activo = activo; }
 
-    @Transient
-    private Rol rol;
-    public Rol getRol() { return this.rol; }
-    public void setRol(Rol rol) { this.rol = rol; }
+    @Column(name = "rol")
+    private String rol = null;
+    public String getRol() { return this.rol; }
+    public void setRol(Rol rol) { this.rol = rol.toString(); }
 }

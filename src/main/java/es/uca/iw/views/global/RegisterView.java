@@ -29,7 +29,6 @@ import com.vaadin.flow.theme.lumo.LumoUtility;
 
 import es.uca.iw.aplication.service.UsuarioService;
 import es.uca.iw.aplication.tables.Rol;
-import es.uca.iw.aplication.tables.usuarios.Cliente;
 import es.uca.iw.aplication.tables.usuarios.Usuario;
 
 
@@ -70,52 +69,52 @@ public class RegisterView extends Div {
         PasswordField confirmPasswordField = new PasswordField("Confirmar contraseña");
         
         // Binding
-        Binder<Cliente> binderRegister = new Binder<>(Cliente.class);
+        Binder<Usuario> binderRegister = new Binder<>(Usuario.class);
         
         binderRegister.forField(nameField)
             .asRequired("El nombre es obligatiorio")
-            .bind(Cliente::getNombre, Cliente::setNombre);
+            .bind(Usuario::getNombre, Usuario::setNombre);
         
         binderRegister.forField(surnameField)
             .asRequired("El apellido es obligatorio")
-            .bind(Cliente::getApellidos, Cliente::setApellidos);
+            .bind(Usuario::getApellidos, Usuario::setApellidos);
                 
         binderRegister.forField(dniField)
             .asRequired("El DNI es obligatorio")
-            .withValidator(dni1 -> dni1.length() == 9, "El DNI debe tener 9 caracteres")
-            .withValidator(dni1 -> dni1.matches("[0-9]{8}[A-Za-z]"), "El DNI debe tener 8 números y una letra")
-            .bind(Cliente::getDNI, Cliente::setDNI);
+            //.withValidator(dni1 -> dni1.length() == 9, "El DNI debe tener 9 caracteres")
+            //.withValidator(dni1 -> dni1.matches("[0-9]{8}[A-Za-z]"), "El DNI debe tener 8 números y una letra")
+            .bind(Usuario::getDNI, Usuario::setDNI);
         
         binderRegister.forField(phoneNumberField)
             .asRequired("El teléfono es obligatorio")
-            .bind(Cliente::getTelefono, Cliente::setTelefono);
+            .bind(Usuario::getTelefono, Usuario::setTelefono);
 
         
         binderRegister.forField(birthDateField)
             .asRequired("La fecha de nacimiento es obligatoria")
-            .withValidator(birthDate1 -> birthDate1.isBefore((java.time.LocalDate.now().minusYears(18).plusDays(1))), "El Cliente ha de ser mayor de edad")
-            .bind(Cliente::getFechaNacimiento, Cliente::setFechaNacimiento);
+            //.withValidator(birthDate1 -> birthDate1.isBefore((java.time.LocalDate.now().minusYears(18).plusDays(1))), "El Usuario ha de ser mayor de edad")
+            .bind(Usuario::getFechaNacimiento, Usuario::setFechaNacimiento);
         
         
         binderRegister.forField(passwordField)
             .asRequired("La contraseña es obligatoria")
-            .withValidator(password1 -> password1.length() >= 8, "La contraseña debe tener al menos 8 caracteres")
-            .withValidator(password1 -> password1.matches(".*[A-Z].*"), "La contraseña debe tener al menos una mayúscula")
-            .withValidator(password1 -> password1.matches(".*[a-z].*"), "La contraseña debe tener al menos una minúscula")
-            .withValidator(password1 -> password1.matches(".*[0-9].*"), "La contraseña debe tener al menos un número")
-            .withValidator(password1 -> password1.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?].*"), "La contraseña debe tener al menos un caracter especial")
-            .withValidator(password1 -> password1.equals(confirmPasswordField.getValue()), "Las contraseñas no coinciden")
-            .bind(Cliente::getContrasena, Cliente::setContrasena);
+            //.withValidator(password1 -> password1.length() >= 8, "La contraseña debe tener al menos 8 caracteres")
+            //.withValidator(password1 -> password1.matches(".*[A-Z].*"), "La contraseña debe tener al menos una mayúscula")
+            //.withValidator(password1 -> password1.matches(".*[a-z].*"), "La contraseña debe tener al menos una minúscula")
+            //.withValidator(password1 -> password1.matches(".*[0-9].*"), "La contraseña debe tener al menos un número")
+            //.withValidator(password1 -> password1.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?].*"), "La contraseña debe tener al menos un caracter especial")
+            //.withValidator(password1 -> password1.equals(confirmPasswordField.getValue()), "Las contraseñas no coinciden")
+            .bind(Usuario::getContrasena, Usuario::setContrasena);
 
         binderRegister.forField(confirmPasswordField)
             .asRequired("La confirmación de la contraseña es obligatoria")
-            .withValidator(password1 -> password1.equals(confirmPasswordField.getValue()), "Las contraseñas no coinciden")
-            .bind(Cliente::getContrasena, Cliente::setContrasena);
+            //.withValidator(password1 -> password1.equals(confirmPasswordField.getValue()), "Las contraseñas no coinciden")
+            .bind(Usuario::getContrasena, Usuario::setContrasena);
 
         binderRegister.forField(emailField)
             .asRequired("El correo electrónico es obligatorio")
-            .withValidator(email1 -> email1.matches("^[A-Za-z0-9+_.-]+@(.+)$"), "El correo electrónico no es válido")
-            .bind(Cliente::getCorreoElectronico, Cliente::setCorreoElectronico);
+            //.withValidator(email1 -> email1.matches("^[A-Za-z0-9+_.-]+@(.+)$"), "El correo electrónico no es válido")
+            .bind(Usuario::getCorreoElectronico, Usuario::setCorreoElectronico);
         
         // Boton register
         Button registerButton = new Button("Crear cuenta");
@@ -124,19 +123,19 @@ public class RegisterView extends Div {
         registerButton.addClickShortcut(Key.ENTER);
         registerButton.addClickListener(event -> {
             if(binderRegister.validate().isOk()) {
-                Usuario Usuario = new Usuario();
-                Usuario.setId(UUID.randomUUID());
-                Usuario.setRol(Rol.FINANZAS);
-                Usuario.setNombre(nameField.getValue());
-                Usuario.setApellidos(surnameField.getValue());
-                Usuario.setDNI(dniField.getValue());
-                Usuario.setTelefono(phoneNumberField.getValue());
-                Usuario.setFechaNacimiento(birthDateField.getValue());
-                Usuario.setCorreoElectronico(emailField.getValue());
-                Usuario.setContrasena(passwordField.getValue());
-                Usuario.setActivo(false);
+                Usuario usuario = new Usuario();
+                usuario.setId(UUID.randomUUID());
+                usuario.setRol(Rol.CLIENTE);
+                usuario.setNombre(nameField.getValue());
+                usuario.setApellidos(surnameField.getValue());
+                usuario.setDNI(dniField.getValue());
+                usuario.setTelefono(phoneNumberField.getValue());
+                usuario.setFechaNacimiento(birthDateField.getValue());
+                usuario.setCorreoElectronico(emailField.getValue());
+                usuario.setContrasena(passwordField.getValue());
+                usuario.setActivo(false);
 
-                SaveRequest(Usuario);
+                SaveRequest(usuario);
             }
         });
         

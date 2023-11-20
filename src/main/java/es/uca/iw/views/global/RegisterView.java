@@ -28,7 +28,7 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 
 import es.uca.iw.aplication.service.ClienteService;
-import es.uca.iw.aplication.tables.Cliente;
+import es.uca.iw.aplication.tables.usuarios.Cliente;
 
 
 @PageTitle("Crear Cuenta")

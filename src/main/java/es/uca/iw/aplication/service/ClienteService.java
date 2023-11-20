@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import es.uca.iw.aplication.repository.ClienteRepository;
-import es.uca.iw.aplication.tables.Cliente;
+import es.uca.iw.aplication.tables.usuarios.Cliente;
 
 @Service
 public class ClienteService {

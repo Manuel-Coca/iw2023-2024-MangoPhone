@@ -4,7 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
-import es.uca.iw.aplication.tables.Cliente;
+
+import es.uca.iw.aplication.tables.usuarios.Cliente;
 
 public interface ClienteRepository extends JpaRepository<Cliente, UUID> {
 

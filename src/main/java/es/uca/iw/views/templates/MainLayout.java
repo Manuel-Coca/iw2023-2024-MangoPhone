@@ -10,10 +10,12 @@ import com.vaadin.flow.component.orderedlayout.Scroller;
 import com.vaadin.flow.component.sidenav.SideNav;
 import com.vaadin.flow.component.sidenav.SideNavItem;
 import com.vaadin.flow.router.PageTitle;
+import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 
 import es.uca.iw.views.global.AboutUsView;
 import es.uca.iw.views.global.LoginView;
+import es.uca.iw.views.global.LogoutView;
 import es.uca.iw.views.global.ServicesInfoView;
 import es.uca.iw.views.global.WelcomeView;
 
@@ -58,7 +60,13 @@ public class MainLayout extends AppLayout {
         nav.addItem(new SideNavItem("Inicio", WelcomeView.class, LineAwesomeIcon.HOME_SOLID.create()));
         nav.addItem(new SideNavItem("Nuestros servicios", ServicesInfoView.class, LineAwesomeIcon.PHONE_SOLID.create()));
         nav.addItem(new SideNavItem("Sobre nosotros", AboutUsView.class, LineAwesomeIcon.INFO_SOLID.create()));
-        nav.addItem(new SideNavItem("Iniciar Sesión", LoginView.class, LineAwesomeIcon.USER.create()));        
+
+        VaadinSession session = VaadinSession.getCurrent();
+        if(session.getAttribute("Rol") == null) { nav.addItem(new SideNavItem("Iniciar Sesión", LoginView.class, LineAwesomeIcon.USER.create())); }
+        else {
+            nav.addItem(new SideNavItem("Tu perfil", LoginView.class, LineAwesomeIcon.USER.create()));  
+            nav.addItem(new SideNavItem("Cerrar sesión", LogoutView.class, LineAwesomeIcon.USER.create()));  
+        }  
 
         return nav;
     }

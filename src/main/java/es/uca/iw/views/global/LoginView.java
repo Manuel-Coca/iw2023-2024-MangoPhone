@@ -1,11 +1,7 @@
 package es.uca.iw.views.global;
 
-import java.util.Objects;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.UI;
@@ -14,8 +10,6 @@ import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H1;
-import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
 import com.vaadin.flow.component.orderedlayout.FlexComponent.JustifyContentMode;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -44,7 +38,19 @@ public class LoginView extends Div {
     private PasswordEncoder passwordEncoder;
 
     public LoginView() {
-        add(LoginLayout());
+        VaadinSession session = VaadinSession.getCurrent();
+        if(session.getAttribute("Rol") != null) {
+            ConfirmDialog error = new ConfirmDialog("Error", "Ya has iniciado sesión", "Entrar", event -> {
+                if (session.getAttribute("Rol").equals(Rol.CLIENTE.toString())) { UI.getCurrent().navigate("/home"); } 
+                else if (session.getAttribute("Rol").equals(Rol.SAC.toString())) { UI.getCurrent().navigate("/home"); }
+                else if (session.getAttribute("Rol").equals(Rol.MARKETING.toString())) { UI.getCurrent().navigate("/home"); }
+                else if (session.getAttribute("Rol").equals(Rol.FINANZAS.toString())) { UI.getCurrent().navigate("/home"); }
+            });
+            error.open();
+        }
+        else {
+            add(LoginLayout());
+        }
     }
 
     private VerticalLayout LoginLayout() {
@@ -118,38 +124,34 @@ public class LoginView extends Div {
             if(usuario != null && passwordEncoder.matches(password, usuario.getContrasena())) {
                 // Abrir la sesion
                 VaadinSession session = VaadinSession.getCurrent();
-                
-                if(usuario.getRol() == "CLIENTE") {
+
+                if(usuario.getRol().equals(Rol.CLIENTE.toString())) {
                     session.setAttribute("Rol", usuario.getRol());
-                    ConfirmDialog dialogBienvenida = new ConfirmDialog("Bienvenido", "Hola, " + usuario.getNombre(), "Entrar", event -> {
+                    ConfirmDialog dialogBienvenida = new ConfirmDialog("Bienvenido", "Cliente, " + usuario.getNombre(), "Entrar", event -> {
                         UI.getCurrent().navigate("/home"); //Cambiar por perfil de cliente
                     });
                     dialogBienvenida.open();
-                    //UI.getCurrent().navigate("pagina-principal-cliente");
                 } 
-                else if(usuario.getRol() == Rol.SAC.toString()) {
+                else if(usuario.getRol().equals(Rol.SAC.toString())) {
                     session.setAttribute("Rol", usuario.getRol());
-                    ConfirmDialog dialogBienvenida = new ConfirmDialog("Bienvenido", "Hola, " + usuario.getNombre(), "Entrar", event -> {
+                    ConfirmDialog dialogBienvenida = new ConfirmDialog("Bienvenido", "SAC, " + usuario.getNombre(), "Entrar", event -> {
                         UI.getCurrent().navigate("/home"); //Cambiar por perfil de SAC
                     });
                     dialogBienvenida.open();
-                    UI.getCurrent().navigate("pagina-principal-cliente");
                 } 
-                else if(usuario.getRol() == Rol.MARKETING.toString()) {
+                else if(usuario.getRol().equals(Rol.MARKETING.toString())) {
                     session.setAttribute("Rol", usuario.getRol());
-                    ConfirmDialog dialogBienvenida = new ConfirmDialog("Bienvenido", "Hola, " + usuario.getNombre(), "Entrar", event -> {
+                    ConfirmDialog dialogBienvenida = new ConfirmDialog("Bienvenido", "MARK, " + usuario.getNombre(), "Entrar", event -> {
                         UI.getCurrent().navigate("/home"); //Cambiar por perfil de Marketing
                     });
                     dialogBienvenida.open();
-                    UI.getCurrent().navigate("pagina-principal-cliente");
                 } 
-                else if(usuario.getRol() == Rol.FINANZAS.toString()) {
+                else if(usuario.getRol().equals(Rol.FINANZAS.toString())) {
                     session.setAttribute("Rol", usuario.getRol());
-                    ConfirmDialog dialogBienvenida = new ConfirmDialog("Bienvenido", "Hola, " + usuario.getNombre(), "Entrar", event -> {
+                    ConfirmDialog dialogBienvenida = new ConfirmDialog("Bienvenido", "FINZ, " + usuario.getNombre(), "Entrar", event -> {
                         UI.getCurrent().navigate("/home"); //Cambiar por perfil de Finanzas
                     });
                     dialogBienvenida.open();
-                    UI.getCurrent().navigate("pagina-principal-cliente");
                 }
             }
             else {
@@ -160,7 +162,7 @@ public class LoginView extends Div {
             }
         } 
         catch(Exception e) {
-            ConfirmDialog errorDialog = new ConfirmDialog("Error", "El correo o la contraseña son incorrectos", "Reintentar", event -> {
+            ConfirmDialog errorDialog = new ConfirmDialog("Error", "No se ha conseguido realizar la peticion", "Reintentar", event -> {
                 UI.getCurrent().navigate("/login");
             });
             errorDialog.open();

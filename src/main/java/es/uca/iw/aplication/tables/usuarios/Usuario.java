@@ -58,8 +58,8 @@ public class Usuario {
     public boolean getActivo() { return this.activo; }
     public void setActivo(boolean activo) { this.activo = activo; }
 
-    @Column(name = "rol")
-    private Rol rol = Rol.CLIENTE;
+    @Transient
+    private Rol rol;
     public Rol getRol() { return this.rol; }
     public void setRol(Rol rol) { this.rol = rol; }
 }

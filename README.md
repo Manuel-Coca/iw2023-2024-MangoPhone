@@ -1,29 +1,27 @@
 # MangoPhone
 
-This project can be used as a starting point to create your own Vaadin application with Spring Boot.
-It contains all the necessary configuration and some placeholder files to get you started.
+Este proyecto surge en la asignatura Ingeniería Web del grado universitario Ingeniería Informática de la UCA el curso 2023/2024.
 
-## Running the application
+## Lanzar la aplicación
 
-The project is a standard Maven project. To run it from the command line,
-type `mvnw` (Windows), or `./mvnw` (Mac & Linux), then open
-http://localhost:8080 in your browser.
+Este proyecto sigue la estructura de directorios estándar de Maven. Para lanzar el proyecto desde la linea de comandos,
+escribe `mvnw` (Windows), o `./mvnw` (Mac & Linux) y luego abre http://localhost:8080 en tu navegador web.
 
-You can also import the project to your IDE of choice as you would with any
-Maven project. Read more on [how to import Vaadin projects to different IDEs](https://vaadin.com/docs/latest/guide/step-by-step/importing) (Eclipse, IntelliJ IDEA, NetBeans, and VS Code).
+Puedes importar el proyecto al IDE de tu elección tal y como lo harías con cualquier proyecto Maven.
+Aprende más en: [cómo importar un proyecto Maven en distintos IDEs](https://vaadin.com/docs/latest/guide/step-by-step/importing) (Eclipse, IntelliJ IDEA, NetBeans, y VS Code).
 
-## Deploying to Production
+## Despliegue a producción
 
-To create a production build, call `mvnw clean package -Pproduction` (Windows),
-or `./mvnw clean package -Pproduction` (Mac & Linux).
-This will build a JAR file with all the dependencies and front-end resources,
-ready to be deployed. The file can be found in the `target` folder after the build completes.
+Para crear una build de producción, escribe `mvnw clean package -Pproduction` (Windows), o `./mvnw clean package -Pproduction` (Mac & Linux).
+Esto constuirá un fichero JAR con todas las depencias y los recursos del front-end listo para ser desplegado. El fichero se puede encontrar en 
+el directorio `target` después de que la construcción se complete. 
 
-Once the JAR file is built, you can run it using
+Una vez que el fichero JAR esté construido, lo puedes lanzar usando
 `java -jar target/mangophone-1.0-SNAPSHOT.jar`
 
-## Project structure
+## Estructura del proyecto
 
+- El directorio `views` en `src/main/java/es/uca/iw` contiene todas las vistas de la aplicación.
 - `MainLayout.java` in `src/main/java` contains the navigation setup (i.e., the
   side/top bar and the main menu). This setup uses
   [App Layout](https://vaadin.com/docs/components/app-layout).

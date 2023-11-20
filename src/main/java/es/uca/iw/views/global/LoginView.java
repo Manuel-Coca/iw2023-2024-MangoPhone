@@ -28,8 +28,9 @@ import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 
-import es.uca.iw.aplication.service.ClienteService;
-import es.uca.iw.aplication.tables.Cliente;
+import es.uca.iw.aplication.service.UsuarioService;
+import es.uca.iw.aplication.tables.Rol;
+import es.uca.iw.aplication.tables.usuarios.Usuario;
 
 @PageTitle("Inicio Sesión")
 @Route(value = "login")
@@ -37,7 +38,7 @@ import es.uca.iw.aplication.tables.Cliente;
 public class LoginView extends Div {
 
     @Autowired
-    private ClienteService clienteService;
+    private UsuarioService usuarioService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -61,15 +62,15 @@ public class LoginView extends Div {
         PasswordField passwordField = new PasswordField("Contraseña");
         
         //Binding
-        Binder<Cliente> binderLogin = new Binder<>(Cliente.class);
+        Binder<Usuario> binderLogin = new Binder<>(Usuario.class);
         
         binderLogin.forField(emailField)
             .asRequired("El correo electrónico es obligatorio")
-            .bind(Cliente::getCorreoElectronico, Cliente::setCorreoElectronico);
+            .bind(Usuario::getCorreoElectronico, Usuario::setCorreoElectronico);
 
         binderLogin.forField(passwordField)
             .asRequired("La contraseña es obligatoria")
-            .bind(Cliente::getContrasena, Cliente::setContrasena);
+            .bind(Usuario::getContrasena, Usuario::setContrasena);
         
         // Boton login
         Button loginButton = new Button("Iniciar sesión");
@@ -77,8 +78,8 @@ public class LoginView extends Div {
         loginButton.addClickShortcut(Key.ENTER);
         loginButton.addClickListener(event -> {
             if (binderLogin.validate().isOk()) {
-                Optional<Cliente> cliente = clienteService.findByCorreoElectronico(emailField.getValue());
-                //VerifyLogin(cliente, passwordField.getValue());
+                Usuario usuario = usuarioService.buscarEmail(emailField.getValue());
+                VerifyLogin(usuario, passwordField.getValue());
             }       
         });
         
@@ -112,55 +113,59 @@ public class LoginView extends Div {
         return loginLayout;
     }
 
-    private void VerifyLogin(Cliente cliente, String password) {
-        /*
+    private void VerifyLogin(Usuario usuario, String password) {
         try {
-            if (cliente != null && passwordEncoder.matches(passwordForm, user.getPassword())) {
-                // Declaramos el rol del usuario
-                String role = usuarioService.getRole(user.getUUID());
-                user.setRol(Role.valueOf(role));
-                // Coger el usuario logueado
+            if(usuario != null && passwordEncoder.matches(password, usuario.getContrasena())) {
+                // Abrir la sesion
                 VaadinSession session = VaadinSession.getCurrent();
-
-                if (Objects.equals(user.getRol(), Role.CLIENTE.toString())) {
-                    session.setAttribute(Cliente.class, (Cliente) user);
-                    Notification notification = new Notification("Bienvenido " + user.getNombre() + " " + user.getApellidos(), 1000);
-                    notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
-                    notification.open();
+                
+                if(usuario.getRol() == "CLIENTE") {
+                    session.setAttribute("Rol", usuario.getRol());
+                    ConfirmDialog dialogBienvenida = new ConfirmDialog("Bienvenido", "Hola, " + usuario.getNombre(), "Entrar", event -> {
+                        UI.getCurrent().navigate("/home"); //Cambiar por perfil de cliente
+                    });
+                    dialogBienvenida.open();
+                    //UI.getCurrent().navigate("pagina-principal-cliente");
+                } 
+                else if(usuario.getRol() == Rol.SAC.toString()) {
+                    session.setAttribute("Rol", usuario.getRol());
+                    ConfirmDialog dialogBienvenida = new ConfirmDialog("Bienvenido", "Hola, " + usuario.getNombre(), "Entrar", event -> {
+                        UI.getCurrent().navigate("/home"); //Cambiar por perfil de SAC
+                    });
+                    dialogBienvenida.open();
                     UI.getCurrent().navigate("pagina-principal-cliente");
-
-                } else if (Objects.equals(user.getRol(), Role.GESTOR.toString())) {
-                    session.setAttribute(Gestor.class, (Gestor) user);
-                    Notification notification = new Notification("Bienvenido " + user.getNombre() + " " + user.getApellidos(), 1000);
-                    notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
-                    notification.open();
-                    UI.getCurrent().navigate("pagina-principal-gestor");
-
-                } else if (Objects.equals(user.getRol(), Role.ENCARGADO_COMUNICACIONES.toString())) {
-                    session.setAttribute(EncargadoComunicaciones.class, (EncargadoComunicaciones) user);
-                    Notification notification = new Notification("Bienvenido " + user.getNombre() + " " + user.getApellidos(), 1000);
-                    notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
-                    notification.open();
-                    UI.getCurrent().navigate("pagina-principal-encargado");
-
-                } else if (Objects.equals(user.getRol(), Role.ADMINISTRADOR.toString())) {
-                    session.setAttribute(Administrador.class, (Administrador) user);
-                    Notification notification = new Notification("Bienvenido " + user.getNombre() + " " + user.getApellidos(), 1000);
-                    notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
-                    notification.open();
-                    UI.getCurrent().navigate("pagina-principal-admin");
-
+                } 
+                else if(usuario.getRol() == Rol.MARKETING.toString()) {
+                    session.setAttribute("Rol", usuario.getRol());
+                    ConfirmDialog dialogBienvenida = new ConfirmDialog("Bienvenido", "Hola, " + usuario.getNombre(), "Entrar", event -> {
+                        UI.getCurrent().navigate("/home"); //Cambiar por perfil de Marketing
+                    });
+                    dialogBienvenida.open();
+                    UI.getCurrent().navigate("pagina-principal-cliente");
+                } 
+                else if(usuario.getRol() == Rol.FINANZAS.toString()) {
+                    session.setAttribute("Rol", usuario.getRol());
+                    ConfirmDialog dialogBienvenida = new ConfirmDialog("Bienvenido", "Hola, " + usuario.getNombre(), "Entrar", event -> {
+                        UI.getCurrent().navigate("/home"); //Cambiar por perfil de Finanzas
+                    });
+                    dialogBienvenida.open();
+                    UI.getCurrent().navigate("pagina-principal-cliente");
                 }
-            } else {
-                Notification errorEmailPassword = Notification.show("El correo electrónico o la contraseña son incorrectos");
-                errorEmailPassword.addThemeVariants(NotificationVariant.LUMO_ERROR);
             }
-        } catch (Exception e) {
-            ConfirmDialog error = new ConfirmDialog("Error", "Ha ocurrido un error al crear la solicitud. Comunique al adminsitrador del sitio el error.\n" +
-                    "Error: " + e, "Aceptar", null);
-            error.open();
+            else {
+                ConfirmDialog errorDialog = new ConfirmDialog("Error", "El correo o la contraseña son incorrectos", "Reintentar", event -> {
+                        UI.getCurrent().navigate("/login");
+                    });
+                errorDialog.open();
+            }
+        } 
+        catch(Exception e) {
+            ConfirmDialog errorDialog = new ConfirmDialog("Error", "El correo o la contraseña son incorrectos", "Reintentar", event -> {
+                UI.getCurrent().navigate("/login");
+            });
+            errorDialog.open();
         }
     }
-    */
-    }
 }
+
+

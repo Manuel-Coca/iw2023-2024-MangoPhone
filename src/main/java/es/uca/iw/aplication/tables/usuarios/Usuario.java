@@ -2,7 +2,6 @@ package es.uca.iw.aplication.tables.usuarios;
 
 import java.time.LocalDate;
 import java.util.UUID;
-
 import es.uca.iw.aplication.tables.Rol;
 import jakarta.persistence.*;
 

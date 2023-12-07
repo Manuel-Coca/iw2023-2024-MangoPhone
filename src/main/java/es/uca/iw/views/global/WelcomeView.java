@@ -21,7 +21,11 @@ import es.uca.iw.views.templates.MainLayout;
 public class WelcomeView extends Div {
 
     public WelcomeView() {
+        crearContenido();
         
+    }
+
+    public void crearContenido() {
         // Layout
         VerticalLayout globalViewLayout = new VerticalLayout();
         

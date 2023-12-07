@@ -34,6 +34,7 @@
 
 .titulo-custom {
     color: rgba(255, 165, 0);
+    cursor: pointer;
 }
 
 .titulo-custom::after {

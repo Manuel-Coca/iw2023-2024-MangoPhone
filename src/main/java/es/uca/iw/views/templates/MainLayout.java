@@ -1,15 +1,17 @@
 package es.uca.iw.views.templates;
 
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.html.Footer;
 import com.vaadin.flow.component.html.H1;
-import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Header;
+import com.vaadin.flow.component.html.Image;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.Scroller;
+import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
 import com.vaadin.flow.component.sidenav.SideNav;
 import com.vaadin.flow.component.sidenav.SideNavItem;
-import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 
@@ -26,35 +28,45 @@ import org.vaadin.lineawesome.LineAwesomeIcon;
  */
 public class MainLayout extends AppLayout {
 
-    private H2 viewTitle;
-
     public MainLayout() {
-        setPrimarySection(Section.DRAWER);
-        addDrawerContent();
-        addHeaderContent();
+        setPrimarySection(Section.NAVBAR);
+        crearMenu();
+        crearHeader();
+        crearFooter();
     }
 
-    private void addHeaderContent() {
+    private void crearHeader() {
         DrawerToggle toggle = new DrawerToggle();
         toggle.setAriaLabel("Menu toggle");
 
-        viewTitle = new H2();
-        viewTitle.addClassNames(LumoUtility.FontSize.LARGE, LumoUtility.Margin.NONE);
+        Image mangoIcon = new Image("icons/mango-fruit-icon.svg", "logo");
+        mangoIcon.setWidth("30px");
+        mangoIcon.setHeight("30px");
 
-        addToNavbar(true, toggle, viewTitle);
+        H1 mangoName = new H1("Mango");
+        mangoName.addClassNames("titulo-custom");
+
+        HorizontalLayout bloqueLogoNombre = new HorizontalLayout();
+        bloqueLogoNombre.add(mangoIcon, mangoName);
+        bloqueLogoNombre.setAlignItems(Alignment.CENTER);
+        bloqueLogoNombre.addClickListener(event -> {
+            UI.getCurrent().navigate("home");
+        });
+
+        addToNavbar(true, toggle, bloqueLogoNombre);
     }
 
-    private void addDrawerContent() {
-        H1 appName = new H1("MangoPhone");
+    private void crearMenu() {
+        H1 appName = new H1("Menú");
         appName.addClassNames(LumoUtility.FontSize.LARGE, LumoUtility.Margin.NONE);
         Header header = new Header(appName);
 
-        Scroller scroller = new Scroller(createNavigation());
+        Scroller scroller = new Scroller(crearNavegacion());
 
-        addToDrawer(header, scroller, createFooter());
+        addToDrawer(header, scroller, crearFooter());
     }
 
-    private SideNav createNavigation() {
+    private SideNav crearNavegacion() {
         SideNav nav = new SideNav();
 
         nav.addItem(new SideNavItem("Inicio", WelcomeView.class, LineAwesomeIcon.HOME_SOLID.create()));
@@ -71,12 +83,12 @@ public class MainLayout extends AppLayout {
         return nav;
     }
 
-    private Footer createFooter() {
+    private Footer crearFooter() {
         Footer layout = new Footer();
-
         return layout;
     }
 
+    /* 
     @Override
     protected void afterNavigation() {
         super.afterNavigation();
@@ -87,4 +99,5 @@ public class MainLayout extends AppLayout {
         PageTitle title = getContent().getClass().getAnnotation(PageTitle.class);
         return title == null ? "" : title.value();
     }
+    */
 }

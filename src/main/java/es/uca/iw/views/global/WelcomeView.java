@@ -29,27 +29,6 @@ public class WelcomeView extends Div {
     }
 
     public Carousel crearCarrusel() {
-
-        /*
-        
-        // Slide 2
-        Image stock2Image = new Image("images/stock2.jpg", "stockPhoto");
-        stock2Image.addClassName("mitad-izquierda-slide2");
-        
-        H1 mainTextSlide2 = new H1("¡Hola Cádiz!");
-        Paragraph secondTextSlide2 = new Paragraph("Os traemos la mejor conexión de toda la provincia. Conectamos a las personas desde Tarifa hasta la Sierra");
-        
-        Div textoSlide2 = new Div();
-        textoSlide2.addClassName("mitad-derecha-slide2");
-        textoSlide2.add(mainTextSlide2, secondTextSlide2);
-
-        Div slide2Layout = new Div();
-        slide2Layout.addClassName("slide");
-        slide2Layout.add(textoSlide2, stock2Image);
-
-        Slide s2 = new Slide(slide2Layout);
-        */
-
         // Slide 1
         Div izquierdaS1 = new Div();
         izquierdaS1.addClassName("mitad-izquierda-slide1");

@@ -25,7 +25,7 @@ public class AboutUsView extends VerticalLayout{
         add(new Paragraph("Con una presencia global en diversos mercados, MangoPhone se destaca por su enfoque hacia la transformación digital, consolidándose como una verdadera 'Telco Digital'. Esta estrategia la sitúa de manera óptima para satisfacer las cambiantes necesidades de sus clientes y capitalizar el crecimiento en nuevos segmentos del mercado."));
         add(new Paragraph("Operando en múltiples países, MangoPhone atiende a una amplia base de clientes, superando los límites geográficos para ofrecer servicios de calidad. La compañía se enorgullece de su presencia sólida en regiones estratégicas, consolidando su posición en mercados clave de Europa, Latinoamérica y otros lugares, alineando su estrategia de crecimiento con las demandas específicas de cada región."));
         
-        Image img = new Image("images/mango.png", "MangoPhoneIcon");
+        Image img = new Image("icons/mango-fruit-icon.svg", "MangoPhoneIcon");
         img.setWidth("400px");
         add(img);
 

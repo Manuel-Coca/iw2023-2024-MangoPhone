@@ -74,6 +74,7 @@
     "@vaadin/vaadin-usage-statistics": "2.1.2",
     "@vaadin/vertical-layout": "24.2.1",
     "@vaadin/virtual-list": "24.2.1",
+    "@xpertsea/paper-slider": "3.0.0",
     "construct-style-sheets-polyfill": "3.1.0",
     "date-fns": "2.29.3",
     "lit": "2.8.0",
@@ -170,6 +171,7 @@
       "@vaadin/vaadin-usage-statistics": "2.1.2",
       "@vaadin/vertical-layout": "24.2.1",
       "@vaadin/virtual-list": "24.2.1",
+      "@xpertsea/paper-slider": "3.0.0",
       "construct-style-sheets-polyfill": "3.1.0",
       "date-fns": "2.29.3",
       "lit": "2.8.0",
@@ -193,7 +195,7 @@
       "workbox-core": "7.0.0",
       "workbox-precaching": "7.0.0"
     },
-    "hash": "24c5f324a8f0c89b5a3dfc4787237e0df6132f871afd17a0a0b85c2ec8e8d40d"
+    "hash": "2e7bd93baef9fdff956517e60c164f94ccbe1c366a1098b1e4172fcce6839b96"
   },
   "overrides": {
     "@vaadin/bundles": "$@vaadin/bundles",
@@ -271,6 +273,7 @@
     "proj4": "$proj4",
     "@vaadin/vaadin-themable-mixin": "$@vaadin/vaadin-themable-mixin",
     "date-fns": "$date-fns",
-    "mobile-drag-drop": "$mobile-drag-drop"
+    "mobile-drag-drop": "$mobile-drag-drop",
+    "@xpertsea/paper-slider": "$@xpertsea/paper-slider"
   }
 }

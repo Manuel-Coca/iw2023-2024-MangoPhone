@@ -102,8 +102,8 @@ public class WelcomeView extends Div {
         //s3.setClassName("fondo-verde");
     
         Carousel c = new Carousel(s1,s2,s3)
-        //.withAutoProgress()
-        //.withoutSwipe()
+        .withAutoProgress()
+        .withoutSwipe()
         .withSlideDuration(4)
         .withStartPosition(0);
         
@@ -137,7 +137,7 @@ public class WelcomeView extends Div {
         contratarFibraButton.addClassName("boton-contratar");
         contratarFibraButton.addClickListener(event -> {  
             if(session.getAttribute("Rol") == null) UI.getCurrent().navigate("login");
-            else UI.getCurrent().navigate("aboutUs");
+            else UI.getCurrent().navigate("aboutUs"); // Cambiar por vista de contratar
         });
 
         Div fibraCard = new Div();
@@ -153,7 +153,7 @@ public class WelcomeView extends Div {
         contratarMovilButton.addClassName("boton-contratar");
         contratarMovilButton.addClickListener(event -> {  
             if(session.getAttribute("Rol") == null) UI.getCurrent().navigate("login");
-            else UI.getCurrent().navigate("aboutUs");
+            else UI.getCurrent().navigate("aboutUs"); // Cambiar por vista de contratar
         });
 
         Div movilCard = new Div();
@@ -168,7 +168,7 @@ public class WelcomeView extends Div {
         contratarFijoButton.addClassName("boton-contratar");
         contratarFijoButton.addClickListener(event -> {  
             if(session.getAttribute("Rol") == null) UI.getCurrent().navigate("login");
-            else UI.getCurrent().navigate("aboutUs");
+            else UI.getCurrent().navigate("aboutUs"); // Cambiar por vista de contratar
         });
 
         Div fijoCard = new Div();
@@ -189,6 +189,9 @@ public class WelcomeView extends Div {
 
         Button conocenosButton = new Button("Sobre nosotros");
         conocenosButton.setClassName("boton-conocenos");
+        conocenosButton.addClickListener(event -> {
+            UI.getCurrent().navigate("aboutUs");
+        });
         
         Div bloqueConocenosLayout = new Div();
         bloqueConocenosLayout.add(conocenosParagraph, conocenosButton);

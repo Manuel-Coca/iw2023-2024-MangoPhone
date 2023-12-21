@@ -20,20 +20,17 @@ public class ListaServiciosView extends Div {
     @Autowired
     private ServicioService servicioService;
 
-    public ListaServiciosView(){
-        add(ServiciosLayout());
-    }
+    public ListaServiciosView(){ add(serviciosLayout()); }
 
-    private VerticalLayout ServiciosLayout(){
-        VerticalLayout ServiciosLayout = new VerticalLayout();
+    private VerticalLayout serviciosLayout(){
+        VerticalLayout serviciosLayout = new VerticalLayout();
         List<Servicio> listaServicios = servicioService.getAllServicios();
 
         Paragraph nombreServicio = new Paragraph(listaServicios.get(0).getNombre()); 
-        float valor = listaServicios.get(0).getPrecio();
-        Paragraph precioServicio = new Paragraph("El precio es:" + valor + "€");
+        Paragraph precioServicio = new Paragraph("El precio es:" + listaServicios.get(0).getPrecio() + "€");
 
-        ServiciosLayout.add(nombreServicio, precioServicio);
+        serviciosLayout.add(nombreServicio, precioServicio);
 
-        return ServiciosLayout;
+        return serviciosLayout;
     }
 }

@@ -19,12 +19,10 @@ import es.uca.iw.views.templates.MainLayout;
 @RouteAlias(value = "marketinghome", layout = MainLayout.class)
 public class MarkentingHomeView extends Div {
     
-    public MarkentingHomeView(){
-        add(MarkentingLayout());
-    }
+    public MarkentingHomeView() { add(markentingLayout()); }
 
-    private VerticalLayout MarkentingLayout(){
-        VerticalLayout MarkentingLayout = new VerticalLayout();
+    private VerticalLayout markentingLayout(){
+        VerticalLayout markentingLayout = new VerticalLayout();
         VerticalLayout titleLayout = new VerticalLayout();
 
         H1 globalTitle = new H1("Mango");
@@ -48,7 +46,7 @@ public class MarkentingHomeView extends Div {
         Button anadirButton = new Button("Crear");
         anadirButton.addClassName("boton-naranja-primary");
         anadirButton.addClickListener(event -> {
-            UI.getCurrent().navigate("home");
+            UI.getCurrent().navigate("crearServicio");
         });
         anadirServiciosCard.add(crearTitulo, crearDescription, anadirButton);
         anadirServiciosCard.addClassNames("card");
@@ -84,7 +82,7 @@ public class MarkentingHomeView extends Div {
         eliminarServiciosCard.addClassNames("card");
 
         cardsServicios.add(anadirServiciosCard, modificarServiciosCard, consultarServiciosCard, eliminarServiciosCard);
-        MarkentingLayout.add(titleLayout, cardsServicios);
-        return MarkentingLayout;
+        markentingLayout.add(titleLayout, cardsServicios);
+        return markentingLayout;
     }
 }

@@ -3,7 +3,7 @@ package es.uca.iw.aplication.tables.usuarios;
 import java.time.LocalDate;
 import java.util.UUID;
 
-import es.uca.iw.aplication.tables.Rol;
+import es.uca.iw.aplication.tables.enumerados.Rol;
 import jakarta.persistence.*;
 
 @Entity

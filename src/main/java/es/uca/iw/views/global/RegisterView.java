@@ -28,7 +28,7 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 
 import es.uca.iw.aplication.service.UsuarioService;
-import es.uca.iw.aplication.tables.Rol;
+import es.uca.iw.aplication.tables.enumerados.Rol;
 import es.uca.iw.aplication.tables.usuarios.Usuario;
 
 

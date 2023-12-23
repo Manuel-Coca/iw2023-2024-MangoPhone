@@ -25,10 +25,11 @@ import com.vaadin.flow.theme.lumo.LumoUtility;
 import es.uca.iw.aplication.service.TarifaService;
 import es.uca.iw.aplication.tables.enumerados.Servicio;
 import es.uca.iw.aplication.tables.tarifas.Tarifa;
+import es.uca.iw.views.templates.MainLayoutTrabajadores;
 
 @PageTitle("Crear Tarifa")
-@Route(value = "crearTarifa")
-@RouteAlias(value = "crearTarifa")
+@Route(value = "crearTarifa", layout = MainLayoutTrabajadores.class)
+@RouteAlias(value = "crearTarifa", layout = MainLayoutTrabajadores.class)
 public class CrearTarifaView extends Div {
     @Autowired
     private TarifaService tarifaService;
@@ -50,11 +51,11 @@ public class CrearTarifaView extends Div {
         Binder<Tarifa> binderTarifa = new Binder<>(Tarifa.class);
 
         binderTarifa.forField(servicioField)
-            .asRequired("El nombre del Tarifa es obligatorio.")
+            .asRequired("El servicio de la tarifa es obligatorio.")
             .bind(Tarifa::getServicio, Tarifa::setServicio);
 
         binderTarifa.forField(precioField)
-            .asRequired("Debes de introducir un valor.")
+            .asRequired("El precio de la tarifa es obligatorio.")
             .withValidator(value -> value != null && value.compareTo(BigDecimal.ZERO) > 0, "El precio debe ser mayor que 0.")
             .withValidator(value -> value != null && value.scale() <= 2, "El precio no debe tener más de 2 decimales.")
             .bind(Tarifa::getPrecio, Tarifa::setPrecio);
@@ -75,7 +76,7 @@ public class CrearTarifaView extends Div {
             }
         });
 
-        Anchor backToHome = new Anchor("marketinghome", "Inicio");
+        Anchor backToHome = new Anchor("marketinghome", "Volver");
         backToHome.addClassName(LumoUtility.Margin.Top.LARGE);
 
         columnaLayout.add(servicioField, capacidadField, precioField);
@@ -92,13 +93,13 @@ public class CrearTarifaView extends Div {
     private void saveRequest(Tarifa Tarifa){
         try {
             tarifaService.createTarifa(Tarifa);
-            ConfirmDialog confirmDialog = new ConfirmDialog("Creación Correcto", "Creación realizada correctamente", "Aceptar", event1 -> {
+            ConfirmDialog confirmDialog = new ConfirmDialog("Tarifa creada", "La tarifa se creó correctamente", "Aceptar", event1 -> {
                 UI.getCurrent().navigate("marketinghome");
             });
             confirmDialog.open();
         }
         catch (Exception e) {
-            ConfirmDialog errorDialog = new ConfirmDialog("Error", "Error al crear el Tarifa", "Aceptar", event -> { 
+            ConfirmDialog errorDialog = new ConfirmDialog("Error", "Error al crear la tarifa", "Reintentar", event -> { 
                 UI.getCurrent().navigate("/crearTarifa");
             });
             errorDialog.open();

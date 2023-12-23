@@ -141,7 +141,7 @@ public class LoginView extends Div {
                 else if(usuario.getRol().equals(Rol.MARKETING.toString())) {
                     session.setAttribute("Rol", usuario.getRol());
                     ConfirmDialog dialogBienvenida = new ConfirmDialog("Bienvenido", "MARK, " + usuario.getNombre(), "Entrar", event -> {
-                        UI.getCurrent().navigate("/home"); //Cambiar por perfil de Marketing
+                        UI.getCurrent().navigate("/marketinghome"); //Cambiar por perfil de Marketing
                     });
                     dialogBienvenida.open();
                 } 

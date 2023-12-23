@@ -13,10 +13,11 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import es.uca.iw.views.templates.MainLayout;
+import es.uca.iw.views.templates.MainLayoutTrabajadores;
 
 @PageTitle("Marketing Home")
-@Route(value = "marketinghome", layout = MainLayout.class)
-@RouteAlias(value = "marketinghome", layout = MainLayout.class)
+@Route(value = "marketinghome", layout = MainLayoutTrabajadores.class)
+@RouteAlias(value = "marketinghome", layout = MainLayoutTrabajadores.class)
 public class MarkentingHomeView extends Div {
     
     public MarkentingHomeView() { add(markentingLayout()); }
@@ -28,7 +29,7 @@ public class MarkentingHomeView extends Div {
         H1 globalTitle = new H1("Mango");
         globalTitle.addClassName("titulo-custom");
 
-        titleLayout.add(globalTitle, new Paragraph("Gestión de Tarifas"));
+        titleLayout.add(globalTitle, new Paragraph("Panel de control de Marketing"));
         titleLayout.setSizeFull();
         titleLayout.setAlignItems(Alignment.CENTER);
 
@@ -36,8 +37,8 @@ public class MarkentingHomeView extends Div {
         VerticalLayout anadirServiciosCard = new VerticalLayout();
         VerticalLayout consultarServiciosCard = new VerticalLayout();
 
-        H2 crearTitulo = new H2("Crear");
-        Paragraph crearDescription = new Paragraph("Registro de servicios a la web");
+        H2 crearTitulo = new H2("Crear tarifa");
+        Paragraph crearDescription = new Paragraph("Crear una nueva tarifa para los clientes");
         Button anadirButton = new Button("Crear");
         anadirButton.addClassName("boton-naranja-primary");
         anadirButton.addClickListener(event -> {
@@ -46,8 +47,8 @@ public class MarkentingHomeView extends Div {
         anadirServiciosCard.add(crearTitulo, crearDescription, anadirButton);
         anadirServiciosCard.addClassNames("card");
 
-        H2 consultarTitulo = new H2("Consultar");
-        Paragraph consultarDescription = new Paragraph("Lista de servicios de la web");
+        H2 consultarTitulo = new H2("Ver tarifas");
+        Paragraph consultarDescription = new Paragraph("Ver la lista de todas las tarifas disponibles");
         Button consultarButton = new Button("Consultar");
         consultarButton.addClassName("boton-verde-primary");
         consultarButton.addClickListener(event -> { 

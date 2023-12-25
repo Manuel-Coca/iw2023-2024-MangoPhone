@@ -12,12 +12,13 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
-import es.uca.iw.views.templates.MainLayout;
 import es.uca.iw.views.templates.MainLayoutTrabajadores;
+import jakarta.annotation.security.RolesAllowed;
 
 @PageTitle("Marketing Home")
 @Route(value = "marketinghome", layout = MainLayoutTrabajadores.class)
 @RouteAlias(value = "marketinghome", layout = MainLayoutTrabajadores.class)
+@RolesAllowed("CLIENTE")
 public class MarkentingHomeView extends Div {
     
     public MarkentingHomeView() { add(markentingLayout()); }

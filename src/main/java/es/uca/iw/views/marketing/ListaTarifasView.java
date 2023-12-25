@@ -13,7 +13,6 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import es.uca.iw.aplication.service.TarifaService;
 import es.uca.iw.aplication.tables.tarifas.Tarifa;
-import es.uca.iw.views.templates.MainLayout;
 import es.uca.iw.views.templates.MainLayoutTrabajadores;
 
 @PageTitle("Lista de Tarifas")

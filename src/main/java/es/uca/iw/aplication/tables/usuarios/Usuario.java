@@ -1,13 +1,21 @@
 package es.uca.iw.aplication.tables.usuarios;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.UUID;
+import java.util.List;
+import java.util.Set;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import es.uca.iw.aplication.tables.enumerados.Rol;
 import jakarta.persistence.*;
 
 @Entity
-public class Usuario {
+public class Usuario implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id")
@@ -57,7 +65,37 @@ public class Usuario {
     public void setActivo(boolean activo) { this.activo = activo; }
 
     @Column(name = "rol")
-    private String rol = null;
-    public String getRol() { return this.rol; }
-    public void setRol(Rol rol) { this.rol = rol.toString(); }
+    private Rol rol = null;
+    public Rol getRol() { return this.rol; }
+    public void setRol(Rol rol) { this.rol = rol; }
+    public List<Rol> getAllRoles() {
+        List<Rol> roles = new ArrayList<>();
+        for(Rol rol : Rol.values()) { roles.add(rol);}
+        return roles;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() { 
+        Set<GrantedAuthority> authorities = new HashSet<>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_" + getRol()));
+        return authorities;
+    }
+
+    @Override
+    public String getPassword() { return getContrasena(); }
+
+    @Override
+    public String getUsername() { return getNombre(); }
+
+    @Override
+    public boolean isAccountNonExpired() { return true; }
+
+    @Override
+    public boolean isAccountNonLocked() { return true; }
+
+    @Override
+    public boolean isCredentialsNonExpired() { return true; }
+
+    @Override
+    public boolean isEnabled() { return getActivo(); }
 }

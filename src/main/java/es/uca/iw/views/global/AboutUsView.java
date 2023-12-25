@@ -7,12 +7,13 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
-
+import com.vaadin.flow.server.auth.AnonymousAllowed;
 import es.uca.iw.views.templates.MainLayout;
 
 @PageTitle("Sobre Nosotros")
 @Route(value = "aboutUs", layout = MainLayout.class)
 @RouteAlias(value = "aboutUs")
+@AnonymousAllowed
 public class AboutUsView extends VerticalLayout{
     public AboutUsView() {
         setSpacing(false);

@@ -73,7 +73,7 @@ public class MainLayout extends AppLayout {
         nav.addItem(new SideNavItem("Nuestros servicios", ServicesInfoView.class, LineAwesomeIcon.PHONE_SOLID.create()));
         nav.addItem(new SideNavItem("Sobre nosotros", AboutUsView.class, LineAwesomeIcon.INFO_SOLID.create()));
 
-        VaadinSession session = VaadinSession.getCurrent();
+        VaadinSession session = VaadinSession.getCurrent();        
         if(session.getAttribute("Rol") == null) { nav.addItem(new SideNavItem("Iniciar Sesión", LoginView.class, LineAwesomeIcon.USER.create())); }
         else {
             nav.addItem(new SideNavItem("Tu perfil", LoginView.class, LineAwesomeIcon.USER.create()));  

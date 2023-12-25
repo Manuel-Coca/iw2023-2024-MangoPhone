@@ -16,11 +16,7 @@ import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 
 import es.uca.iw.aplication.tables.enumerados.Rol;
-import es.uca.iw.views.global.AboutUsView;
-import es.uca.iw.views.global.LoginView;
 import es.uca.iw.views.global.LogoutView;
-import es.uca.iw.views.global.ServicesInfoView;
-import es.uca.iw.views.global.WelcomeView;
 import es.uca.iw.views.marketing.CrearTarifaView;
 import es.uca.iw.views.marketing.ListaTarifasView;
 import es.uca.iw.views.marketing.MarkentingHomeView;
@@ -82,11 +78,11 @@ public class MainLayoutTrabajadores extends AppLayout {
             nav.addItem(new SideNavItem("Cerrar sesión", LogoutView.class, LineAwesomeIcon.USER.create()));  
         }
         else if(session.getAttribute("Rol").equals(Rol.FINANZAS.toString())) {
-            
+            //---
             nav.addItem(new SideNavItem("Cerrar sesión", LogoutView.class, LineAwesomeIcon.USER.create()));  
         }
         else if(session.getAttribute("Rol").equals(Rol.SAC.toString())) {
-            
+            //---
             nav.addItem(new SideNavItem("Cerrar sesión", LogoutView.class, LineAwesomeIcon.USER.create()));  
         }
 

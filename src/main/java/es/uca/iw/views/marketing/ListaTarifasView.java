@@ -11,6 +11,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
+import com.vaadin.flow.server.auth.AnonymousAllowed;
 import es.uca.iw.aplication.service.TarifaService;
 import es.uca.iw.aplication.tables.tarifas.Tarifa;
 import es.uca.iw.views.templates.MainLayoutTrabajadores;
@@ -18,6 +19,7 @@ import es.uca.iw.views.templates.MainLayoutTrabajadores;
 @PageTitle("Lista de Tarifas")
 @Route(value = "listaTarifas", layout = MainLayoutTrabajadores.class)
 @RouteAlias(value = "listaTarifas", layout = MainLayoutTrabajadores.class)
+@AnonymousAllowed
 public class ListaTarifasView extends Div {
 
     @Autowired

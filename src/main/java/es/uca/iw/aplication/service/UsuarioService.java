@@ -7,6 +7,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import es.uca.iw.aplication.repository.UsuarioRepository;
 import es.uca.iw.aplication.tables.usuarios.Usuario;
 
@@ -52,6 +54,7 @@ public class UsuarioService implements UserDetailsService {
     }*/
 
     @Override
+    @Transactional
     public UserDetails loadUserByUsername(String nombre) throws UsernameNotFoundException {
         Usuario usuario = usuarioRepository.findByNombre(nombre);
         

@@ -17,11 +17,15 @@ import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.BeforeEnterEvent;
+import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import com.vaadin.flow.theme.lumo.LumoUtility;
+
+import es.uca.iw.AuthenticatedUser;
 import es.uca.iw.aplication.service.UsuarioService;
 import es.uca.iw.aplication.tables.enumerados.Rol;
 import es.uca.iw.aplication.tables.usuarios.Usuario;
@@ -30,7 +34,7 @@ import es.uca.iw.aplication.tables.usuarios.Usuario;
 @Route(value = "login")
 @RouteAlias(value = "login")
 @AnonymousAllowed
-public class LoginView extends Div {
+public class LoginView extends Div implements BeforeEnterObserver {
 
     @Autowired
     private UsuarioService usuarioService;
@@ -38,7 +42,10 @@ public class LoginView extends Div {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public LoginView() {
+    private final AuthenticatedUser authUser;
+
+    public LoginView(AuthenticatedUser authUser) {
+        this.authUser = authUser;
         VaadinSession session = VaadinSession.getCurrent();
         if(session.getAttribute("Rol") != null) {
             ConfirmDialog error = new ConfirmDialog("Error", "Ya has iniciado sesión", "Entrar", event -> {
@@ -169,6 +176,12 @@ public class LoginView extends Div {
             errorDialog.open();
         }
     }
+
+    @Override
+    public void beforeEnter(BeforeEnterEvent event) {
+        if(authUser.get().isPresent()) {
+            //setOpened(false);
+            event.forwardTo("");
+        }
+    }
 }
-
-

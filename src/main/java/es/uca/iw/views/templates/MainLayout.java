@@ -79,7 +79,7 @@ public class MainLayout extends AppLayout {
             nav.addItem(new SideNavItem("Tu perfil", LoginView.class, LineAwesomeIcon.USER.create()));  
             nav.addItem(new SideNavItem("Cerrar sesión", LogoutView.class, LineAwesomeIcon.USER.create()));  
         }  
-
+        //nav.addItem(new SideNavItem(session.getAttribute("Rol"), LoginView.class, LineAwesomeIcon.USER.create())); 
         return nav;
     }
 

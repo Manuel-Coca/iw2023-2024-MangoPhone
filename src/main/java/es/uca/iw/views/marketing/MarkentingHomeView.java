@@ -12,7 +12,6 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
-import es.uca.iw.views.templates.MainLayout;
 import es.uca.iw.views.templates.MainLayoutTrabajadores;
 
 @PageTitle("Marketing Home")

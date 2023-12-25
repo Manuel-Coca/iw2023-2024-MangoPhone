@@ -35,6 +35,7 @@ public class SecurityConfiguration extends VaadinWebSecurity {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(auth -> auth
+            .requestMatchers((new AntPathRequestMatcher("/line-awesome/svg/**"))).permitAll()
             .requestMatchers((new AntPathRequestMatcher("/images/**"))).permitAll()
             .requestMatchers((new AntPathRequestMatcher("/icons/**"))).permitAll()
         );
@@ -44,7 +45,7 @@ public class SecurityConfiguration extends VaadinWebSecurity {
 
     @Override
     public void configure(WebSecurity web) throws Exception { super.configure(web); }
-
+/*
     @Bean
     public UserDetailsManager userDetailsService() {
         UserDetails admin =
@@ -58,34 +59,34 @@ public class SecurityConfiguration extends VaadinWebSecurity {
                         .roles("USER")
                         .build();
         return new InMemoryUserDetailsManager(admin, user);
-    }
-    /*@Bean
+    }*/
+    @Bean
     public UserDetailsManager userDetailsService() {
         UserDetails cliente =
                 User.withUsername("cliente")
                         .password("{noop}user")
-                        .roles("CLIENTE")
+                        .roles("0")
                         .build();
         UserDetails marketing =
                 User.withUsername("marketing")
                         .password("{noop}marketing")
-                        .roles("MARKETING")
+                        .roles("1")
                         .build();
         UserDetails sac =
                 User.withUsername("sac")
                         .password("{noop}sac")
-                        .roles("SAC")
+                        .roles("2")
                         .build();
         UserDetails finanzas =
                 User.withUsername("finanzas")
                         .password("{noop}finanzas")
-                        .roles("FINANZAS")
+                        .roles("3")
                         .build();
         UserDetails root =
                 User.withUsername("root")
                         .password("{noop}root")
-                        .roles("ROOT")
+                        .roles("4")
                         .build();
         return new InMemoryUserDetailsManager(cliente, marketing, sac, finanzas, root);
-    }*/
+    }
 }

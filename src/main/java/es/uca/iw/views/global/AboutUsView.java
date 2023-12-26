@@ -12,9 +12,9 @@ import es.uca.iw.views.templates.MainLayout;
 
 @PageTitle("Sobre Nosotros")
 @Route(value = "aboutUs", layout = MainLayout.class)
-@RouteAlias(value = "aboutUs")
+@RouteAlias(value = "aboutUs", layout = MainLayout.class)
 @AnonymousAllowed
-public class AboutUsView extends VerticalLayout{
+public class AboutUsView extends VerticalLayout {
     public AboutUsView() {
         setSpacing(false);
 

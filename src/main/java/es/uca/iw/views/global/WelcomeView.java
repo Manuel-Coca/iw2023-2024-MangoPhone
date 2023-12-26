@@ -19,7 +19,7 @@ import es.uca.iw.views.templates.MainLayout;
 
 @PageTitle("Bienvenido")
 @Route(value = "home", layout = MainLayout.class)
-@RouteAlias(value = "", layout = MainLayout.class)
+@RouteAlias(value = "home", layout = MainLayout.class)
 @AnonymousAllowed
 public class WelcomeView extends Div {
 

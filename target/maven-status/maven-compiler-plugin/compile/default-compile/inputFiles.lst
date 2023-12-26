@@ -13,7 +13,6 @@ F:\Proyectos\Github\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\views\templat
 F:\Proyectos\Github\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\aplication\tables\LineaFactura.java
 F:\Proyectos\Github\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\views\finanzas\FinanzasHomeView.java
 F:\Proyectos\Github\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\views\global\WelcomeView.java
-F:\Proyectos\Github\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\SecurityConfig.java
 F:\Proyectos\Github\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\views\global\AboutUsView.java
 F:\Proyectos\Github\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\views\marketing\CrearTarifaView.java
 F:\Proyectos\Github\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\aplication\repository\ContratoRepository.java
@@ -23,8 +22,10 @@ F:\Proyectos\Github\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\aplication\ta
 F:\Proyectos\Github\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\views\sac\SacHomeView.java
 F:\Proyectos\Github\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\aplication\tables\Contrato.java
 F:\Proyectos\Github\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\aplication\tables\enumerados\Servicio.java
+F:\Proyectos\Github\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\SecurityConfiguration.java
 F:\Proyectos\Github\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\views\global\RegisterView.java
 F:\Proyectos\Github\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\aplication\tables\Empleado.java
+F:\Proyectos\Github\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\AuthenticatedUser.java
 F:\Proyectos\Github\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\views\marketing\MarkentingHomeView.java
 F:\Proyectos\Github\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\views\templates\MainLayout.java
 F:\Proyectos\Github\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\aplication\tables\Mensaje.java

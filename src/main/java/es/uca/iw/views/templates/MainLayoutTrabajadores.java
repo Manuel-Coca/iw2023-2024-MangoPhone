@@ -71,7 +71,7 @@ public class MainLayoutTrabajadores extends AppLayout {
     private SideNav crearNavegacion() {
         SideNav nav = new SideNav();
 
-        if(session.getAttribute("Rol").equals(Rol.MARKETING.toString())) {
+        if(session.getAttribute("Rol").equals(Rol.MARKETING)) {
             nav.addItem(new SideNavItem("Inicio", MarkentingHomeView.class, LineAwesomeIcon.HOME_SOLID.create()));
             nav.addItem(new SideNavItem("Crear tarifa", CrearTarifaView.class, LineAwesomeIcon.PLUS_CIRCLE_SOLID.create()));
             nav.addItem(new SideNavItem("Ver tarifas", ListaTarifasView.class, LineAwesomeIcon.LIST_SOLID.create()));

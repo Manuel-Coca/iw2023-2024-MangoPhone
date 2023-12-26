@@ -16,6 +16,7 @@ import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 
 import es.uca.iw.views.global.AboutUsView;
+import es.uca.iw.views.global.ContratoFormView;
 import es.uca.iw.views.global.LoginView;
 import es.uca.iw.views.global.LogoutView;
 import es.uca.iw.views.global.ServicesInfoView;
@@ -71,6 +72,7 @@ public class MainLayout extends AppLayout {
 
         nav.addItem(new SideNavItem("Inicio", WelcomeView.class, LineAwesomeIcon.HOME_SOLID.create()));
         nav.addItem(new SideNavItem("Nuestros servicios", ServicesInfoView.class, LineAwesomeIcon.PHONE_SOLID.create()));
+        nav.addItem(new SideNavItem("Contrata", ContratoFormView.class, LineAwesomeIcon.PLUS_CIRCLE_SOLID.create()));
         nav.addItem(new SideNavItem("Sobre nosotros", AboutUsView.class, LineAwesomeIcon.INFO_SOLID.create()));
 
         VaadinSession session = VaadinSession.getCurrent();        

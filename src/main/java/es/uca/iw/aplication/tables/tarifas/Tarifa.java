@@ -39,4 +39,16 @@ public class Tarifa {
     private BigDecimal precio;
     public BigDecimal getPrecio() { return precio; }
     public void setPrecio(BigDecimal precio) { this.precio = precio; }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Tarifa other)) {
+            return false; // null or other class
+        }
+
+        if (id != null) {
+            return id.equals(other.id);
+        }
+        return super.equals(other);
+    }
 }

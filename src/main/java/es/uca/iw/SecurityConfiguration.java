@@ -39,11 +39,9 @@ public class SecurityConfiguration extends VaadinWebSecurity {
                 .authorizeHttpRequests(auth -> auth
                 .requestMatchers((new AntPathRequestMatcher("/line-awesome/svg/**"))).permitAll()
                 .requestMatchers((new AntPathRequestMatcher("/images/**"))).permitAll()
-                .requestMatchers((new AntPathRequestMatcher("/icons/**"))).permitAll()
-                .requestMatchers((new AntPathRequestMatcher("/marketinghome"))).authenticated()
-                );
+                .requestMatchers((new AntPathRequestMatcher("/icons/**"))).permitAll());
         super.configure(http);
-        setLoginView(http, LoginView.class,"/");
+        setLoginView(http, LoginView.class);
     }
 
     @Override
@@ -54,27 +52,27 @@ public class SecurityConfiguration extends VaadinWebSecurity {
         UserDetails cliente =
                 User.withUsername("cliente")
                         .password("{noop}user")
-                        .roles("0")
+                        .roles("CLIENTE")
                         .build();
         UserDetails marketing =
                 User.withUsername("marketing")
                         .password("{noop}marketing")
-                        .roles("1")
+                        .roles("MARKETING")
                         .build();
         UserDetails sac =
                 User.withUsername("sac")
                         .password("{noop}sac")
-                        .roles("2")
+                        .roles("SAC")
                         .build();
         UserDetails finanzas =
                 User.withUsername("finanzas")
                         .password("{noop}finanzas")
-                        .roles("3")
+                        .roles("FINANZAS")
                         .build();
         UserDetails root =
                 User.withUsername("root")
                         .password("{noop}root")
-                        .roles("4")
+                        .roles("ROOT")
                         .build();
         return new InMemoryUserDetailsManager(cliente, marketing, sac, finanzas, root);
     }*/

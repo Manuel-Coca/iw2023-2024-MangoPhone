@@ -11,6 +11,8 @@ import java.util.Set;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import es.uca.iw.aplication.tables.Contrato;
 import es.uca.iw.aplication.tables.enumerados.Rol;
 import jakarta.persistence.*;
 
@@ -73,6 +75,9 @@ public class Usuario implements UserDetails {
         for(Rol rol : Rol.values()) { roles.add(rol);}
         return roles;
     }
+
+    @OneToOne
+    private Contrato contrato = null;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() { 

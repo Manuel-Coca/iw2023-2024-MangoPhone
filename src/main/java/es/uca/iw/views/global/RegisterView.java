@@ -1,9 +1,7 @@
 package es.uca.iw.views.global;
 
 import java.util.UUID;
-
 import org.springframework.beans.factory.annotation.Autowired;
-
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.UI;
@@ -26,9 +24,11 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import com.vaadin.flow.theme.lumo.LumoUtility;
-
+import es.uca.iw.aplication.service.EmailService;
+import es.uca.iw.aplication.service.TokenService;
 import es.uca.iw.aplication.service.UsuarioService;
 import es.uca.iw.aplication.tables.enumerados.Rol;
+import es.uca.iw.aplication.tables.usuarios.Token;
 import es.uca.iw.aplication.tables.usuarios.Usuario;
 
 
@@ -40,6 +40,10 @@ public class RegisterView extends Div {
 
     @Autowired
     private UsuarioService usuarioService;
+    @Autowired
+    private TokenService tokenService;
+    @Autowired
+    private EmailService emailService;
 
     public RegisterView() {
         add(RegisterLayout());        
@@ -170,9 +174,20 @@ public class RegisterView extends Div {
 
     private void SaveRequest(Usuario usuario) {
         try {
+            String code = UUID.randomUUID().toString().substring(0, 5);
+            
             usuarioService.createUsuario(usuario);
-            ConfirmDialog confirmDialog = new ConfirmDialog("Registro Correcto", "Registro realizado correctamente", "Aceptar", event1 -> {
-                UI.getCurrent().navigate("/login");
+
+            Token token = new Token();
+            token.setId(UUID.randomUUID());
+            token.setToken(code);
+            token.setUsuario(usuario);
+            token.setDate(token.calculateExpiryDate(token.expiracion));
+            tokenService.createToken(token);
+            
+            emailService.sendRegistartionEmail(usuario,code);
+            ConfirmDialog confirmDialog = new ConfirmDialog("Registro Correcto", "Activar cuenta", "Activar", event1 -> {
+                UI.getCurrent().navigate("/useractivation");
             });
             confirmDialog.open();
         }

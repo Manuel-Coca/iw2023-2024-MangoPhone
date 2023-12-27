@@ -7,7 +7,8 @@ import java.util.HashSet;
 import java.util.UUID;
 import java.util.List;
 import java.util.Set;
-
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,7 +18,8 @@ import jakarta.persistence.*;
 @Entity
 public class Usuario implements UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @JdbcTypeCode(SqlTypes.CHAR)
+    @GeneratedValue
     @Column(name = "id")
     private UUID id = null;
     public UUID getId() { return id; }

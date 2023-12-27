@@ -48,6 +48,7 @@ public class Contrato {
 
     @OneToOne
     private Usuario usuario = null;
+    public Usuario getUsuario() { return usuario; }
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
@@ -56,6 +57,8 @@ public class Contrato {
         inverseJoinColumns = @JoinColumn(name = "tarifa_id")
     )
     private List<Tarifa> tarifas = new ArrayList<Tarifa>();
+    public List<Tarifa> getTarifas() { return tarifas; }
+    public void setTarifas(Tarifa tarifa) { tarifas.add(tarifa); }
 
     public Contrato(int numero, float precio, Date fecha){
         this.numero = numero;

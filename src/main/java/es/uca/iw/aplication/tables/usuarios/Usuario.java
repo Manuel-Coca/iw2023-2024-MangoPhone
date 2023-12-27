@@ -78,6 +78,8 @@ public class Usuario implements UserDetails {
 
     @OneToOne
     private Contrato contrato = null;
+    public Contrato getContrato() { return contrato; }
+    public void setContrato(Contrato contrato) { this.contrato = contrato; }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() { 

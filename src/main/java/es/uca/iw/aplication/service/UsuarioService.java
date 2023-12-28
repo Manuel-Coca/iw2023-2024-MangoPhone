@@ -48,12 +48,13 @@ public class UsuarioService implements UserDetailsService {
         Token token = buscarToken(usuario);
         Date fechaActual = new Date();
 
-        if(usuario != null && token != null && token.getUsuario().getId().equals(usuario.getId()) && fechaActual.before(token.getDate())) {
+        if(usuario != null && token != null && token.getUsuario().getId().equals(usuario.getId()) && fechaActual.before(token.getDate()) && registerCode.equals(token.getToken())) {
             usuario.setActivo(true);
             usuarioRepository.save(usuario);
             // Incluir Eliminación de token (En el caso que se quiera eliminar)
             return true;
-        }else return false;
+        }
+        else return false;
     }
 
     @Override

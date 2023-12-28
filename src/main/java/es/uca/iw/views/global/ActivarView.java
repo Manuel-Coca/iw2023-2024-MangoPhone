@@ -14,7 +14,7 @@ import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import es.uca.iw.aplication.service.UsuarioService;
 
-@PageTitle("Ativar Usuario")
+@PageTitle("Activar Usuario")
 @Route(value = "useractivation")
 @RouteAlias(value = "useractivation")
 @AnonymousAllowed
@@ -45,8 +45,8 @@ public class ActivarView extends Div {
 
         status.setVisible(false);
 
-        add(title, new HorizontalLayout(email, secretCode), activate, status);
         activate.addClickListener(e -> onActivateButtonClick());
+        add(title, new HorizontalLayout(email, secretCode), activate, status);
     }
 
     public void onActivateButtonClick() {

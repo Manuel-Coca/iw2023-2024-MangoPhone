@@ -12,6 +12,7 @@ import org.hibernate.type.SqlTypes;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
 import es.uca.iw.aplication.tables.enumerados.Rol;
 import jakarta.persistence.*;
 
@@ -40,7 +41,7 @@ public class Usuario implements UserDetails {
     public String getDNI() { return dni; }
     public void setDNI(String dni) { this.dni = dni; }
 
-    @Column(name = "correoElectronico", length = 128)
+    @Column(name = "correoElectronico", length = 128, unique = true)
     private String correoElectronico;
     public String getCorreoElectronico() { return correoElectronico; }
     public void setCorreoElectronico(String correoElectronico) { this.correoElectronico = correoElectronico; }
@@ -76,6 +77,11 @@ public class Usuario implements UserDetails {
         return roles;
     }
 
+    @OneToOne
+    private CuentaUsuario cuentaUsuario;
+    public CuentaUsuario getCuentaUsuario() { return cuentaUsuario; }
+    public void setCuentaUsuario(CuentaUsuario cuentaUsuario) { this.cuentaUsuario = cuentaUsuario; }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() { 
         Set<GrantedAuthority> authorities = new HashSet<>();
@@ -100,4 +106,5 @@ public class Usuario implements UserDetails {
 
     @Override
     public boolean isEnabled() { return getActivo(); }
+
 }

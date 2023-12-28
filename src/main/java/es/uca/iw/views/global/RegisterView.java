@@ -27,8 +27,10 @@ import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 
+import es.uca.iw.aplication.service.CuentaUsuarioService;
 import es.uca.iw.aplication.service.UsuarioService;
 import es.uca.iw.aplication.tables.enumerados.Rol;
+import es.uca.iw.aplication.tables.usuarios.CuentaUsuario;
 import es.uca.iw.aplication.tables.usuarios.Usuario;
 
 
@@ -40,6 +42,9 @@ public class RegisterView extends Div {
 
     @Autowired
     private UsuarioService usuarioService;
+
+    @Autowired
+    private CuentaUsuarioService cuentaUsuarioService;
 
     public RegisterView() {
         add(RegisterLayout());        
@@ -170,7 +175,17 @@ public class RegisterView extends Div {
 
     private void SaveRequest(Usuario usuario) {
         try {
+            CuentaUsuario cuentaUsuario = new CuentaUsuario();
+
+            cuentaUsuarioService.createCuentaUsuario(cuentaUsuario);
             usuarioService.createUsuario(usuario);
+
+            usuario.setCuentaUsuario(cuentaUsuario);
+            cuentaUsuario.setDuennoCuenta(usuario);
+
+            cuentaUsuarioService.createCuentaUsuario(cuentaUsuario);
+            usuarioService.createUsuario(usuario);
+            
             ConfirmDialog confirmDialog = new ConfirmDialog("Registro Correcto", "Registro realizado correctamente", "Aceptar", event1 -> {
                 UI.getCurrent().navigate("/login");
             });

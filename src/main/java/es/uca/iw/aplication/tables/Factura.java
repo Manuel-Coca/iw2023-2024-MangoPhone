@@ -3,6 +3,7 @@ package es.uca.iw.aplication.tables;
 import java.util.Date;
 import java.util.UUID;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -41,10 +42,9 @@ public class Factura {
     public Estado getEstado() { return estado; }
     public void setEstado(Estado estado) { this.estado = estado; }
 
-    public Factura(int numero, float precio, Date fechaEmision, Estado estado){
-        this.numero = numero;
-        this.precio = precio;
-        this.fechaEmision = fechaEmision;
-        this.estado = estado; 
-    }
+    @OneToOne
+    private Contrato contrato = null;
+    public Contrato getContrato() { return contrato; }
+    public void setContrato(Contrato contrato) { this.contrato = contrato; }
+
 }

@@ -8,6 +8,7 @@ import es.uca.iw.aplication.tables.Contrato;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name="CuentaUsuario")
 public class CuentaUsuario {
      @Id
      @GeneratedValue(strategy = GenerationType.UUID)

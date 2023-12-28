@@ -43,11 +43,6 @@ public class Tarifa {
     public BigDecimal getPrecio() { return precio; }
     public void setPrecio(BigDecimal precio) { this.precio = precio; }
 
-    @OneToOne
-    private Contrato contrato = null;
-    public Contrato getContrato() { return contrato; }
-    public void setContrato(Contrato contrato) { this.contrato = contrato; }
-
     @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof Tarifa other)) {

@@ -50,6 +50,11 @@ public class Contrato {
     private CuentaUsuario cuentaUsuario = null;
     public CuentaUsuario getUsuario() { return cuentaUsuario; }
 
+    @OneToOne
+    private Factura factura = null;
+    public Factura getFactura() { return factura; }
+    public void setFactura(Factura factura) { this.factura = factura; }
+
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
         name = "Contrato_Tarifa",

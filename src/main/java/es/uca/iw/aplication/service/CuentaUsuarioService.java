@@ -1,13 +1,12 @@
 package es.uca.iw.aplication.service;
 
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
 import es.uca.iw.aplication.repository.CuentaUsuarioRepository;
 import es.uca.iw.aplication.tables.usuarios.CuentaUsuario;
 
-public class CuentaUsuarioService implements UserDetailsService {
+@Service
+public class CuentaUsuarioService {
     private final CuentaUsuarioRepository cuentaUsuarioRepository;
 
     public CuentaUsuarioService(CuentaUsuarioRepository cuentaUsuarioRepository) { this.cuentaUsuarioRepository = cuentaUsuarioRepository; }
@@ -16,9 +15,4 @@ public class CuentaUsuarioService implements UserDetailsService {
         cuentaUsuarioRepository.save(cuentaUsuario);
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'loadUserByUsername'");
-    }
 }

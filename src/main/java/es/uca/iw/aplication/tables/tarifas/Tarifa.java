@@ -1,12 +1,10 @@
 package es.uca.iw.aplication.tables.tarifas;
 
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
 
 import java.math.BigDecimal;
 import java.util.UUID;
 
-import es.uca.iw.aplication.tables.Contrato;
 import es.uca.iw.aplication.tables.enumerados.Servicio;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

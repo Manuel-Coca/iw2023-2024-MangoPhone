@@ -26,6 +26,7 @@ import es.uca.iw.aplication.tables.enumerados.Servicio;
 import es.uca.iw.aplication.tables.tarifas.Tarifa;
 import es.uca.iw.views.templates.MainLayout;
 
+
 @PageTitle("Contratar")
 @Route(value = "contratar", layout = MainLayout.class)
 @RouteAlias(value = "contratar", layout = MainLayout.class)

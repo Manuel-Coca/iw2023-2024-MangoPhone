@@ -39,7 +39,7 @@ public class Usuario implements UserDetails {
     public String getDNI() { return dni; }
     public void setDNI(String dni) { this.dni = dni; }
 
-    @Column(name = "correoElectronico", length = 128)
+    @Column(name = "correoElectronico", length = 128, unique = true)
     private String correoElectronico;
     public String getCorreoElectronico() { return correoElectronico; }
     public void setCorreoElectronico(String correoElectronico) { this.correoElectronico = correoElectronico; }

@@ -4,7 +4,7 @@ public class CuentaUsuario {
     /*
      * Usuario dueñoCuenta
      * 
-     * List<Tarifa> tarifasContratadas
+     * List<Tarifa> tarifasContratadas -- class contratos
      * 
      * BigDecimal pagoMensual
      * 

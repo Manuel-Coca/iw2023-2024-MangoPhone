@@ -34,7 +34,7 @@ import es.uca.iw.aplication.tables.usuarios.Usuario;
 @Route(value = "login")
 @RouteAlias(value = "login")
 @AnonymousAllowed
-public class LoginView extends Div implements BeforeEnterObserver {
+public class LoginView extends Div {
 
     @Autowired
     private UsuarioService usuarioService;
@@ -42,10 +42,9 @@ public class LoginView extends Div implements BeforeEnterObserver {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    private final AuthenticatedUser authUser;
+    //private final AuthenticatedUser authUser;
 
-    public LoginView(AuthenticatedUser authUser) {
-        this.authUser = authUser;
+    public LoginView() {
         VaadinSession session = VaadinSession.getCurrent();
         if(session.getAttribute("Rol") != null) {
             ConfirmDialog error = new ConfirmDialog("Error", "Ya has iniciado sesión", "Entrar", event -> {
@@ -135,6 +134,7 @@ public class LoginView extends Div implements BeforeEnterObserver {
 
                 if(usuario.getRol().equals(Rol.CLIENTE)) {
                     session.setAttribute("Rol", usuario.getRol());
+                    session.setAttribute("loggedUser", usuario);
                     ConfirmDialog dialogBienvenida = new ConfirmDialog("Bienvenido", "Cliente, " + usuario.getNombre(), "Entrar", event -> {
                         UI.getCurrent().navigate("/home"); //Cambiar por perfil de cliente
                     });
@@ -142,6 +142,7 @@ public class LoginView extends Div implements BeforeEnterObserver {
                 } 
                 else if(usuario.getRol().equals(Rol.SAC)) {
                     session.setAttribute("Rol", usuario.getRol());
+                    session.setAttribute("loggedUser", usuario);
                     ConfirmDialog dialogBienvenida = new ConfirmDialog("Bienvenido", "SAC, " + usuario.getNombre(), "Entrar", event -> {
                         UI.getCurrent().navigate("/home"); //Cambiar por perfil de SAC
                     });
@@ -149,6 +150,7 @@ public class LoginView extends Div implements BeforeEnterObserver {
                 } 
                 else if(usuario.getRol().equals(Rol.MARKETING)) {
                     session.setAttribute("Rol", usuario.getRol());
+                    session.setAttribute("loggedUser", usuario);
                     ConfirmDialog dialogBienvenida = new ConfirmDialog("Bienvenido", "MARK, " + usuario.getNombre(), "Entrar", event -> {
                         UI.getCurrent().navigate("/marketinghome"); //Cambiar por perfil de Marketing
                     });
@@ -156,6 +158,7 @@ public class LoginView extends Div implements BeforeEnterObserver {
                 } 
                 else if(usuario.getRol().equals(Rol.FINANZAS)) {
                     session.setAttribute("Rol", usuario.getRol());
+                    session.setAttribute("loggedUser", usuario);
                     ConfirmDialog dialogBienvenida = new ConfirmDialog("Bienvenido", "FINZ, " + usuario.getNombre(), "Entrar", event -> {
                         UI.getCurrent().navigate("/home"); //Cambiar por perfil de Finanzas
                     });
@@ -177,6 +180,7 @@ public class LoginView extends Div implements BeforeEnterObserver {
         }
     }
 
+    /*
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
         if(authUser.get().isPresent()) {
@@ -184,4 +188,5 @@ public class LoginView extends Div implements BeforeEnterObserver {
             event.forwardTo("");
         }
     }
+     */
 }

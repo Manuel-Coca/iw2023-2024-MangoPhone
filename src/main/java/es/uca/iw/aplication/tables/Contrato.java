@@ -46,6 +46,11 @@ public class Contrato {
     public Date getFechaInicio() { return fechaInicio; }
     public void setFechaInicio(Date fechaInicio) { this.fechaInicio = fechaInicio; }
 
+    @Column(name="activo")
+    private boolean activo = false;
+    public boolean isActivo() { return activo; }
+    public void setActivo(boolean activo) { this.activo = activo; }
+
     @OneToOne
     private CuentaUsuario cuentaUsuario = null;
     public CuentaUsuario getUsuario() { return cuentaUsuario; }

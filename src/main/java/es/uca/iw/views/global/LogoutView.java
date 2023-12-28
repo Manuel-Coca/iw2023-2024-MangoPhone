@@ -12,8 +12,9 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 @AnonymousAllowed
 public class LogoutView extends Div {
     
+    private VaadinSession session = VaadinSession.getCurrent();
+    
     public LogoutView() {
-        VaadinSession session = VaadinSession.getCurrent();
         if(session != null) { 
             session.getSession().invalidate();
             session.close();

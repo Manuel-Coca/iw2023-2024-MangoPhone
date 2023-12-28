@@ -2,7 +2,9 @@ package es.uca.iw.views.global;
 
 import java.util.Random;
 
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.avatar.Avatar;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Paragraph;
@@ -12,7 +14,6 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
-import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 
@@ -23,9 +24,9 @@ import es.uca.iw.views.templates.MainLayout;
 @Route(value = "profile", layout = MainLayout.class)
 @RouteAlias(value = "profile", layout = MainLayout.class)
 @AnonymousAllowed
-public class PerfilView extends Div{
+public class PerfilView extends Div {
 
-    private VaadinSession session = VaadinSession.getCurrent();
+    private final VaadinSession session = VaadinSession.getCurrent();
 
     // cocaalba.manuel@gmail.com
     public PerfilView() {
@@ -69,7 +70,8 @@ public class PerfilView extends Div{
         Anchor datosPersonalesLink = new Anchor("/profile/datos", "Ver datos personales");
         Anchor listaLlamadasLink = new Anchor("/profile/llamadas", "Ver desglose de llamadas");
         Anchor listaFacturasLink = new Anchor("/profile/facturas", "Ver tus facturas");
-        RouterLink cerrarSesionLink = new RouterLink("Cerrar sesión", LogoutView.class);
+        Anchor cerrarSesionLink = new Anchor("logout", "Cerrar sesión");
+
         globalVerticalLayout.add(datosPersonalesLink, listaLlamadasLink, listaFacturasLink, cerrarSesionLink);
 
         globalDiv.add(globalVerticalLayout);

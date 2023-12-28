@@ -1,8 +1,7 @@
 package es.uca.iw.aplication.tables.tarifas;
 
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -43,6 +42,11 @@ public class Tarifa {
     private BigDecimal precio;
     public BigDecimal getPrecio() { return precio; }
     public void setPrecio(BigDecimal precio) { this.precio = precio; }
+
+    @OneToOne
+    private Contrato contrato = null;
+    public Contrato getContrato() { return contrato; }
+    public void setContrato(Contrato contrato) { this.contrato = contrato; }
 
     @Override
     public boolean equals(Object obj) {

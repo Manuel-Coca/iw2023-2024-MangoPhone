@@ -12,7 +12,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import es.uca.iw.aplication.tables.Contrato;
 import es.uca.iw.aplication.tables.enumerados.Rol;
 import jakarta.persistence.*;
 
@@ -77,9 +76,9 @@ public class Usuario implements UserDetails {
     }
 
     @OneToOne
-    private Contrato contrato = null;
-    public Contrato getContrato() { return contrato; }
-    public void setContrato(Contrato contrato) { this.contrato = contrato; }
+    private CuentaUsuario cuentaUsuario;
+    public CuentaUsuario getCuentaUsuario() { return cuentaUsuario; }
+    public void setCuentaUsuario(CuentaUsuario cuentaUsuario) { this.cuentaUsuario = cuentaUsuario; }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() { 
@@ -105,4 +104,5 @@ public class Usuario implements UserDetails {
 
     @Override
     public boolean isEnabled() { return getActivo(); }
+
 }

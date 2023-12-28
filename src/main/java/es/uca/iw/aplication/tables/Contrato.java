@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.UUID;
 
 import es.uca.iw.aplication.tables.tarifas.Tarifa;
-import es.uca.iw.aplication.tables.usuarios.Usuario;
+import es.uca.iw.aplication.tables.usuarios.CuentaUsuario;
 
 @Entity
 @Table(name="Contrato")
@@ -47,8 +47,8 @@ public class Contrato {
     public void setFechaInicio(Date fechaInicio) { this.fechaInicio = fechaInicio; }
 
     @OneToOne
-    private Usuario usuario = null;
-    public Usuario getUsuario() { return usuario; }
+    private CuentaUsuario cuentaUsuario = null;
+    public CuentaUsuario getUsuario() { return cuentaUsuario; }
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
@@ -59,10 +59,5 @@ public class Contrato {
     private List<Tarifa> tarifas = new ArrayList<Tarifa>();
     public List<Tarifa> getTarifas() { return tarifas; }
     public void setTarifas(Tarifa tarifa) { tarifas.add(tarifa); }
-
-    public Contrato(int numero, float precio, Date fecha){
-        this.numero = numero;
-        this.precio = precio;
-        this.fechaInicio = fecha;
-    }
+    
 }

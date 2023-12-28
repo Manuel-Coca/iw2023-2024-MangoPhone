@@ -31,19 +31,14 @@ public class ActivarView extends Div {
 
     public ActivarView(UsuarioService usuarioService) {
         this.usuarioService = usuarioService;
-        if(((Usuario)session.getAttribute("loggedUser")) == null) {
-            ConfirmDialog dialog = new ConfirmDialog("Aviso", "Debes iniciar sesión", "Iniciar sesión", evento -> {
-                UI.getCurrent().navigate("/login");
-            });
-            dialog.open();
-        }
-        else if(((Usuario)session.getAttribute("loggedUser")).getActivo()) {
+        if(((Usuario)session.getAttribute("loggedUser")) == null || !((Usuario)session.getAttribute("loggedUser")).getActivo()) {
+            add(crearContenido());
+        }else{
             ConfirmDialog dialog = new ConfirmDialog("Aviso", "El usuario ya está activo", "Inicio", evento -> {
                 UI.getCurrent().navigate("/home");
             });
             dialog.open();
         }
-        else add(crearContenido());
     }
 
     private Div crearContenido() {

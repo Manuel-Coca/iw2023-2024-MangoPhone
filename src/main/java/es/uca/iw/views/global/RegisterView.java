@@ -187,7 +187,7 @@ public class RegisterView extends Div {
             
             emailService.sendRegistartionEmail(usuario,code);
             ConfirmDialog confirmDialog = new ConfirmDialog("Registro Correcto", "Activar cuenta", "Activar", event1 -> {
-                UI.getCurrent().navigate("/useractivation");
+                UI.getCurrent().navigate("/activar");
             });
             confirmDialog.open();
         }

@@ -14,6 +14,4 @@ public class ContratoService {
     public void createContrato(Contrato contrato){
         cuentaUsuarioRepository.save(contrato);
     }
-
-    
 }

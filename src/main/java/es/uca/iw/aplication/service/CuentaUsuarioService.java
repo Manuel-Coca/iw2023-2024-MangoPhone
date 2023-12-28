@@ -14,5 +14,4 @@ public class CuentaUsuarioService {
     public void createCuentaUsuario(CuentaUsuario cuentaUsuario){
         cuentaUsuarioRepository.save(cuentaUsuario);
     }
-
 }

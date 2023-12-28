@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import es.uca.iw.aplication.repository.UsuarioRepository;
 import es.uca.iw.aplication.repository.TokenRepository;
 import es.uca.iw.aplication.tables.usuarios.Usuario;
+import es.uca.iw.aplication.tables.usuarios.CuentaUsuario;
 import es.uca.iw.aplication.tables.usuarios.Token;
 
 @Service
@@ -19,12 +20,14 @@ public class UsuarioService implements UserDetailsService {
     private final UsuarioRepository usuarioRepository;
     private final TokenRepository tokenRepository;
     private final PasswordEncoder passwordEncoder;
+    private CuentaUsuarioService cuentaUsuarioService;
 
     @Autowired
-    public UsuarioService(UsuarioRepository usuarioRepository,PasswordEncoder passwordEncoder, TokenRepository tokenRepository){
+    public UsuarioService(UsuarioRepository usuarioRepository,PasswordEncoder passwordEncoder, TokenRepository tokenRepository, CuentaUsuarioService cuentaUsuarioService){
         this.usuarioRepository = usuarioRepository;
         this.tokenRepository = tokenRepository;
         this.passwordEncoder = passwordEncoder;
+        this.cuentaUsuarioService = cuentaUsuarioService;
     }
 
     public void createUsuario(Usuario usuario) {       
@@ -50,6 +53,10 @@ public class UsuarioService implements UserDetailsService {
 
         if(usuario != null && token != null && token.getUsuario().getId().equals(usuario.getId()) && fechaActual.before(token.getDate()) && registerCode.equals(token.getToken())) {
             usuario.setActivo(true);
+            CuentaUsuario cuentaUsuario = new CuentaUsuario();
+            cuentaUsuario.setDuennoCuenta(usuario);
+            cuentaUsuarioService.createCuentaUsuario(cuentaUsuario);
+            usuario.setCuentaUsuario(cuentaUsuario);
             usuarioRepository.save(usuario);
             // Incluir Eliminación de token (En el caso que se quiera eliminar)
             return true;

@@ -18,7 +18,6 @@ import com.vaadin.flow.theme.lumo.LumoUtility;
 import es.uca.iw.views.global.AboutUsView;
 import es.uca.iw.views.global.ContratoFormView;
 import es.uca.iw.views.global.LoginView;
-import es.uca.iw.views.global.LogoutView;
 import es.uca.iw.views.global.PerfilView;
 import es.uca.iw.views.global.ServicesInfoView;
 import es.uca.iw.views.global.WelcomeView;

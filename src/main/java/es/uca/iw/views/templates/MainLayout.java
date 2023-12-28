@@ -19,6 +19,7 @@ import es.uca.iw.views.global.AboutUsView;
 import es.uca.iw.views.global.ContratoFormView;
 import es.uca.iw.views.global.LoginView;
 import es.uca.iw.views.global.LogoutView;
+import es.uca.iw.views.global.PerfilView;
 import es.uca.iw.views.global.ServicesInfoView;
 import es.uca.iw.views.global.WelcomeView;
 
@@ -78,8 +79,7 @@ public class MainLayout extends AppLayout {
         VaadinSession session = VaadinSession.getCurrent();        
         if(session.getAttribute("Rol") == null) { nav.addItem(new SideNavItem("Iniciar Sesión", LoginView.class, LineAwesomeIcon.USER.create())); }
         else {
-            nav.addItem(new SideNavItem("Tu perfil", LoginView.class, LineAwesomeIcon.USER.create()));  
-            nav.addItem(new SideNavItem("Cerrar sesión", LogoutView.class, LineAwesomeIcon.USER.create()));  
+            nav.addItem(new SideNavItem("Tu perfil", PerfilView.class, LineAwesomeIcon.USER.create()));  
         }  
         //nav.addItem(new SideNavItem(session.getAttribute("Rol"), LoginView.class, LineAwesomeIcon.USER.create())); 
         return nav;

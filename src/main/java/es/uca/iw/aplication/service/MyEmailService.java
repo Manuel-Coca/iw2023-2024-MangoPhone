@@ -1,5 +1,6 @@
 package es.uca.iw.aplication.service;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.net.InetAddress;
 import java.time.LocalDate;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import com.lowagie.text.Document;
@@ -18,6 +20,7 @@ import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
 
 import es.uca.iw.aplication.tables.Factura;
 import es.uca.iw.aplication.tables.usuarios.Usuario;
+import jakarta.mail.internet.MimeMessage;
 
 @Service
 public class MyEmailService implements EmailService{
@@ -87,7 +90,18 @@ public class MyEmailService implements EmailService{
             
             document.add(new Paragraph("Precio: " + factura.getPrecio()));
             document.close();
+            
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "utf-8");
+            helper.setTo(usuario.getCorreoElectronico());
+            helper.setSubject("Asunto del correo");
+            helper.setText("<html><body><h1>Factura adjunta</h1><body></html>", true);
 
+            File file = new File(path);
+            helper.addAttachment(nombreFichero, file);
+
+            // Enviar el correo electrónico
+            mailSender.send(message);
         } catch (Exception e) {
             ConfirmDialog errorDialog = new ConfirmDialog("Error", e.getMessage(), "Aceptar", event -> {
                 UI.getCurrent().navigate("/home");

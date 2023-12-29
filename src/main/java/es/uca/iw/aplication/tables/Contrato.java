@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import es.uca.iw.aplication.tables.tarifas.Tarifa;
 import es.uca.iw.aplication.tables.usuarios.CuentaUsuario;
 
 @Entity
@@ -38,9 +37,10 @@ public class Contrato {
     public void setNumero(int numero) { this.numero = numero; }
 
     @Column(name = "precio")
-    private BigDecimal precio = new BigDecimal(0);
+    private BigDecimal precio = BigDecimal.ZERO;
     public BigDecimal getPrecio() { return precio; }
-    public void setPrecio(BigDecimal precio) { this.precio.add(precio); }
+    public void setPrecio(BigDecimal precio) { this.precio = this.precio.add(precio); }
+    public void addPrecio(BigDecimal precio) { this.precio = this.precio.add(precio); }
 
     @Column(name = "fechaInicio")
     private LocalDate fechaInicio;
@@ -52,19 +52,15 @@ public class Contrato {
     public void setCuentaUsuario(CuentaUsuario cuentaUsuario) { this.cuentaUsuario = cuentaUsuario; }
     public CuentaUsuario getUsuario() { return cuentaUsuario; }
 
-    @OneToOne
-    private Factura factura = null;
-    public Factura getFactura() { return factura; }
-    public void setFactura(Factura factura) { this.factura = factura; }
-
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
-        name = "Contrato_Tarifa",
+        name = "Contrato_Factura",
         joinColumns = @JoinColumn(name = "contrato_id"), 
-        inverseJoinColumns = @JoinColumn(name = "tarifa_id")
+        inverseJoinColumns = @JoinColumn(name = "factura_id")
     )
-    private List<Tarifa> tarifas = new ArrayList<Tarifa>();
-    public List<Tarifa> getTarifas() { return tarifas; }
-    public void setTarifas(Tarifa tarifa) { tarifas.add(tarifa); }
+    private List<Factura> facturas = new ArrayList<Factura>();
+    public List<Factura> getFacturas() { return facturas; }
+    public void setFacturas(List<Factura> facturas) { this.facturas = facturas; }
+    public void addFactura(Factura factura) { this.facturas.add(factura); }
     
 }

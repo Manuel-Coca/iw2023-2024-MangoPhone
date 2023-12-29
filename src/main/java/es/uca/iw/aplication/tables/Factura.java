@@ -1,8 +1,10 @@
 package es.uca.iw.aplication.tables;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.UUID;
+
+import es.uca.iw.aplication.tables.tarifas.Tarifa;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Column;
@@ -29,9 +31,10 @@ public class Factura {
     public void setNumero(int numero) { this.numero = numero; }
 
     @Column(name = "precio")
-    private float precio;
-    public float getPrecio() { return precio; }
-    public void setPrecio(int precio) { this.precio = precio; }
+    private BigDecimal precio;
+    public BigDecimal getPrecio() { return precio; }
+    public void setPrecio(BigDecimal precio) { this.precio = (precio); }
+    public void addPrecio(BigDecimal precio) { this.precio = this.precio.add(precio); }
 
     @Column(name = "fechaEmision")
     private LocalDate fechaEmision;
@@ -44,8 +47,7 @@ public class Factura {
     public void setEstado(Estado estado) { this.estado = estado; }
 
     @OneToOne
-    private Contrato contrato = null;
-    public Contrato getContrato() { return contrato; }
-    public void setContrato(Contrato contrato) { this.contrato = contrato; }
-
+    private Tarifa tarifa = null;
+    public Tarifa getTarifa() { return tarifa; }
+    public void setTarifa(Tarifa tarifa) { this.tarifa = tarifa; }
 }

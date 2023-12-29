@@ -147,39 +147,54 @@ public class ContratoFormView extends Div {
             else {
                 Usuario usuario = (Usuario)session.getAttribute("loggedUser");
                 Contrato contrato = usuario.getCuentaUsuario().getContrato();
-                Factura factura = new Factura();
 
                 if(contrato == null) {
                     contrato = new Contrato();
                     contrato.setNumero(0);
                     contrato.setFechaInicio(LocalDate.now());
 
-                    factura.setEstado(Estado.NoPagado);
-                    factura.setFechaInicio(LocalDate.now());
-
                     contratoService.createContrato(contrato);
-                    facturaService.createFactura(factura);
                 }
                 
                 if(seleccionadorFibra.tarifaSeleccionada != null){
-                    contrato.setTarifas(seleccionadorFibra.tarifaSeleccionada);
-                    contrato.setPrecio(seleccionadorFibra.tarifaSeleccionada.getPrecio());
+                    Factura factura = new Factura();
+                    factura.setEstado(Estado.NoPagado);
+                    factura.setFechaInicio(LocalDate.now());
+                    factura.setPrecio(seleccionadorFibra.tarifaSeleccionada.getPrecio());
+                    factura.setTarifa(seleccionadorFibra.tarifaSeleccionada);
+                    facturaService.createFactura(factura);
+
+                    contrato.addFactura(factura);
                 }
 
                 if(seleccionadorFijo.tarifaSeleccionada != null){
-                    contrato.setTarifas(seleccionadorFijo.tarifaSeleccionada);
-                    contrato.setPrecio(seleccionadorFijo.tarifaSeleccionada.getPrecio());
+                    Factura factura = new Factura();
+                    factura.setEstado(Estado.NoPagado);
+                    factura.setFechaInicio(LocalDate.now());
+                    factura.setPrecio(seleccionadorFijo.tarifaSeleccionada.getPrecio());
+                    factura.setTarifa(seleccionadorFijo.tarifaSeleccionada);
+                    facturaService.createFactura(factura);
+
+                    contrato.addFactura(factura);
                 }
 
                 if(seleccionadorMovil.tarifaSeleccionada != null){
-                    contrato.setTarifas(seleccionadorMovil.tarifaSeleccionada);
-                    contrato.setPrecio(seleccionadorMovil.tarifaSeleccionada.getPrecio());
+                    Factura factura = new Factura();
+                    factura.setEstado(Estado.NoPagado);
+                    factura.setFechaInicio(LocalDate.now());
+                    factura.setPrecio(seleccionadorMovil.tarifaSeleccionada.getPrecio());
+                    factura.setTarifa(seleccionadorMovil.tarifaSeleccionada);
+                    facturaService.createFactura(factura);
+
+                    contrato.addFactura(factura);
                 }
 
-                contrato.setFactura(factura);
-                factura.setContrato(contrato);
                 contrato.setCuentaUsuario(usuario.getCuentaUsuario());
                 usuario.getCuentaUsuario().setContrato(contrato);
+
+                for(Factura factura: contrato.getFacturas()){
+                    contrato.addPrecio(factura.getPrecio());
+                }
                 
                 contratoService.createContrato(contrato);
                 cuentaUsuarioService.createCuentaUsuario(usuario.getCuentaUsuario());

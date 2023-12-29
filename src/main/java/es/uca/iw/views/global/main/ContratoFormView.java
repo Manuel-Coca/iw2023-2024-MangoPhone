@@ -150,7 +150,6 @@ public class ContratoFormView extends Div {
 
                 if(contrato == null) {
                     contrato = new Contrato();
-                    contrato.setNumero(0);
                     contrato.setFechaInicio(LocalDate.now());
 
                     contratoService.createContrato(contrato);

@@ -29,6 +29,6 @@ public class TarifaService {
 
     public Tarifa updateTarifa(Tarifa tarifa) { 
         if(tarifaRepository.existsById(tarifa.getId())) return tarifaRepository.save(tarifa);
-        else return null; 
+        else return null;
     }
 }

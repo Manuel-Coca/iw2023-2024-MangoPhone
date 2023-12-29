@@ -31,15 +31,25 @@ public class UsuarioService implements UserDetailsService {
     }
 
     public void createUsuario(Usuario usuario) {       
-        usuario.setContrasena(passwordEncoder.encode(usuario.getContrasena()));   
-        
-        usuarioRepository.save(usuario);     
+        usuario.setContrasena(passwordEncoder.encode(usuario.getContrasena()));
+        usuarioRepository.save(usuario);
+    }
+
+    public void updateUsuario(Usuario usuario) throws Exception{ 
+        if(usuarioRepository.existsById(usuario.getId())) usuarioRepository.save(usuario);
+        else throw new Exception("El usuario no existe");
     }
 
     public boolean validarCredenciales(String correo, String contrasena) {
         Usuario usuario = usuarioRepository.findByCorreoElectronico(correo);
         return usuario != null && passwordEncoder.matches(contrasena, usuario.getContrasena());
     }
+
+    public boolean compararContrasena(String inputPass, String actualPass) {
+        return passwordEncoder.matches(inputPass, actualPass);
+    }
+
+    public String encriptarPass(String pass) { return passwordEncoder.encode(pass); }
 
     public Usuario buscarEmail(String email) { return usuarioRepository.findByCorreoElectronico(email); }
 

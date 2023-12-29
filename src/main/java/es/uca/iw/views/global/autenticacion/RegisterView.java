@@ -1,4 +1,4 @@
-package es.uca.iw.views.global;
+package es.uca.iw.views.global.autenticacion;
 
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;

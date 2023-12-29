@@ -1,4 +1,4 @@
-package es.uca.iw.views.global;
+package es.uca.iw.views.global.main;
 
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;

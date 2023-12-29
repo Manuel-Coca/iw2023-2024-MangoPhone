@@ -1,4 +1,4 @@
-package es.uca.iw.views.global;
+package es.uca.iw.views.global.main;
 
 import com.flowingcode.vaadin.addons.carousel.Carousel;
 import com.flowingcode.vaadin.addons.carousel.Slide;

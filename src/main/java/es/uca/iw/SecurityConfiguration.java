@@ -10,7 +10,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import com.vaadin.flow.spring.security.VaadinWebSecurity;
-import es.uca.iw.views.global.LoginView;
+
+import es.uca.iw.views.global.autenticacion.LoginView;
 
 @Configuration
 @EnableWebSecurity

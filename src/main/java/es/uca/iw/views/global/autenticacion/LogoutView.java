@@ -1,4 +1,4 @@
-package es.uca.iw.views.global;
+package es.uca.iw.views.global.autenticacion;
 
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.html.Div;

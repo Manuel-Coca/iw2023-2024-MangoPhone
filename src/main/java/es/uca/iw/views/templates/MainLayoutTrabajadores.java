@@ -16,7 +16,7 @@ import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 
 import es.uca.iw.aplication.tables.enumerados.Rol;
-import es.uca.iw.views.global.LogoutView;
+import es.uca.iw.views.global.autenticacion.LogoutView;
 import es.uca.iw.views.marketing.CrearTarifaView;
 import es.uca.iw.views.marketing.ListaTarifasView;
 import es.uca.iw.views.marketing.MarkentingHomeView;

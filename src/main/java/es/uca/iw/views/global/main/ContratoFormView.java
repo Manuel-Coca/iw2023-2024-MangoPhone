@@ -1,4 +1,4 @@
-package es.uca.iw.views.global;
+package es.uca.iw.views.global.main;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -127,7 +127,9 @@ public class ContratoFormView extends Div {
                 errorDialog.open();
             }
             else {
+                ///////////////////////////
                 // LOGICA DE AÑADIR CONTRATOS
+                /////////////////////////
             }
         }
         catch(Exception e) {

@@ -21,7 +21,7 @@ public class UsuarioService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UsuarioService(UsuarioRepository usuarioRepository,PasswordEncoder passwordEncoder, TokenRepository tokenRepository){
+    public UsuarioService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder, TokenRepository tokenRepository){
         this.usuarioRepository = usuarioRepository;
         this.tokenRepository = tokenRepository;
         this.passwordEncoder = passwordEncoder;
@@ -34,8 +34,7 @@ public class UsuarioService implements UserDetailsService {
     }
 
     public boolean validarCredenciales(String correo, String contrasena) {
-        Usuario usuario = usuarioRepository.findByCorreoElectronico(correo) ;
-        
+        Usuario usuario = usuarioRepository.findByCorreoElectronico(correo);
         return usuario != null && passwordEncoder.matches(contrasena, usuario.getContrasena());
     }
 

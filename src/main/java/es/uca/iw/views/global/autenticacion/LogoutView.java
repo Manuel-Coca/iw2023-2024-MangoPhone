@@ -1,4 +1,4 @@
-package es.uca.iw.views.global;
+package es.uca.iw.views.global.autenticacion;
 
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.html.Div;
@@ -13,11 +13,10 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 public class LogoutView extends Div {
     
     public LogoutView() {
-        VaadinSession session = VaadinSession.getCurrent();
-        if(session != null) { 
-            session.getSession().invalidate();
-            session.close();
+        if(VaadinSession.getCurrent() != null) { 
+            VaadinSession.getCurrent().getSession().invalidate();
+            VaadinSession.getCurrent().close();
         }
-        UI.getCurrent().navigate("home");
+        UI.getCurrent().getPage().setLocation("home");
     }
 }

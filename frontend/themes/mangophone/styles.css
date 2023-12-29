@@ -60,6 +60,15 @@
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+.enlace {
+    color: rgb(0, 95, 219);
+    cursor: pointer;
+}
+
+.enlace:hover {
+    text-decoration: underline;
+}
+
 /* ---- GENERAL ---- */
 .margen-top-small {
     margin-top: 15px;

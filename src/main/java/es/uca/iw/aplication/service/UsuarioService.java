@@ -23,11 +23,7 @@ public class UsuarioService implements UserDetailsService {
     private CuentaUsuarioService cuentaUsuarioService;
 
     @Autowired
-<<<<<<< HEAD
     public UsuarioService(UsuarioRepository usuarioRepository,PasswordEncoder passwordEncoder, TokenRepository tokenRepository, CuentaUsuarioService cuentaUsuarioService){
-=======
-    public UsuarioService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder, TokenRepository tokenRepository){
->>>>>>> Vistas
         this.usuarioRepository = usuarioRepository;
         this.tokenRepository = tokenRepository;
         this.passwordEncoder = passwordEncoder;

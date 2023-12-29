@@ -15,21 +15,12 @@ import com.vaadin.flow.component.sidenav.SideNavItem;
 import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 
-<<<<<<< HEAD
-import es.uca.iw.views.global.AboutUsView;
-import es.uca.iw.views.global.ContratoFormView;
-import es.uca.iw.views.global.LoginView;
-import es.uca.iw.views.global.PerfilView;
-import es.uca.iw.views.global.ServicesInfoView;
-import es.uca.iw.views.global.WelcomeView;
-=======
 import es.uca.iw.views.global.autenticacion.LoginView;
 import es.uca.iw.views.global.main.AboutUsView;
 import es.uca.iw.views.global.main.ContratoFormView;
 import es.uca.iw.views.global.main.ServicesInfoView;
 import es.uca.iw.views.global.main.WelcomeView;
 import es.uca.iw.views.global.perfil.PerfilView;
->>>>>>> Vistas
 
 import org.vaadin.lineawesome.LineAwesomeIcon;
 

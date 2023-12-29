@@ -13,12 +13,12 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Table;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import es.uca.iw.aplication.tables.tarifas.Tarifa;
 import es.uca.iw.aplication.tables.usuarios.CuentaUsuario;
 
 @Entity
@@ -31,43 +31,31 @@ public class Contrato {
     public UUID getId() { return id; }
     public void setId(UUID newId) { this.id = newId; }
 
-    @Column(name = "numero")
-    private int numero;
-    public int getNumero() { return numero; }
-    public void setNumero(int numero) { this.numero = numero; }
-
     @Column(name = "precio")
-    private float precio;
-    public float getPrecio() { return precio; }
-    public void setPrecio(float precio) { this.precio = precio; }
+    private BigDecimal precio = BigDecimal.ZERO;
+    public BigDecimal getPrecio() { return precio; }
+    public void setPrecio(BigDecimal precio) { this.precio = this.precio.add(precio); }
+    public void addPrecio(BigDecimal precio) { this.precio = this.precio.add(precio); }
 
     @Column(name = "fechaInicio")
-    private Date fechaInicio;
-    public Date getFechaInicio() { return fechaInicio; }
-    public void setFechaInicio(Date fechaInicio) { this.fechaInicio = fechaInicio; }
-
-    @Column(name="activo")
-    private boolean activo = false;
-    public boolean isActivo() { return activo; }
-    public void setActivo(boolean activo) { this.activo = activo; }
+    private LocalDate fechaInicio;
+    public LocalDate getFechaInicio() { return fechaInicio; }
+    public void setFechaInicio(LocalDate fechaInicio) { this.fechaInicio = fechaInicio; }
 
     @OneToOne
     private CuentaUsuario cuentaUsuario = null;
+    public void setCuentaUsuario(CuentaUsuario cuentaUsuario) { this.cuentaUsuario = cuentaUsuario; }
     public CuentaUsuario getUsuario() { return cuentaUsuario; }
 
-    @OneToOne
-    private Factura factura = null;
-    public Factura getFactura() { return factura; }
-    public void setFactura(Factura factura) { this.factura = factura; }
-
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
-        name = "Contrato_Tarifa",
+        name = "Contrato_Factura",
         joinColumns = @JoinColumn(name = "contrato_id"), 
-        inverseJoinColumns = @JoinColumn(name = "tarifa_id")
+        inverseJoinColumns = @JoinColumn(name = "factura_id")
     )
-    private List<Tarifa> tarifas = new ArrayList<Tarifa>();
-    public List<Tarifa> getTarifas() { return tarifas; }
-    public void setTarifas(Tarifa tarifa) { tarifas.add(tarifa); }
+    private List<Factura> facturas = new ArrayList<Factura>();
+    public List<Factura> getFacturas() { return facturas; }
+    public void setFacturas(List<Factura> facturas) { this.facturas = facturas; }
+    public void addFactura(Factura factura) { this.facturas.add(factura); }
     
 }

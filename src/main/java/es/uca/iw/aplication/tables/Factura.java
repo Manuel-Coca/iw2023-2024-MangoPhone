@@ -1,7 +1,10 @@
 package es.uca.iw.aplication.tables;
 
-import java.util.Date;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.UUID;
+
+import es.uca.iw.aplication.tables.tarifas.Tarifa;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Column;
@@ -22,20 +25,16 @@ public class Factura {
     public UUID getId() { return id; }
     public void setId(UUID newId) { this.id = newId; }
 
-    @Column(name = "numero")
-    private int numero;
-    public int getNumero() { return numero; }
-    public void setNumero(int numero) { this.numero = numero; }
-
     @Column(name = "precio")
-    private float precio;
-    public float getPrecio() { return precio; }
-    public void setPrecio(int precio) { this.precio = precio; }
+    private BigDecimal precio;
+    public BigDecimal getPrecio() { return precio; }
+    public void setPrecio(BigDecimal precio) { this.precio = (precio); }
+    public void addPrecio(BigDecimal precio) { this.precio = this.precio.add(precio); }
 
     @Column(name = "fechaEmision")
-    private Date fechaEmision;
-    public Date getFechaInicio() { return fechaEmision; }
-    public void setFechaInicio(Date fecha) { this.fechaEmision = fecha; }
+    private LocalDate fechaEmision;
+    public LocalDate getFechaInicio() { return fechaEmision; }
+    public void setFechaInicio(LocalDate fecha) { this.fechaEmision = fecha; }
 
     @Column(name = "estado")
     private Estado estado;
@@ -43,8 +42,7 @@ public class Factura {
     public void setEstado(Estado estado) { this.estado = estado; }
 
     @OneToOne
-    private Contrato contrato = null;
-    public Contrato getContrato() { return contrato; }
-    public void setContrato(Contrato contrato) { this.contrato = contrato; }
-
+    private Tarifa tarifa = null;
+    public Tarifa getTarifa() { return tarifa; }
+    public void setTarifa(Tarifa tarifa) { this.tarifa = tarifa; }
 }

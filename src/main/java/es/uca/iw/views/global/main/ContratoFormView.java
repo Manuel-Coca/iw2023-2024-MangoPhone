@@ -1,6 +1,7 @@
 package es.uca.iw.views.global.main;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,11 +20,19 @@ import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
+import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 
+import es.uca.iw.aplication.service.ContratoService;
+import es.uca.iw.aplication.service.CuentaUsuarioService;
+import es.uca.iw.aplication.service.FacturaService;
 import es.uca.iw.aplication.service.TarifaService;
+import es.uca.iw.aplication.tables.Contrato;
+import es.uca.iw.aplication.tables.Factura;
+import es.uca.iw.aplication.tables.Factura.Estado;
 import es.uca.iw.aplication.tables.enumerados.Servicio;
 import es.uca.iw.aplication.tables.tarifas.Tarifa;
+import es.uca.iw.aplication.tables.usuarios.Usuario;
 import es.uca.iw.views.templates.MainLayout;
 
 
@@ -33,9 +42,17 @@ import es.uca.iw.views.templates.MainLayout;
 @AnonymousAllowed
 public class ContratoFormView extends Div {
     
+    private VaadinSession session = VaadinSession.getCurrent();
+
     @Autowired
     private TarifaService tarifaService;
-    
+    @Autowired
+    private CuentaUsuarioService cuentaUsuarioService;
+    @Autowired
+    private ContratoService contratoService;
+    @Autowired
+    private FacturaService facturaService;
+
     private BigDecimal precioTotal = new BigDecimal(0);
     private H3 precioTitle = new H3("Precio total: " + String.valueOf(precioTotal) + " €/mes");
     
@@ -128,13 +145,63 @@ public class ContratoFormView extends Div {
                 errorDialog.open();
             }
             else {
-                ///////////////////////////
-                // LOGICA DE AÑADIR CONTRATOS
-                /////////////////////////
+                Usuario usuario = (Usuario)session.getAttribute("loggedUser");
+                Contrato contrato = usuario.getCuentaUsuario().getContrato();
+
+                if(contrato == null) {
+                    contrato = new Contrato();
+                    contrato.setNumero(0);
+                    contrato.setFechaInicio(LocalDate.now());
+
+                    contratoService.createContrato(contrato);
+                }
+                
+                if(seleccionadorFibra.tarifaSeleccionada != null){
+                    Factura factura = new Factura();
+                    factura.setEstado(Estado.NoPagado);
+                    factura.setFechaInicio(LocalDate.now());
+                    factura.setPrecio(seleccionadorFibra.tarifaSeleccionada.getPrecio());
+                    factura.setTarifa(seleccionadorFibra.tarifaSeleccionada);
+                    facturaService.createFactura(factura);
+
+                    contrato.addFactura(factura);
+                }
+
+                if(seleccionadorFijo.tarifaSeleccionada != null){
+                    Factura factura = new Factura();
+                    factura.setEstado(Estado.NoPagado);
+                    factura.setFechaInicio(LocalDate.now());
+                    factura.setPrecio(seleccionadorFijo.tarifaSeleccionada.getPrecio());
+                    factura.setTarifa(seleccionadorFijo.tarifaSeleccionada);
+                    facturaService.createFactura(factura);
+
+                    contrato.addFactura(factura);
+                }
+
+                if(seleccionadorMovil.tarifaSeleccionada != null){
+                    Factura factura = new Factura();
+                    factura.setEstado(Estado.NoPagado);
+                    factura.setFechaInicio(LocalDate.now());
+                    factura.setPrecio(seleccionadorMovil.tarifaSeleccionada.getPrecio());
+                    factura.setTarifa(seleccionadorMovil.tarifaSeleccionada);
+                    facturaService.createFactura(factura);
+
+                    contrato.addFactura(factura);
+                }
+
+                contrato.setCuentaUsuario(usuario.getCuentaUsuario());
+                usuario.getCuentaUsuario().setContrato(contrato);
+
+                for(Factura factura: contrato.getFacturas()){
+                    contrato.addPrecio(factura.getPrecio());
+                }
+                
+                contratoService.createContrato(contrato);
+                cuentaUsuarioService.createCuentaUsuario(usuario.getCuentaUsuario());
             }
         }
         catch(Exception e) {
-            ConfirmDialog errorDialog = new ConfirmDialog("Error", "No se ha conseguido realizar la peticion", "Reintentar", event -> {
+            ConfirmDialog errorDialog = new ConfirmDialog("Error", e.getMessage(), "Reintentar", event -> {
                 UI.getCurrent().navigate("/contratar");
             });
             errorDialog.open();

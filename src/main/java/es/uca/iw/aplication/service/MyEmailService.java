@@ -1,11 +1,22 @@
 package es.uca.iw.aplication.service;
 
+import java.io.FileOutputStream;
 import java.net.InetAddress;
+import java.time.LocalDate;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+
+import com.lowagie.text.Document;
+import com.lowagie.text.Paragraph;
+import com.lowagie.text.pdf.PdfWriter;
+import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
+
+import es.uca.iw.aplication.tables.Factura;
 import es.uca.iw.aplication.tables.usuarios.Usuario;
 
 @Service
@@ -49,6 +60,39 @@ public class MyEmailService implements EmailService{
             this.mailSender.send(message);
         }catch(MailException ex) {
             ex.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    public boolean sendFacturaEmail(Usuario usuario, Factura factura, String tipo) {
+        try {
+            Document document = new Document();
+            String nombreFichero = "Factura-" + tipo + "-" + usuario.getNombre() + "-" + LocalDate.now() + ".pdf";
+            String path = "src\\main\\resources\\recibo-facturas\\" + nombreFichero;
+
+            PdfWriter.getInstance(document, new FileOutputStream(path));
+
+            document.open();
+
+            document.add(new Paragraph("FACTURA"));
+            document.add(new Paragraph("------------------------------------------"));
+            document.add(new Paragraph("Fecha de Emisión: " + factura.getFechaInicio()));
+            document.add(new Paragraph("Estado: " + factura.getEstado()));
+
+            if (factura.getTarifa() != null) {
+                document.add(new Paragraph("Tarifa Aplicada: " + factura.getTarifa().getServicio()));
+                document.add(new Paragraph("Capacidad: " + factura.getTarifa().getCapacidad()));
+            }
+            
+            document.add(new Paragraph("Precio: " + factura.getPrecio()));
+            document.close();
+
+        } catch (Exception e) {
+            ConfirmDialog errorDialog = new ConfirmDialog("Error", e.getMessage(), "Aceptar", event -> {
+                UI.getCurrent().navigate("/home");
+            });
+            errorDialog.open();
             return false;
         }
         return true;

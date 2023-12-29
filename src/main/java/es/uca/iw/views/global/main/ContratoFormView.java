@@ -25,6 +25,7 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 
 import es.uca.iw.aplication.service.ContratoService;
 import es.uca.iw.aplication.service.CuentaUsuarioService;
+import es.uca.iw.aplication.service.EmailService;
 import es.uca.iw.aplication.service.FacturaService;
 import es.uca.iw.aplication.service.TarifaService;
 import es.uca.iw.aplication.tables.Contrato;
@@ -52,6 +53,8 @@ public class ContratoFormView extends Div {
     private ContratoService contratoService;
     @Autowired
     private FacturaService facturaService;
+    @Autowired
+    private EmailService emailService;
 
     private BigDecimal precioTotal = new BigDecimal(0);
     private H3 precioTitle = new H3("Precio total: " + String.valueOf(precioTotal) + " €/mes");
@@ -164,6 +167,7 @@ public class ContratoFormView extends Div {
                     facturaService.createFactura(factura);
 
                     contrato.addFactura(factura);
+                    emailService.sendFacturaEmail(usuario, factura, "Fibra");
                 }
 
                 if(seleccionadorFijo.tarifaSeleccionada != null){
@@ -175,6 +179,7 @@ public class ContratoFormView extends Div {
                     facturaService.createFactura(factura);
 
                     contrato.addFactura(factura);
+                    emailService.sendFacturaEmail(usuario, factura, "Fijo");
                 }
 
                 if(seleccionadorMovil.tarifaSeleccionada != null){
@@ -186,6 +191,7 @@ public class ContratoFormView extends Div {
                     facturaService.createFactura(factura);
 
                     contrato.addFactura(factura);
+                    emailService.sendFacturaEmail(usuario, factura, "Movil");
                 }
 
                 contrato.setCuentaUsuario(usuario.getCuentaUsuario());

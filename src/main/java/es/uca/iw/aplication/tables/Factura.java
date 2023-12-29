@@ -25,11 +25,6 @@ public class Factura {
     public UUID getId() { return id; }
     public void setId(UUID newId) { this.id = newId; }
 
-    @Column(name = "numero")
-    private int numero;
-    public int getNumero() { return numero; }
-    public void setNumero(int numero) { this.numero = numero; }
-
     @Column(name = "precio")
     private BigDecimal precio;
     public BigDecimal getPrecio() { return precio; }

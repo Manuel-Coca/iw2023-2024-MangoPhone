@@ -31,11 +31,6 @@ public class Contrato {
     public UUID getId() { return id; }
     public void setId(UUID newId) { this.id = newId; }
 
-    @Column(name = "numero")
-    private int numero;
-    public int getNumero() { return numero; }
-    public void setNumero(int numero) { this.numero = numero; }
-
     @Column(name = "precio")
     private BigDecimal precio = BigDecimal.ZERO;
     public BigDecimal getPrecio() { return precio; }

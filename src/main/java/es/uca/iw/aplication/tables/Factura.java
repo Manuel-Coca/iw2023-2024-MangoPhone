@@ -1,5 +1,6 @@
 package es.uca.iw.aplication.tables;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.UUID;
 import jakarta.persistence.Id;
@@ -33,9 +34,9 @@ public class Factura {
     public void setPrecio(int precio) { this.precio = precio; }
 
     @Column(name = "fechaEmision")
-    private Date fechaEmision;
-    public Date getFechaInicio() { return fechaEmision; }
-    public void setFechaInicio(Date fecha) { this.fechaEmision = fecha; }
+    private LocalDate fechaEmision;
+    public LocalDate getFechaInicio() { return fechaEmision; }
+    public void setFechaInicio(LocalDate fecha) { this.fechaEmision = fecha; }
 
     @Column(name = "estado")
     private Estado estado;

@@ -13,8 +13,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Table;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -37,22 +38,18 @@ public class Contrato {
     public void setNumero(int numero) { this.numero = numero; }
 
     @Column(name = "precio")
-    private float precio;
-    public float getPrecio() { return precio; }
-    public void setPrecio(float precio) { this.precio = precio; }
+    private BigDecimal precio = new BigDecimal(0);
+    public BigDecimal getPrecio() { return precio; }
+    public void setPrecio(BigDecimal precio) { this.precio.add(precio); }
 
     @Column(name = "fechaInicio")
-    private Date fechaInicio;
-    public Date getFechaInicio() { return fechaInicio; }
-    public void setFechaInicio(Date fechaInicio) { this.fechaInicio = fechaInicio; }
-
-    @Column(name="activo")
-    private boolean activo = false;
-    public boolean isActivo() { return activo; }
-    public void setActivo(boolean activo) { this.activo = activo; }
+    private LocalDate fechaInicio;
+    public LocalDate getFechaInicio() { return fechaInicio; }
+    public void setFechaInicio(LocalDate fechaInicio) { this.fechaInicio = fechaInicio; }
 
     @OneToOne
     private CuentaUsuario cuentaUsuario = null;
+    public void setCuentaUsuario(CuentaUsuario cuentaUsuario) { this.cuentaUsuario = cuentaUsuario; }
     public CuentaUsuario getUsuario() { return cuentaUsuario; }
 
     @OneToOne

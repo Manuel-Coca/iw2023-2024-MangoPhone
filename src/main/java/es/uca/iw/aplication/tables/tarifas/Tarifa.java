@@ -37,9 +37,9 @@ public class Tarifa {
 
     @NotNull
     @Column(name = "precio")
-    private BigDecimal precio;
+    private BigDecimal precio = new BigDecimal(0);
     public BigDecimal getPrecio() { return precio; }
-    public void setPrecio(BigDecimal precio) { this.precio = precio; }
+    public void setPrecio(BigDecimal precio) { this.precio.add(precio); }
 
     @Override
     public boolean equals(Object obj) {

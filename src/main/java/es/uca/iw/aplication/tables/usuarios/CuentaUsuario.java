@@ -1,6 +1,5 @@
 package es.uca.iw.aplication.tables.usuarios;
 
-import java.math.BigDecimal;
 import java.util.UUID;
 import java.util.List;
 
@@ -15,10 +14,6 @@ public class CuentaUsuario {
      @Column(name = "id")
      private UUID id = null;
      public UUID getId() { return id; }
-
-    private BigDecimal pagoMensual;
-    public BigDecimal getPagoMensual() { return pagoMensual; }
-    public void setPagoMensual(BigDecimal pagoMensual) { this.pagoMensual = pagoMensual; }
 
     private boolean roaming;
     public boolean getRoaming() { return roaming; }

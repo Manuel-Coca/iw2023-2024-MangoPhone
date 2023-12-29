@@ -12,13 +12,11 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 @AnonymousAllowed
 public class LogoutView extends Div {
     
-    private VaadinSession session = VaadinSession.getCurrent();
-    
     public LogoutView() {
-        if(session != null) { 
-            session.getSession().invalidate();
-            session.close();
+        if(VaadinSession.getCurrent() != null) { 
+            VaadinSession.getCurrent().getSession().invalidate();
+            VaadinSession.getCurrent().close();
         }
-        UI.getCurrent().navigate("home");
+        UI.getCurrent().getPage().setLocation("home");
     }
 }

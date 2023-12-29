@@ -15,6 +15,7 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
+
 import es.uca.iw.views.templates.MainLayout;
 
 @PageTitle("Bienvenido")

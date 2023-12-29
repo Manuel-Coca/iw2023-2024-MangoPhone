@@ -27,6 +27,8 @@ import es.uca.iw.views.templates.MainLayout;
 public class PerfilView extends Div {
 
     private final VaadinSession session = VaadinSession.getCurrent();
+    private Object loggedUser = VaadinSession.getCurrent().getAttribute("loggedUser");
+    private Object profilePic = VaadinSession.getCurrent().getAttribute("profilePic");
 
     // cocaalba.manuel@gmail.com
     public PerfilView() {
@@ -39,42 +41,41 @@ public class PerfilView extends Div {
 
         // Foto + nombre
         HorizontalLayout nameBlock = new HorizontalLayout();
-        if(session != null && session.getAttribute("profilePic") == null ) {
+        if(profilePic == null) {
             Random rand = new Random();
             int randomNum = rand.nextInt((13 - 1) + 1) + 1;
             session.setAttribute("profilePic", randomNum);
-            
+        }
+        
+        if(loggedUser != null) {
             Avatar profilePic = new Avatar(((Usuario)session.getAttribute("loggedUser")).getNombre());
             profilePic.setImage("/icons/profilepics/image" + session.getAttribute("profilePic") + ".svg");
             profilePic.setHeight("150px");
             profilePic.setWidth("150px");            
-            
             nameBlock.add(profilePic);
+            
+            Paragraph userName = new Paragraph(((Usuario)session.getAttribute("loggedUser")).getNombre() + " " + (((Usuario)session.getAttribute("loggedUser")).getApellidos()));
+            userName.addClassName("profile-name");
+            nameBlock.setAlignItems(FlexComponent.Alignment.CENTER);
+            nameBlock.add(userName);
+            
+            globalVerticalLayout.add(nameBlock);
+            
+            // Opciones
+            Anchor datosPersonalesLink = new Anchor("/profile/datos", "Ver datos personales");
+            Anchor listaLlamadasLink = new Anchor("/profile/llamadas", "Ver desglose de llamadas");
+            Anchor listaFacturasLink = new Anchor("/profile/facturas", "Ver tus facturas");
+            Anchor cerrarSesionLink = new Anchor("logout", "Cerrar sesión");
+    
+            globalVerticalLayout.add(datosPersonalesLink, listaLlamadasLink, listaFacturasLink, cerrarSesionLink);
+    
+            globalDiv.add(globalVerticalLayout);
+            return globalDiv;
         }
         else {
-            Avatar profilePic = new Avatar(((Usuario)session.getAttribute("loggedUser")).getNombre());
-            profilePic.setImage("/icons/profilepics/image" + session.getAttribute("profilePic") + ".svg");
-            profilePic.setHeight("150px");
-            profilePic.setWidth("150px");
-            
-            nameBlock.add(profilePic);
+            Anchor iniciarSesion = new Anchor("login", "Iniciar sesión");
+            globalDiv.add(iniciarSesion);
+            return globalDiv;
         }
-        
-        Paragraph userName = new Paragraph(((Usuario)session.getAttribute("loggedUser")).getNombre() + " " + (((Usuario)session.getAttribute("loggedUser")).getApellidos()));
-        userName.addClassName("profile-name");
-        nameBlock.setAlignItems(FlexComponent.Alignment.CENTER);
-        nameBlock.add(userName);
-        globalVerticalLayout.add(nameBlock);
-
-        // Opciones
-        Anchor datosPersonalesLink = new Anchor("/profile/datos", "Ver datos personales");
-        Anchor listaLlamadasLink = new Anchor("/profile/llamadas", "Ver desglose de llamadas");
-        Anchor listaFacturasLink = new Anchor("/profile/facturas", "Ver tus facturas");
-        Anchor cerrarSesionLink = new Anchor("logout", "Cerrar sesión");
-
-        globalVerticalLayout.add(datosPersonalesLink, listaLlamadasLink, listaFacturasLink, cerrarSesionLink);
-
-        globalDiv.add(globalVerticalLayout);
-        return globalDiv;
     }
 }

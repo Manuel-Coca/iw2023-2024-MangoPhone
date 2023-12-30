@@ -178,41 +178,6 @@ public class ContratoFormView extends Div {
         }
     }
 
-   /*private void eliminarSeleccion(){
-        try {
-            if(seleccionadorFibra.tarifaSeleccionada == null && seleccionadorFijo.tarifaSeleccionada == null && seleccionadorMovil.tarifaSeleccionada == null) {
-                ConfirmDialog errorDialog = new ConfirmDialog();
-                errorDialog.setHeader("Error");
-                errorDialog.setText("Debe seleccionar al menos una tarifa");
-                errorDialog.setConfirmText("Cerrar");
-                errorDialog.addConfirmListener(event -> { errorDialog.close(); });
-                errorDialog.open();
-            }
-            else {
-                Usuario usuario = (Usuario)session.getAttribute("loggedUser");
-                usuario = usuarioService.loadUsuario(usuario);
-                Contrato contrato = usuario.getCuentaUsuario().getContrato();
-
-                if(seleccionadorFibra.tarifaSeleccionada != null)
-                    contratoService.removeTarifa(contrato, usuario, seleccionadorFibra.tarifaSeleccionada, "Fibra");
-                
-                if(seleccionadorFijo.tarifaSeleccionada != null)
-                    contratoService.removeTarifa(contrato, usuario, seleccionadorFijo.tarifaSeleccionada , "Fijo");
-                
-                if(seleccionadorMovil.tarifaSeleccionada != null)
-                    contratoService.removeTarifa(contrato, usuario, seleccionadorMovil.tarifaSeleccionada , "Movil");
-                
-                contratoService.actualizarContrato(contrato);
-            }
-        }
-        catch(Exception e) {
-            ConfirmDialog errorDialog = new ConfirmDialog("Error", e.getMessage(), "Reintentar", event -> {
-                UI.getCurrent().navigate("/contratar");
-            });
-            errorDialog.open();
-        }
-    }*/
-
     private Div crearTarjeta(Tarifa tarifa, SeleccionadorDeTarifas seleccionador, List<Div> cards) {
         Div card = new Div();
         card.addClassName("card-contrato");

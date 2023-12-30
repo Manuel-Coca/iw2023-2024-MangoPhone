@@ -1,6 +1,9 @@
 package es.uca.iw.aplication.service;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,6 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 import es.uca.iw.aplication.repository.UsuarioRepository;
 import es.uca.iw.aplication.repository.TokenRepository;
 import es.uca.iw.aplication.tables.usuarios.Usuario;
+import es.uca.iw.aplication.tables.Contrato;
+import es.uca.iw.aplication.tables.Contrato_Factura;
+import es.uca.iw.aplication.tables.Factura;
 import es.uca.iw.aplication.tables.usuarios.CuentaUsuario;
 import es.uca.iw.aplication.tables.usuarios.Token;
 
@@ -21,13 +27,21 @@ public class UsuarioService implements UserDetailsService {
     private final TokenRepository tokenRepository;
     private final PasswordEncoder passwordEncoder;
     private CuentaUsuarioService cuentaUsuarioService;
+    private ContratoService contratoService;
+    private Contrato_FacturaService contratoFacturaService;
+    private FacturaService facturaService;
 
     @Autowired
-    public UsuarioService(UsuarioRepository usuarioRepository,PasswordEncoder passwordEncoder, TokenRepository tokenRepository, CuentaUsuarioService cuentaUsuarioService){
+    public UsuarioService(UsuarioRepository usuarioRepository,PasswordEncoder passwordEncoder, 
+        TokenRepository tokenRepository, CuentaUsuarioService cuentaUsuarioService, ContratoService contratoService,  
+        Contrato_FacturaService contratoFacturaService, FacturaService facturaService){
         this.usuarioRepository = usuarioRepository;
         this.tokenRepository = tokenRepository;
         this.passwordEncoder = passwordEncoder;
+        this.contratoService = contratoService;
         this.cuentaUsuarioService = cuentaUsuarioService;
+        this.contratoFacturaService = contratoFacturaService;
+        this.facturaService = facturaService;
     }
 
     public void createUsuario(Usuario usuario) {       
@@ -80,6 +94,18 @@ public class UsuarioService implements UserDetailsService {
         
         if(usuario == null) throw new UsernameNotFoundException("No se encontro el usuario con nombre: " + nombre); 
         else return new User(usuario.getNombre(), usuario.getContrasena(), usuario.getAuthorities());
+    }
+    
+    public Usuario loadUsuario(Usuario usuario){
+        List<Contrato_Factura> contratoFacturas = new ArrayList<Contrato_Factura>();
+        Contrato contrato = new Contrato();
+        contrato = contratoService.findByCuentaUsuario(usuario.getCuentaUsuario());
+        contratoFacturas =  contratoFacturaService.findByContrato(contrato);
+        contrato.setContratoFacturas(contratoFacturas);
+        usuario.getCuentaUsuario().setContrato(contrato);
+
+        System.out.println(usuario.getCuentaUsuario().getContrato().getContratoFacturas().toString());
+        return usuario;
     }
 
     /*private Collection<GrantedAuthority> getAuthorities(List<Rol> roles) {

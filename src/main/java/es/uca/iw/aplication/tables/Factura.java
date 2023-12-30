@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import es.uca.iw.aplication.tables.tarifas.Tarifa;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -41,8 +42,17 @@ public class Factura {
     public Estado getEstado() { return estado; }
     public void setEstado(Estado estado) { this.estado = estado; }
 
-    @OneToOne
+    @ManyToOne
     private Tarifa tarifa = null;
     public Tarifa getTarifa() { return tarifa; }
     public void setTarifa(Tarifa tarifa) { this.tarifa = tarifa; }
+
+    public Factura(Estado estado, LocalDate fechaEmision, BigDecimal precio, Tarifa tarifaSeleccionada) {
+        this.estado = estado;
+        this.fechaEmision = fechaEmision;
+        this.precio = precio;
+        this.tarifa = tarifaSeleccionada;
+    }
+
+    public Factura(){}
 }

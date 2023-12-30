@@ -1,8 +1,6 @@
 package es.uca.iw.aplication.tables;
 
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.CascadeType;
@@ -18,6 +16,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
 
 import es.uca.iw.aplication.tables.usuarios.CuentaUsuario;
 
@@ -47,15 +46,18 @@ public class Contrato {
     public void setCuentaUsuario(CuentaUsuario cuentaUsuario) { this.cuentaUsuario = cuentaUsuario; }
     public CuentaUsuario getUsuario() { return cuentaUsuario; }
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(
-        name = "Contrato_Factura",
-        joinColumns = @JoinColumn(name = "contrato_id"), 
-        inverseJoinColumns = @JoinColumn(name = "factura_id")
-    )
-    private List<Factura> facturas = new ArrayList<Factura>();
-    public List<Factura> getFacturas() { return facturas; }
-    public void setFacturas(List<Factura> facturas) { this.facturas = facturas; }
-    public void addFactura(Factura factura) { this.facturas.add(factura); }
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "contrato")
+    private List<Contrato_Factura> contratoFacturas = new ArrayList<>();
+    public List<Contrato_Factura> getContratoFacturas() { return contratoFacturas; }
+    public void setContratoFacturas(List<Contrato_Factura> contratoFacturas) { this.contratoFacturas = contratoFacturas; }
+    public void addContratoFactura(Contrato_Factura contratoFactura) { this.contratoFacturas.add(contratoFactura); }
+
+    public BigDecimal calcularPrecioTotal() {
+        BigDecimal precioTotal = BigDecimal.ZERO;
+        for (Contrato_Factura contrato_factura : contratoFacturas) 
+            this.addPrecio(contrato_factura.getFactura().getPrecio());
+        
+        return precioTotal;
+    }
     
 }

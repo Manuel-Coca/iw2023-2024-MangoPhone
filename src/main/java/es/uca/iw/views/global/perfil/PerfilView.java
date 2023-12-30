@@ -1,7 +1,6 @@
 package es.uca.iw.views.global.perfil;
 
 import java.util.Random;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,8 +27,6 @@ import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 
 import es.uca.iw.aplication.service.UsuarioService;
-import es.uca.iw.aplication.tables.enumerados.Rol;
-import es.uca.iw.aplication.tables.usuarios.Token;
 import es.uca.iw.aplication.tables.usuarios.Usuario;
 import es.uca.iw.views.templates.MainLayout;
 
@@ -119,8 +116,8 @@ public class PerfilView extends Div {
         
         if(password) {
             // Nombre
-            TextField oldPassField = new TextField("Antigua contraseña");
-            TextField newPassField = new TextField("Nueva contraseña");
+            PasswordField oldPassField = new PasswordField("Antigua contraseña");
+            PasswordField newPassField = new PasswordField("Nueva contraseña");
             dialogLayout.add(oldPassField, newPassField);
 
             

@@ -11,6 +11,8 @@ C:\Users\juang\OneDrive\Desktop\home\jgarcia\WorkSpace\GitHub\es.jgarcia.cod.man
 C:\Users\juang\OneDrive\Desktop\home\jgarcia\WorkSpace\GitHub\es.jgarcia.cod.mangophone.spring\www\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\views\global\main\ContratoFormView.java
 C:\Users\juang\OneDrive\Desktop\home\jgarcia\WorkSpace\GitHub\es.jgarcia.cod.mangophone.spring\www\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\aplication\service\UsuarioService.java
 C:\Users\juang\OneDrive\Desktop\home\jgarcia\WorkSpace\GitHub\es.jgarcia.cod.mangophone.spring\www\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\views\global\autenticacion\RegisterView.java
+C:\Users\juang\OneDrive\Desktop\home\jgarcia\WorkSpace\GitHub\es.jgarcia.cod.mangophone.spring\www\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\aplication\service\Contrato_FacturaService.java
+C:\Users\juang\OneDrive\Desktop\home\jgarcia\WorkSpace\GitHub\es.jgarcia.cod.mangophone.spring\www\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\aplication\tables\Contrato_Factura.java
 C:\Users\juang\OneDrive\Desktop\home\jgarcia\WorkSpace\GitHub\es.jgarcia.cod.mangophone.spring\www\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\aplication\tables\tarifas\Tarifa.java
 C:\Users\juang\OneDrive\Desktop\home\jgarcia\WorkSpace\GitHub\es.jgarcia.cod.mangophone.spring\www\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\views\marketing\ListaTarifasView.java
 C:\Users\juang\OneDrive\Desktop\home\jgarcia\WorkSpace\GitHub\es.jgarcia.cod.mangophone.spring\www\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\aplication\tables\usuarios\Token.java
@@ -31,6 +33,7 @@ C:\Users\juang\OneDrive\Desktop\home\jgarcia\WorkSpace\GitHub\es.jgarcia.cod.man
 C:\Users\juang\OneDrive\Desktop\home\jgarcia\WorkSpace\GitHub\es.jgarcia.cod.mangophone.spring\www\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\aplication\repository\CuentaUsuarioRepository.java
 C:\Users\juang\OneDrive\Desktop\home\jgarcia\WorkSpace\GitHub\es.jgarcia.cod.mangophone.spring\www\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\views\global\autenticacion\LoginView.java
 C:\Users\juang\OneDrive\Desktop\home\jgarcia\WorkSpace\GitHub\es.jgarcia.cod.mangophone.spring\www\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\views\MainLayout.java
+C:\Users\juang\OneDrive\Desktop\home\jgarcia\WorkSpace\GitHub\es.jgarcia.cod.mangophone.spring\www\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\aplication\repository\Contrato_FacturaRepository.java
 C:\Users\juang\OneDrive\Desktop\home\jgarcia\WorkSpace\GitHub\es.jgarcia.cod.mangophone.spring\www\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\views\global\autenticacion\LogoutView.java
 C:\Users\juang\OneDrive\Desktop\home\jgarcia\WorkSpace\GitHub\es.jgarcia.cod.mangophone.spring\www\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\aplication\tables\Contrato.java
 C:\Users\juang\OneDrive\Desktop\home\jgarcia\WorkSpace\GitHub\es.jgarcia.cod.mangophone.spring\www\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\aplication\tables\Factura.java

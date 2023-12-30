@@ -25,12 +25,8 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 
 import es.uca.iw.aplication.service.ContratoService;
 import es.uca.iw.aplication.service.CuentaUsuarioService;
-import es.uca.iw.aplication.service.EmailService;
-import es.uca.iw.aplication.service.FacturaService;
 import es.uca.iw.aplication.service.TarifaService;
 import es.uca.iw.aplication.tables.Contrato;
-import es.uca.iw.aplication.tables.Factura;
-import es.uca.iw.aplication.tables.Factura.Estado;
 import es.uca.iw.aplication.tables.enumerados.Servicio;
 import es.uca.iw.aplication.tables.tarifas.Tarifa;
 import es.uca.iw.aplication.tables.usuarios.Usuario;
@@ -51,10 +47,6 @@ public class ContratoFormView extends Div {
     private CuentaUsuarioService cuentaUsuarioService;
     @Autowired
     private ContratoService contratoService;
-    @Autowired
-    private FacturaService facturaService;
-    @Autowired
-    private EmailService emailService;
 
     private BigDecimal precioTotal = new BigDecimal(0);
     private H3 precioTitle = new H3("Precio total: " + String.valueOf(precioTotal) + " €/mes");
@@ -158,51 +150,20 @@ public class ContratoFormView extends Div {
                     contratoService.createContrato(contrato);
                 }
                 
-                if(seleccionadorFibra.tarifaSeleccionada != null){
-                    Factura factura = new Factura();
-                    factura.setEstado(Estado.NoPagado);
-                    factura.setFechaInicio(LocalDate.now());
-                    factura.setPrecio(seleccionadorFibra.tarifaSeleccionada.getPrecio());
-                    factura.setTarifa(seleccionadorFibra.tarifaSeleccionada);
-                    facturaService.createFactura(factura);
-
-                    contrato.addFactura(factura);
-                    emailService.sendFacturaEmail(usuario, factura, "Fibra");
-                }
-
-                if(seleccionadorFijo.tarifaSeleccionada != null){
-                    Factura factura = new Factura();
-                    factura.setEstado(Estado.NoPagado);
-                    factura.setFechaInicio(LocalDate.now());
-                    factura.setPrecio(seleccionadorFijo.tarifaSeleccionada.getPrecio());
-                    factura.setTarifa(seleccionadorFijo.tarifaSeleccionada);
-                    facturaService.createFactura(factura);
-
-                    contrato.addFactura(factura);
-                    emailService.sendFacturaEmail(usuario, factura, "Fijo");
-                }
-
-                if(seleccionadorMovil.tarifaSeleccionada != null){
-                    Factura factura = new Factura();
-                    factura.setEstado(Estado.NoPagado);
-                    factura.setFechaInicio(LocalDate.now());
-                    factura.setPrecio(seleccionadorMovil.tarifaSeleccionada.getPrecio());
-                    factura.setTarifa(seleccionadorMovil.tarifaSeleccionada);
-                    facturaService.createFactura(factura);
-
-                    contrato.addFactura(factura);
-                    emailService.sendFacturaEmail(usuario, factura, "Movil");
-                }
-
-                contrato.setCuentaUsuario(usuario.getCuentaUsuario());
-                usuario.getCuentaUsuario().setContrato(contrato);
-
-                for(Factura factura: contrato.getFacturas()){
-                    contrato.addPrecio(factura.getPrecio());
-                }
+                if(seleccionadorFibra.tarifaSeleccionada != null)
+                    contratoService.addTarifa(contrato, usuario, seleccionadorFibra.tarifaSeleccionada, "Fibra");
                 
-                contratoService.createContrato(contrato);
-                cuentaUsuarioService.createCuentaUsuario(usuario.getCuentaUsuario());
+                if(seleccionadorFijo.tarifaSeleccionada != null)
+                    contratoService.addTarifa(contrato, usuario, seleccionadorFijo.tarifaSeleccionada , "Fijo");
+                
+                if(seleccionadorMovil.tarifaSeleccionada != null)
+                    contratoService.addTarifa(contrato, usuario, seleccionadorMovil.tarifaSeleccionada , "Movil");
+                
+                contratoService.asignarCuentaUsuario(contrato, usuario.getCuentaUsuario());
+                cuentaUsuarioService.asignarContrato(usuario.getCuentaUsuario(), contrato);
+                
+                contratoService.actualizarContrato(contrato);
+                cuentaUsuarioService.actualizarCuentaUsuario(usuario.getCuentaUsuario());
             }
         }
         catch(Exception e) {

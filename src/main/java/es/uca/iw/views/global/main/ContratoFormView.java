@@ -26,6 +26,7 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 import es.uca.iw.aplication.service.ContratoService;
 import es.uca.iw.aplication.service.CuentaUsuarioService;
 import es.uca.iw.aplication.service.TarifaService;
+import es.uca.iw.aplication.service.UsuarioService;
 import es.uca.iw.aplication.tables.Contrato;
 import es.uca.iw.aplication.tables.enumerados.Servicio;
 import es.uca.iw.aplication.tables.tarifas.Tarifa;
@@ -47,6 +48,8 @@ public class ContratoFormView extends Div {
     private CuentaUsuarioService cuentaUsuarioService;
     @Autowired
     private ContratoService contratoService;
+    @Autowired
+    private UsuarioService usuarioService;
 
     private BigDecimal precioTotal = new BigDecimal(0);
     private H3 precioTitle = new H3("Precio total: " + String.valueOf(precioTotal) + " €/mes");
@@ -96,6 +99,7 @@ public class ContratoFormView extends Div {
         confirmButton.addClickListener(event -> {
             verificarSeleccion();
         });
+
         HorizontalLayout headerBlock = new HorizontalLayout();
         headerBlock.setAlignItems(Alignment.CENTER);
         headerBlock.add(precioTitle, confirmButton);
@@ -148,7 +152,7 @@ public class ContratoFormView extends Div {
                     contrato.setFechaInicio(LocalDate.now());
 
                     contratoService.createContrato(contrato);
-                }
+                }else usuario = usuarioService.loadUsuario(usuario);
                 
                 if(seleccionadorFibra.tarifaSeleccionada != null)
                     contratoService.addTarifa(contrato, usuario, seleccionadorFibra.tarifaSeleccionada, "Fibra");
@@ -174,7 +178,7 @@ public class ContratoFormView extends Div {
         }
     }
 
-      private void eliminarSeleccion(){
+   /*private void eliminarSeleccion(){
         try {
             if(seleccionadorFibra.tarifaSeleccionada == null && seleccionadorFijo.tarifaSeleccionada == null && seleccionadorMovil.tarifaSeleccionada == null) {
                 ConfirmDialog errorDialog = new ConfirmDialog();
@@ -186,15 +190,9 @@ public class ContratoFormView extends Div {
             }
             else {
                 Usuario usuario = (Usuario)session.getAttribute("loggedUser");
+                usuario = usuarioService.loadUsuario(usuario);
                 Contrato contrato = usuario.getCuentaUsuario().getContrato();
 
-                if(contrato == null) {
-                    contrato = new Contrato();
-                    contrato.setFechaInicio(LocalDate.now());
-
-                    contratoService.createContrato(contrato);
-                }
-                
                 if(seleccionadorFibra.tarifaSeleccionada != null)
                     contratoService.removeTarifa(contrato, usuario, seleccionadorFibra.tarifaSeleccionada, "Fibra");
                 
@@ -213,7 +211,7 @@ public class ContratoFormView extends Div {
             });
             errorDialog.open();
         }
-    }
+    }*/
 
     private Div crearTarjeta(Tarifa tarifa, SeleccionadorDeTarifas seleccionador, List<Div> cards) {
         Div card = new Div();

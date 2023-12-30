@@ -5,12 +5,15 @@ import org.springframework.stereotype.Service;
 import es.uca.iw.aplication.repository.CuentaUsuarioRepository;
 import es.uca.iw.aplication.tables.Contrato;
 import es.uca.iw.aplication.tables.usuarios.CuentaUsuario;
+import es.uca.iw.aplication.tables.usuarios.Usuario;
 
 @Service
 public class CuentaUsuarioService {
     private final CuentaUsuarioRepository cuentaUsuarioRepository;
 
-    public CuentaUsuarioService(CuentaUsuarioRepository cuentaUsuarioRepository) { this.cuentaUsuarioRepository = cuentaUsuarioRepository; }
+    public CuentaUsuarioService(CuentaUsuarioRepository cuentaUsuarioRepository) { 
+        this.cuentaUsuarioRepository = cuentaUsuarioRepository; 
+    }
 
     public void createCuentaUsuario(CuentaUsuario cuentaUsuario){
         cuentaUsuarioRepository.save(cuentaUsuario);
@@ -22,5 +25,9 @@ public class CuentaUsuarioService {
 
     public void actualizarCuentaUsuario(CuentaUsuario cuentaUsuario) {
         cuentaUsuarioRepository.save(cuentaUsuario);
+    }
+
+    public CuentaUsuario findByDuennoCuenta(Usuario usuario){
+        return cuentaUsuarioRepository.findByDuennoCuentaId(usuario.getId()).get();
     }
 }

@@ -4,7 +4,6 @@ import java.time.LocalDate;
 
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
@@ -43,19 +42,24 @@ public class ContratoService {
     */
     public void addTarifa(Contrato contrato, Usuario usuario, Tarifa tarifa, String tipo){
         boolean existe = false;
-        for(Contrato_Factura contratoFactura : contrato.getContratoFacturas()) 
-            if(contratoFactura.getFactura().getTarifa().getId() == tarifa.getId() && !existe)
-                existe = true;
-        
+        if(contrato != null){
+            if(contrato.getContratoFacturas() != null){
+                for(Contrato_Factura contratoFactura :  contrato.getContratoFacturas()){
+                    Factura factura = contratoFactura.getFactura();
+                    if(factura.getTarifa().getId().equals(tarifa.getId()))
+                    existe = true;
+                }
+            }
+        }
+            
         if(!existe) {
             Factura factura = new Factura(Estado.NoPagado, LocalDate.now(), tarifa.getPrecio(), tarifa);
             facturaService.createFactura(factura);
             Contrato_Factura contratoFactura = new Contrato_Factura(contrato, factura);
             contrato.addContratoFactura(contratoFactura);
             contrato_FacturaService.create(contratoFactura);
-            this.actualizarContrato(contrato);
             emailService.sendFacturaEmail(usuario, factura, tipo);
-                       ConfirmDialog errorDialog = new ConfirmDialog("Bienvenido", "Se le ha añadido su nueva tarifa", "Cerrar", event -> {
+            ConfirmDialog errorDialog = new ConfirmDialog("Bienvenido", "Se le ha añadido su nueva tarifa", "Cerrar", event -> {
                 UI.getCurrent().navigate("/contratar");
             });
             errorDialog.open();
@@ -71,7 +75,7 @@ public class ContratoService {
         boolean existe = false;
         Factura factura = new Factura();
         Contrato_Factura contratoFactura = new Contrato_Factura();
-        for(Contrato_Factura it : contrato.getContratoFacturas()) 
+        for(Contrato_Factura it : usuario.getCuentaUsuario().getContrato().getContratoFacturas()) 
             if(it.getFactura().getTarifa().getId() == tarifa.getId() && !existe){
                 existe = true;
                 factura = it.getFactura();
@@ -79,12 +83,11 @@ public class ContratoService {
             }
         
         if(existe) {
-            facturaService.removeFactura(factura);
             List<Contrato_Factura> contratoFacturas = contrato.getContratoFacturas();
             contratoFacturas.remove(contratoFacturas.indexOf(contratoFactura));
             contrato.setContratoFacturas(contratoFacturas);
             contrato_FacturaService.remove(contratoFactura);
-            this.actualizarContrato(contrato);
+            facturaService.removeFactura(factura);
             ConfirmDialog errorDialog = new ConfirmDialog("Eliminado", "Se le ha dado de baja de la tarifa seleccionada", "Cerrar", event -> {
                 UI.getCurrent().navigate("/contratar");
             });
@@ -105,4 +108,9 @@ public class ContratoService {
         contrato.setPrecio(contrato.calcularPrecioTotal());
         contratoRepository.save(contrato);
     }
+
+    public Contrato findByCuentaUsuario(CuentaUsuario cuentaUsuario) {
+        return contratoRepository.findByCuentaUsuarioId(cuentaUsuario.getId()).get();
+    }
+
 }

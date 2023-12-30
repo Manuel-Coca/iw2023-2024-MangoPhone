@@ -1,5 +1,7 @@
 package es.uca.iw.aplication.service;
 
+import java.util.UUID;
+
 import org.springframework.stereotype.Service;
 
 import es.uca.iw.aplication.repository.FacturaRepository;
@@ -17,5 +19,9 @@ public class FacturaService {
 
     public void removeFactura(Factura factura){
         facturaRepository.delete(factura);
+    }
+
+    public Factura findById(UUID id){
+        return facturaRepository.findById(id).get();
     }
 }

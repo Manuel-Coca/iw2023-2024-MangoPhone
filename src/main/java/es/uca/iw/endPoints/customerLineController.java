@@ -1,4 +1,4 @@
-package es.uca.iw.aplication.endPoints;
+package es.uca.iw.endPoints;
 
 import java.util.Arrays;
 import java.util.List;
@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 @RestController
-public class restApiController {
+@RequestMapping("/api-docs/v1")
+public class customerLineController {
     @Value("${API.url}")
     private String urlAPI;
 

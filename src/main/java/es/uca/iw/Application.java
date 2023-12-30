@@ -3,6 +3,10 @@ package es.uca.iw;
 import com.vaadin.flow.component.page.AppShellConfigurator;
 import com.vaadin.flow.server.AppShellSettings;
 import com.vaadin.flow.theme.Theme;
+
+import java.util.logging.Logger;
+
+import org.hibernate.validator.internal.util.logging.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -19,6 +23,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 @Theme(value = "mangophone")
 public class Application implements AppShellConfigurator {
+
+    //private static final Logger log = LoggerFactory.getLogger(Application.class);
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);

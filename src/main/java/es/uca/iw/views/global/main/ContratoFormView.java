@@ -99,7 +99,7 @@ public class ContratoFormView extends Div {
         HorizontalLayout headerBlock = new HorizontalLayout();
         headerBlock.setAlignItems(Alignment.CENTER);
         headerBlock.add(precioTitle, confirmButton);
-        
+
         globalVerticalLayout.add(headerBlock);
 
         H1 movilTitle = new H1("Selecciona tu tarifa de móvil");
@@ -164,6 +164,47 @@ public class ContratoFormView extends Div {
                 
                 contratoService.actualizarContrato(contrato);
                 cuentaUsuarioService.actualizarCuentaUsuario(usuario.getCuentaUsuario());
+            }
+        }
+        catch(Exception e) {
+            ConfirmDialog errorDialog = new ConfirmDialog("Error", e.getMessage(), "Reintentar", event -> {
+                UI.getCurrent().navigate("/contratar");
+            });
+            errorDialog.open();
+        }
+    }
+
+      private void eliminarSeleccion(){
+        try {
+            if(seleccionadorFibra.tarifaSeleccionada == null && seleccionadorFijo.tarifaSeleccionada == null && seleccionadorMovil.tarifaSeleccionada == null) {
+                ConfirmDialog errorDialog = new ConfirmDialog();
+                errorDialog.setHeader("Error");
+                errorDialog.setText("Debe seleccionar al menos una tarifa");
+                errorDialog.setConfirmText("Cerrar");
+                errorDialog.addConfirmListener(event -> { errorDialog.close(); });
+                errorDialog.open();
+            }
+            else {
+                Usuario usuario = (Usuario)session.getAttribute("loggedUser");
+                Contrato contrato = usuario.getCuentaUsuario().getContrato();
+
+                if(contrato == null) {
+                    contrato = new Contrato();
+                    contrato.setFechaInicio(LocalDate.now());
+
+                    contratoService.createContrato(contrato);
+                }
+                
+                if(seleccionadorFibra.tarifaSeleccionada != null)
+                    contratoService.removeTarifa(contrato, usuario, seleccionadorFibra.tarifaSeleccionada, "Fibra");
+                
+                if(seleccionadorFijo.tarifaSeleccionada != null)
+                    contratoService.removeTarifa(contrato, usuario, seleccionadorFijo.tarifaSeleccionada , "Fijo");
+                
+                if(seleccionadorMovil.tarifaSeleccionada != null)
+                    contratoService.removeTarifa(contrato, usuario, seleccionadorMovil.tarifaSeleccionada , "Movil");
+                
+                contratoService.actualizarContrato(contrato);
             }
         }
         catch(Exception e) {

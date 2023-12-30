@@ -4,6 +4,8 @@ import java.time.LocalDate;
 
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
 
@@ -51,9 +53,44 @@ public class ContratoService {
             Contrato_Factura contratoFactura = new Contrato_Factura(contrato, factura);
             contrato.addContratoFactura(contratoFactura);
             contrato_FacturaService.create(contratoFactura);
-            //emailService.sendFacturaEmail(usuario, factura, tipo);
+            this.actualizarContrato(contrato);
+            emailService.sendFacturaEmail(usuario, factura, tipo);
+                       ConfirmDialog errorDialog = new ConfirmDialog("Bienvenido", "Se le ha añadido su nueva tarifa", "Cerrar", event -> {
+                UI.getCurrent().navigate("/contratar");
+            });
+            errorDialog.open();
         } else {
             ConfirmDialog errorDialog = new ConfirmDialog("Ups!", "Parece que ya tienes esta tarifa contratada", "Cerrar", event -> {
+                UI.getCurrent().navigate("/contratar");
+            });
+            errorDialog.open();
+        }
+    }
+
+    public void removeTarifa(Contrato contrato, Usuario usuario, Tarifa tarifa, String tipo) {
+        boolean existe = false;
+        Factura factura = new Factura();
+        Contrato_Factura contratoFactura = new Contrato_Factura();
+        for(Contrato_Factura it : contrato.getContratoFacturas()) 
+            if(it.getFactura().getTarifa().getId() == tarifa.getId() && !existe){
+                existe = true;
+                factura = it.getFactura();
+                contratoFactura = it;
+            }
+        
+        if(existe) {
+            facturaService.removeFactura(factura);
+            List<Contrato_Factura> contratoFacturas = contrato.getContratoFacturas();
+            contratoFacturas.remove(contratoFacturas.indexOf(contratoFactura));
+            contrato.setContratoFacturas(contratoFacturas);
+            contrato_FacturaService.remove(contratoFactura);
+            this.actualizarContrato(contrato);
+            ConfirmDialog errorDialog = new ConfirmDialog("Eliminado", "Se le ha dado de baja de la tarifa seleccionada", "Cerrar", event -> {
+                UI.getCurrent().navigate("/contratar");
+            });
+            errorDialog.open();
+        } else {
+            ConfirmDialog errorDialog = new ConfirmDialog("Ups!", "Parece que no tienes esta tarifa contratada", "Cerrar", event -> {
                 UI.getCurrent().navigate("/contratar");
             });
             errorDialog.open();

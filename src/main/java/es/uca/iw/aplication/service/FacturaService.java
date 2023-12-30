@@ -14,4 +14,8 @@ public class FacturaService {
     public void createFactura(Factura factura){
         facturaRepository.save(factura);
     }
+
+    public void removeFactura(Factura factura){
+        facturaRepository.delete(factura);
+    }
 }

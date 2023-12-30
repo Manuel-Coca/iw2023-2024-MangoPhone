@@ -72,7 +72,7 @@ public class MyEmailService implements EmailService{
   
             Document document = new Document();
             String nombreFichero = "Factura-" + tipo + "-" + usuario.getNombre() + "-" + LocalDate.now() + ".pdf";
-            String path = "src\\main\\resources\\recibo-facturas\\" + nombreFichero;
+            String path = "doc\\recibo-facturas" + nombreFichero;
 
             try {
                 PdfWriter.getInstance(document, new FileOutputStream(path));

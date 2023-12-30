@@ -14,4 +14,8 @@ public class Contrato_FacturaService {
     public void create(Contrato_Factura contratoFactura) {
         contratoFacturaRepository.save(contratoFactura);
     }
+
+     public void remove(Contrato_Factura contratoFactura) {
+        contratoFacturaRepository.delete(contratoFactura);
+    }
 }

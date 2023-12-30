@@ -4,6 +4,9 @@ import java.time.LocalDate;
 
 import org.springframework.stereotype.Service;
 
+import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
+
 import es.uca.iw.aplication.repository.ContratoRepository;
 import es.uca.iw.aplication.tables.Contrato;
 import es.uca.iw.aplication.tables.Contrato_Factura;
@@ -37,12 +40,24 @@ public class ContratoService {
      * A partir de una tarifa, crea una factura de manera automatica, la asigna al contrato actual y la manda por correo
     */
     public void addTarifa(Contrato contrato, Usuario usuario, Tarifa tarifa, String tipo){
-        Factura factura = new Factura(Estado.NoPagado, LocalDate.now(), tarifa.getPrecio(), tarifa);
-        facturaService.createFactura(factura);
-        Contrato_Factura contratoFactura = new Contrato_Factura(contrato, factura);
-        contrato.addContratoFactura(contratoFactura);
-        contrato_FacturaService.create(contratoFactura);
-        //emailService.sendFacturaEmail(usuario, factura, tipo);
+        boolean existe = false;
+        for(Contrato_Factura contratoFactura : contrato.getContratoFacturas()) 
+            if(contratoFactura.getFactura().getTarifa().getId() == tarifa.getId() && !existe)
+                existe = true;
+        
+        if(!existe) {
+            Factura factura = new Factura(Estado.NoPagado, LocalDate.now(), tarifa.getPrecio(), tarifa);
+            facturaService.createFactura(factura);
+            Contrato_Factura contratoFactura = new Contrato_Factura(contrato, factura);
+            contrato.addContratoFactura(contratoFactura);
+            contrato_FacturaService.create(contratoFactura);
+            //emailService.sendFacturaEmail(usuario, factura, tipo);
+        } else {
+            ConfirmDialog errorDialog = new ConfirmDialog("Ups!", "Parece que ya tienes esta tarifa contratada", "Cerrar", event -> {
+                UI.getCurrent().navigate("/contratar");
+            });
+            errorDialog.open();
+        }
     }
 
     public void asignarCuentaUsuario(Contrato contrato, CuentaUsuario cuentaUsuario) {

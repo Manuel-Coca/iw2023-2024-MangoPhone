@@ -1,6 +1,7 @@
 package es.uca.iw.aplication.service;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.net.InetAddress;
 import java.time.LocalDate;
@@ -13,13 +14,12 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import com.lowagie.text.Document;
+import com.lowagie.text.DocumentException;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.pdf.PdfWriter;
-import com.vaadin.flow.component.UI;
-import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
-
 import es.uca.iw.aplication.tables.Factura;
 import es.uca.iw.aplication.tables.usuarios.Usuario;
+import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 
 @Service
@@ -69,12 +69,18 @@ public class MyEmailService implements EmailService{
     }
 
     public boolean sendFacturaEmail(Usuario usuario, Factura factura, String tipo) {
-        try {
+  
             Document document = new Document();
             String nombreFichero = "Factura-" + tipo + "-" + usuario.getNombre() + "-" + LocalDate.now() + ".pdf";
             String path = "src\\main\\resources\\recibo-facturas\\" + nombreFichero;
 
-            PdfWriter.getInstance(document, new FileOutputStream(path));
+            try {
+                PdfWriter.getInstance(document, new FileOutputStream(path));
+            } catch (DocumentException e) {
+                e.printStackTrace();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
 
             document.open();
 
@@ -92,23 +98,21 @@ public class MyEmailService implements EmailService{
             document.close();
             
             MimeMessage message = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, true, "utf-8");
-            helper.setTo(usuario.getCorreoElectronico());
-            helper.setSubject("Asunto del correo");
-            helper.setText("<html><body><h1>Factura adjunta</h1><body></html>", true);
+            try{
+                MimeMessageHelper helper = new MimeMessageHelper(message, true, "utf-8");
+                helper.setTo(usuario.getCorreoElectronico());
+                helper.setSubject("Asunto del correo");
+                helper.setText("<html><body><h1>Factura adjunta</h1><body></html>", true);
 
-            File file = new File(path);
-            helper.addAttachment(nombreFichero, file);
+                File file = new File(path);
+                helper.addAttachment(nombreFichero, file);
 
-            // Enviar el correo electrónico
-            mailSender.send(message);
-        } catch (Exception e) {
-            ConfirmDialog errorDialog = new ConfirmDialog("Error", e.getMessage(), "Aceptar", event -> {
-                UI.getCurrent().navigate("/home");
-            });
-            errorDialog.open();
-            return false;
-        }
+                mailSender.send(message);
+            }catch(MessagingException e) {
+                e.printStackTrace();
+                return false;
+            }
+        
         return true;
     }
 }

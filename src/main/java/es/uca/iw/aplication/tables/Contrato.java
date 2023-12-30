@@ -55,7 +55,7 @@ public class Contrato {
     public BigDecimal calcularPrecioTotal() {
         BigDecimal precioTotal = BigDecimal.ZERO;
         for (Contrato_Factura contrato_factura : contratoFacturas) 
-            precioTotal = precioTotal.add(contrato_factura.getFactura().getPrecio());
+            this.addPrecio(contrato_factura.getFactura().getPrecio());
         
         return precioTotal;
     }

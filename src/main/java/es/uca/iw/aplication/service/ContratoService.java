@@ -42,7 +42,7 @@ public class ContratoService {
         Contrato_Factura contratoFactura = new Contrato_Factura(contrato, factura);
         contrato.addContratoFactura(contratoFactura);
         contrato_FacturaService.create(contratoFactura);
-        emailService.sendFacturaEmail(usuario, factura, tipo);
+        //emailService.sendFacturaEmail(usuario, factura, tipo);
     }
 
     public void asignarCuentaUsuario(Contrato contrato, CuentaUsuario cuentaUsuario) {
@@ -50,6 +50,7 @@ public class ContratoService {
     }
 
     public void actualizarContrato(Contrato contrato) {
+        contrato.setPrecio(contrato.calcularPrecioTotal());
         contratoRepository.save(contrato);
     }
 }

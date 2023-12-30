@@ -10,6 +10,7 @@ import org.springframework.web.client.RestTemplate;
 
 @RestController
 public class restApiController {
+    /*
     @Value("${API.url}")
     private String urlAPI;
 
@@ -30,4 +31,5 @@ public class restApiController {
 
         return Arrays.asList(telephones);
     }
+     */
 }

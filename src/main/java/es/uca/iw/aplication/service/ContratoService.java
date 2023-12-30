@@ -59,13 +59,13 @@ public class ContratoService {
             contrato.addContratoFactura(contratoFactura);
             contrato_FacturaService.create(contratoFactura);
             emailService.sendFacturaEmail(usuario, factura, tipo);
-            ConfirmDialog errorDialog = new ConfirmDialog("Bienvenido", "Se le ha añadido su nueva tarifa", "Cerrar", event -> {
-                UI.getCurrent().navigate("/contratar");
+            ConfirmDialog errorDialog = new ConfirmDialog("Gracias", "Las tarifas han sido contratadas", "Confirmar", event -> {
+                UI.getCurrent().navigate("profile");
             });
             errorDialog.open();
         } else {
-            ConfirmDialog errorDialog = new ConfirmDialog("Ups!", "Parece que ya tienes esta tarifa contratada", "Cerrar", event -> {
-                UI.getCurrent().navigate("/contratar");
+            ConfirmDialog errorDialog = new ConfirmDialog("Ups!", "Parece que ya tienes esa tarifa contratada", "Cerrar", event -> {
+                UI.getCurrent().navigate("contratar");
             });
             errorDialog.open();
         }

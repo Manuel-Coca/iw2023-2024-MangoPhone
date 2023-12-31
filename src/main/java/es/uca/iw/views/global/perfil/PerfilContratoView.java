@@ -1,17 +1,13 @@
 package es.uca.iw.views.global.perfil;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.vaadin.crudui.crud.CrudListener;
-import org.vaadin.crudui.crud.impl.GridCrud;
 
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -21,9 +17,9 @@ import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 
-import es.uca.iw.aplication.service.Contrato_FacturaService;
+import es.uca.iw.aplication.service.Contrato_TarifaService;
 import es.uca.iw.aplication.service.CuentaUsuarioService;
-import es.uca.iw.aplication.tables.Contrato_Factura;
+import es.uca.iw.aplication.tables.Contrato_Tarifa;
 import es.uca.iw.aplication.tables.Factura;
 import es.uca.iw.aplication.tables.tarifas.Tarifa;
 import es.uca.iw.aplication.tables.usuarios.CuentaUsuario;
@@ -38,17 +34,17 @@ public class PerfilContratoView extends Div {
 
     @Autowired
     private CuentaUsuarioService cuentaUsuarioService;
-    
+
     @Autowired
-    private Contrato_FacturaService contrato_FacturaService;
+    private Contrato_TarifaService contrato_TarifaService;
 
     private VaadinSession session = VaadinSession.getCurrent();
     private Optional<Tarifa> selectedTarifa;
 
 
-    public PerfilContratoView(CuentaUsuarioService cuentaUsuarioService, Contrato_FacturaService contrato_FacturaService) {
+    public PerfilContratoView(CuentaUsuarioService cuentaUsuarioService, Contrato_TarifaService contrato_TarifaService) {
         this.cuentaUsuarioService = cuentaUsuarioService;
-        this.contrato_FacturaService = contrato_FacturaService;   
+        this.contrato_TarifaService = contrato_TarifaService;
         
         VerticalLayout listaLayout = new VerticalLayout();
         Button atrasButton = new Button("Volver");
@@ -61,11 +57,11 @@ public class PerfilContratoView extends Div {
         bajaButton.addClassName("boton-verde-secondary");
         bajaButton.addClickListener(event -> {
             CuentaUsuario cuenta = cuentaUsuarioService.findByDuennoCuenta(((Usuario)session.getAttribute("loggedUser")));
-            List<Contrato_Factura> contratoFacturaList = contrato_FacturaService.findByContrato(cuenta.getContrato());
             List<Factura> facturaList = new ArrayList<Factura>();
+            System.out.println(selectedTarifa.get().getId());
         });
 
-        listaLayout.add(atrasButton, gridTarifa());
+        listaLayout.add(atrasButton, gridTarifa(), bajaButton);
 
         
         add(listaLayout);
@@ -91,17 +87,11 @@ public class PerfilContratoView extends Div {
     
     private List<Tarifa> getTarifasContratadas() {
         CuentaUsuario cuenta = cuentaUsuarioService.findByDuennoCuenta(((Usuario)session.getAttribute("loggedUser")));
-        List<Contrato_Factura> contratoFacturaList = contrato_FacturaService.findByContrato(cuenta.getContrato());
-        List<Factura> facturaList = new ArrayList<Factura>();
-
-        for(Contrato_Factura e : contratoFacturaList) {
-            facturaList.add(e.getFactura());
-        }
-
+        List<Contrato_Tarifa> contratoTarifaList = contrato_TarifaService.findByContrato(cuenta.getContrato());
         List<Tarifa> tarifaList = new ArrayList<Tarifa>();
 
-        for(Factura factura : facturaList) {
-            tarifaList.add(factura.getTarifa());
+        for(Contrato_Tarifa elemento : contratoTarifaList) {
+            tarifaList.add(elemento.getTarifa());
         }
 
         return tarifaList;

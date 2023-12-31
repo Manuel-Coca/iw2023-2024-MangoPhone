@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -44,14 +45,18 @@ public class PerfilContratoView extends Div {
     @Autowired
     private ContratoService contratoService;
 
+    @Autowired
+    private UsuarioService usuarioService;
+
     private VaadinSession session = VaadinSession.getCurrent();
     private Optional<Tarifa> selectedTarifa;
 
 
-    public PerfilContratoView(CuentaUsuarioService cuentaUsuarioService, Contrato_TarifaService contrato_TarifaService, ContratoService contratoService) {
+    public PerfilContratoView(CuentaUsuarioService cuentaUsuarioService, Contrato_TarifaService contrato_TarifaService, ContratoService contratoService, UsuarioService usuarioService) {
         this.cuentaUsuarioService = cuentaUsuarioService;
         this.contrato_TarifaService = contrato_TarifaService;
         this.contratoService = contratoService;
+        this.usuarioService = usuarioService;
         
         VerticalLayout listaLayout = new VerticalLayout();
         Button atrasButton = new Button("Volver");
@@ -64,11 +69,19 @@ public class PerfilContratoView extends Div {
         bajaButton.addClassName("boton-verde-secondary");
         bajaButton.addClickListener(event -> {
             Contrato_Tarifa tarifaContratada = contrato_TarifaService.findByContratoAndTarifa(((Usuario)session.getAttribute("loggedUser")).getCuentaUsuario().getContrato(), selectedTarifa.get());
+            System.out.println(tarifaContratada.getId());
             
-            contrato_TarifaService.remove(tarifaContratada);
+            System.out.println(contratoService.existeTarifa(((Usuario)session.getAttribute("loggedUser")).getCuentaUsuario().getContrato(), tarifaContratada.getTarifa()));
+            
+            contrato_TarifaService.remove(tarifaContratada.getId());
+            contratoService.deleteTarifa(((Usuario)session.getAttribute("loggedUser")).getCuentaUsuario().getContrato(), tarifaContratada);
+
+            System.out.println(contratoService.existeTarifa(((Usuario)session.getAttribute("loggedUser")).getCuentaUsuario().getContrato(), tarifaContratada.getTarifa()));
+
+            /*
             ((Usuario)session.getAttribute("loggedUser")).getCuentaUsuario().getContrato().deleteContratoTarifa(tarifaContratada);
             contratoService.createContrato(((Usuario)session.getAttribute("loggedUser")).getCuentaUsuario().getContrato());
-
+            */
             UI.getCurrent().getPage().setLocation("profile/contrato");
         });
 
@@ -106,5 +119,21 @@ public class PerfilContratoView extends Div {
         }
 
         return tarifaList;
+    }
+
+    private void SaveRequest(Usuario usuario) {
+        try {
+            usuarioService.createUsuario(usuario);
+            ConfirmDialog confirmDialog = new ConfirmDialog("Éxito", "Cambios realizados correctamente", "Confirmar", event1 -> {
+                UI.getCurrent().getPage().setLocation("profile");
+            });
+            confirmDialog.open();
+        }
+        catch (Exception e) {
+            ConfirmDialog errorDialog = new ConfirmDialog("Error", "Error al cambiar los datos", "Volver", event -> { 
+                UI.getCurrent().navigate("/profile");
+            });
+            errorDialog.open();
+        }
     }
 }

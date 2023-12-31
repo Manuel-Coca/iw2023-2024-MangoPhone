@@ -80,6 +80,7 @@ public class ContratoService {
             int index = indexTarifa(contrato, contratoTarifa);
             contrato.getContratoTarifas().remove(index);
             this.actualizarContrato(contrato);
+            contratoTarifaService.remove(contratoTarifa.getId());
         }
     }
 }

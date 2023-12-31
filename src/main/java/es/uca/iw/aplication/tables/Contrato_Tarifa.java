@@ -3,6 +3,7 @@ package es.uca.iw.aplication.tables;
 import java.util.UUID;
 
 import es.uca.iw.aplication.tables.tarifas.Tarifa;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

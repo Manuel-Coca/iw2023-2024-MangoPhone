@@ -2,6 +2,7 @@ package es.uca.iw.aplication.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
@@ -20,8 +21,8 @@ public class Contrato_TarifaService {
         contratoTarifaRepository.save(contrato_Tarifa);
     }
 
-    public void remove(Contrato_Tarifa contrato_Tarifa) {
-        contratoTarifaRepository.delete(contrato_Tarifa);
+    public void remove(UUID contrato_Tarifa) {
+        contratoTarifaRepository.deleteById(contrato_Tarifa);
     }
 
     public List<Contrato_Tarifa> findByContrato(Contrato contrato) {

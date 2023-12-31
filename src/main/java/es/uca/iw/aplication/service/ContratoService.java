@@ -75,15 +75,13 @@ public class ContratoService {
         else return contrato.getContratoTarifas().indexOf(contratoTarifa);
     }
 
-    public void deleteTarifa(Contrato contrato, Contrato_Tarifa contratoTarifa) {
-        if(existeTarifa(contrato, contratoTarifa.getTarifa())) {
-            int index = indexTarifa(contrato, contratoTarifa);
-            contrato.getContratoTarifas().remove(index);
+    public void deleteTarifa(Contrato_Tarifa contratoTarifa) {
+        if(existeTarifa(contratoTarifa.getContrato(), contratoTarifa.getTarifa())) {
+            int index = indexTarifa(contratoTarifa.getContrato(), contratoTarifa);
+            contratoTarifa.getContrato().getContratoTarifas().remove(index);
 
-            contratoTarifa.setContrato(null);
-            contratoTarifa.setTarifa(null);
-
-            this.actualizarContrato(contrato);
+            contratoTarifaService.remove(contratoTarifa.getId());
+            this.actualizarContrato(contratoTarifa.getContrato());
         }
     }
 }

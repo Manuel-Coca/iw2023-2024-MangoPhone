@@ -35,4 +35,7 @@ public class Contrato_TarifaService {
         return contratoTarifaRepository.findByContratoAndTarifa(contrato, tarifa);
     }
 
+    public void Clean(){
+        contratoTarifaRepository.deleteByContratoIsNullAndTarifaIsNull();
+    }
 }

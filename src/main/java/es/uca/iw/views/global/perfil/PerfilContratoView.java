@@ -69,7 +69,8 @@ public class PerfilContratoView extends Div {
         bajaButton.addClassName("boton-verde-secondary");
         bajaButton.addClickListener(event -> {
             Contrato_Tarifa tarifaContratada = contrato_TarifaService.findByContratoAndTarifa(((Usuario)session.getAttribute("loggedUser")).getCuentaUsuario().getContrato(), selectedTarifa.get());
-            contratoService.deleteTarifa(((Usuario)session.getAttribute("loggedUser")).getCuentaUsuario().getContrato(), tarifaContratada);
+            contratoService.deleteTarifa(tarifaContratada);
+            
             UI.getCurrent().getPage().setLocation("profile/contrato");
         });
 

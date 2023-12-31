@@ -12,4 +12,5 @@ public interface ContratoRepository extends JpaRepository<Contrato, UUID> {
 
     Optional<Contrato> findById(UUID id);
     Optional<Contrato> findByCuentaUsuarioId(UUID id);
+
 }

@@ -176,6 +176,7 @@ public class ContratoFormView extends Div {
 
                     Factura factura = new Factura(Estado.NoPagado, LocalDate.now(), contrato);
                     facturaService.createFactura(factura);
+                    contrato.setFactura(factura);
                     contratoService.actualizarContrato(contrato);
                 }
                 

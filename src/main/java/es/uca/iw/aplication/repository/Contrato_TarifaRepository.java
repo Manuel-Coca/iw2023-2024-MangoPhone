@@ -16,4 +16,5 @@ public interface Contrato_TarifaRepository extends JpaRepository<Contrato_Tarifa
     Optional<Contrato_Tarifa> findById(UUID id);
     List<Contrato_Tarifa> findByContrato(Contrato contrato);
     Contrato_Tarifa findByContratoAndTarifa(Contrato contrato, Tarifa tarifa);
+    void deleteByContratoIsNullAndTarifaIsNull();
 }

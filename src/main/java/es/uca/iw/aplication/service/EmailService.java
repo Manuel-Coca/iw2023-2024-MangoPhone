@@ -1,6 +1,6 @@
 package es.uca.iw.aplication.service;
 
-import es.uca.iw.aplication.tables.Factura;
+import es.uca.iw.aplication.tables.Contrato;
 import es.uca.iw.aplication.tables.usuarios.Usuario;
 
 public interface EmailService { 
@@ -10,5 +10,5 @@ public interface EmailService {
     /*
      * Crea un pdf con la factura determinada y es enviada al correo del usuario "usuario"
      */
-    boolean sendFacturaEmail(Usuario usuario, Factura factura, String tipo);
+    boolean sendFacturaEmail(Usuario usuario, Contrato contrato);
 }

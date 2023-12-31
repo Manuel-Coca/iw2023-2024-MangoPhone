@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-
 import es.uca.iw.aplication.tables.usuarios.CuentaUsuario;
 
 @Entity
@@ -46,18 +45,21 @@ public class Contrato {
     public void setCuentaUsuario(CuentaUsuario cuentaUsuario) { this.cuentaUsuario = cuentaUsuario; }
     public CuentaUsuario getUsuario() { return cuentaUsuario; }
 
-    //Lista de tarifas contratadas
+    @OneToOne
+    private Factura factura = null;
+    public Factura getFactura() { return factura; }
+    public void setFactura(Factura factura) { this.factura = factura; }
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "contrato")
-    private List<Contrato_Factura> contratoFacturas = new ArrayList<>();
-    public List<Contrato_Factura> getContratoFacturas() { return contratoFacturas; }
-    public void setContratoFacturas(List<Contrato_Factura> contratoFacturas) { this.contratoFacturas = contratoFacturas; }
-    public void addContratoFactura(Contrato_Factura contratoFactura) { this.contratoFacturas.add(contratoFactura); }
+    private List<Contrato_Tarifa> contratoTarifas = new ArrayList<Contrato_Tarifa>();
+    public List<Contrato_Tarifa> getContratoTarifas() { return contratoTarifas; }
+    public void setContratoTarifas(List<Contrato_Tarifa> contratoTarifas) { this.contratoTarifas = contratoTarifas; }
+    public void addContratoTarifas(Contrato_Tarifa contratoTarifa) {this.contratoTarifas.add(contratoTarifa); }
 
     public BigDecimal calcularPrecioTotal() {
         BigDecimal precioTotal = BigDecimal.ZERO;
-        for (Contrato_Factura contrato_factura : contratoFacturas) 
-            this.addPrecio(contrato_factura.getFactura().getPrecio());
+        for (Contrato_Tarifa contratoTarifa : contratoTarifas) 
+            this.addPrecio(contratoTarifa.getTarifa().getPrecio());
         
         return precioTotal;
     }

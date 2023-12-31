@@ -57,12 +57,15 @@ public class PerfilContratoView extends Div {
             UI.getCurrent().navigate("profile");
         });
         
-        Button cosa = new Button("Cosa");
-        cosa.addClickListener(event -> {
-            System.out.println(selectedTarifa.get().getId());
+        Button bajaButton = new Button("Darse de baja");
+        bajaButton.addClassName("boton-verde-secondary");
+        bajaButton.addClickListener(event -> {
+            CuentaUsuario cuenta = cuentaUsuarioService.findByDuennoCuenta(((Usuario)session.getAttribute("loggedUser")));
+            List<Contrato_Factura> contratoFacturaList = contrato_FacturaService.findByContrato(cuenta.getContrato());
+            List<Factura> facturaList = new ArrayList<Factura>();
         });
 
-        listaLayout.add(atrasButton, gridTarifa(), cosa);
+        listaLayout.add(atrasButton, gridTarifa());
 
         
         add(listaLayout);

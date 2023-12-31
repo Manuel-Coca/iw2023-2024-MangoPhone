@@ -46,6 +46,8 @@ public class Contrato {
     public void setCuentaUsuario(CuentaUsuario cuentaUsuario) { this.cuentaUsuario = cuentaUsuario; }
     public CuentaUsuario getUsuario() { return cuentaUsuario; }
 
+    //Lista de tarifas contratadas
+
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "contrato")
     private List<Contrato_Factura> contratoFacturas = new ArrayList<>();
     public List<Contrato_Factura> getContratoFacturas() { return contratoFacturas; }

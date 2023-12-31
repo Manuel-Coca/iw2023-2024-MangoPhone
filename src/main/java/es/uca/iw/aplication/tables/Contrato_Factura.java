@@ -10,6 +10,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
+// Si no se puede un campo multievaluado
+//  Contrato_tarifa
+
 @Entity
 @Table(name = "Contrato_Factura")
 public class Contrato_Factura {

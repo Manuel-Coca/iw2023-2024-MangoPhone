@@ -14,14 +14,15 @@ import com.vaadin.flow.spring.security.VaadinWebSecurity;
 import es.uca.iw.views.global.autenticacion.LoginView;
 
 @Configuration
-@EnableWebSecurity
-public class SecurityConfiguration extends VaadinWebSecurity {
+//@EnableWebSecurity
+public class SecurityConfiguration {//extends VaadinWebSecurity {
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     
     @Bean
     public PasswordEncoder passwordEncoder() { return passwordEncoder; }
     
-    /*@Bean
+    /*
+    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(csrf -> csrf.disable())
@@ -29,20 +30,20 @@ public class SecurityConfiguration extends VaadinWebSecurity {
                 .httpBasic(Customizer.withDefaults())
                 .formLogin(Customizer.withDefaults())
                 .build();
-    }*/
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable())
-                .httpBasic(Customizer.withDefaults())
-                .formLogin(Customizer.withDefaults())
+                //.csrf(csrf -> csrf.disable())
+                //.httpBasic(Customizer.withDefaults())
+                //.formLogin(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
                 .requestMatchers((new AntPathRequestMatcher("/line-awesome/svg/**"))).permitAll()
                 .requestMatchers((new AntPathRequestMatcher("/images/**"))).permitAll()
                 .requestMatchers((new AntPathRequestMatcher("/icons/**"))).permitAll());
         super.configure(http);
-        setLoginView(http, LoginView.class);
+        setLoginView(http, "home");
     }
 
     @Override
@@ -76,5 +77,6 @@ public class SecurityConfiguration extends VaadinWebSecurity {
                         .roles("ROOT")
                         .build();
         return new InMemoryUserDetailsManager(cliente, marketing, sac, finanzas, root);
-    }*/
+    }
+    */
 }

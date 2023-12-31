@@ -20,8 +20,8 @@ import es.uca.iw.views.templates.MainLayout;
 
 @PageTitle("Bienvenido")
 @Route(value = "home", layout = MainLayout.class)
-@RouteAlias(value = "home", layout = MainLayout.class)
-@AnonymousAllowed
+@RouteAlias(value = "", layout = MainLayout.class)
+//@AnonymousAllowed
 public class WelcomeView extends Div {
 
     private VaadinSession session = VaadinSession.getCurrent();

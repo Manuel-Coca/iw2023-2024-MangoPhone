@@ -12,6 +12,7 @@ import com.vaadin.flow.spring.security.AuthenticationContext;
 import es.uca.iw.aplication.repository.UsuarioRepository;
 import es.uca.iw.aplication.tables.usuarios.Usuario;
 
+/*
 @Component
 public class AuthenticatedUser {
     private final UsuarioRepository usuarioRepository;
@@ -31,6 +32,7 @@ public class AuthenticatedUser {
 
     @Transactional
     public Optional<Usuario> get() {
-        return authenticationContext.getAuthenticatedUser(Usuario.class).map(userDetails -> usuarioRepository.findByNombre(userDetails.getNombre())/*.get()*/);
+        return authenticationContext.getAuthenticatedUser(Usuario.class).map(userDetails -> usuarioRepository.findByNombre(userDetails.getNombre())/*.get());
     }
 }
+*/

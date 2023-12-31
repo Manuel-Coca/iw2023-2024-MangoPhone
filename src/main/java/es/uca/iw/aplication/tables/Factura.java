@@ -42,6 +42,10 @@ public class Factura {
     public Estado getEstado() { return estado; }
     public void setEstado(Estado estado) { this.estado = estado; }
 
+    // Contrato asociado
+
+    // Binario (PDF)
+
     @ManyToOne
     private Tarifa tarifa = null;
     public Tarifa getTarifa() { return tarifa; }

@@ -2,9 +2,6 @@ package es.uca.iw.aplication.service;
 
 import org.springframework.stereotype.Service;
 
-import com.vaadin.flow.component.UI;
-import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
-
 import es.uca.iw.aplication.repository.ContratoRepository;
 import es.uca.iw.aplication.tables.Contrato;
 import es.uca.iw.aplication.tables.Contrato_Tarifa;
@@ -39,6 +36,17 @@ public class ContratoService {
         } else return false;
     }
 
+    public boolean removeTarifa(Contrato contrato, Tarifa tarifa) {
+        if(!existeTarifa(contrato, tarifa)) {
+            return false;
+        } 
+        else {
+            //Contrato_Tarifa contratoTarifa = new Contrato_Tarifa(contrato, tarifa);
+            contrato.setPrecio(contrato.calcularPrecioTotal());
+            return true;
+        }
+    }
+
     public boolean existeTarifa(Contrato contrato, Tarifa tarifa) {
         if(contrato != null){
             if(contrato.getContratoTarifas() != null)
@@ -62,4 +70,16 @@ public class ContratoService {
         return contratoRepository.findByCuentaUsuarioId(cuentaUsuario.getId()).get();
     }
 
+    public int indexTarifa(Contrato contrato, Contrato_Tarifa contratoTarifa) {
+        if(contrato.getContratoTarifas() == null) return 0;
+        else return contrato.getContratoTarifas().indexOf(contratoTarifa);
+    }
+
+    public void deleteTarifa(Contrato contrato, Contrato_Tarifa contratoTarifa) {
+        if(existeTarifa(contrato, contratoTarifa.getTarifa())) {
+            int index = indexTarifa(contrato, contratoTarifa);
+            contrato.getContratoTarifas().remove(index);
+            this.actualizarContrato(contrato);
+        }
+    }
 }

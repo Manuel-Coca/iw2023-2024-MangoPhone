@@ -40,4 +40,16 @@ public class Contrato_Tarifa {
     }
 
     public Contrato_Tarifa(){}
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Contrato_Tarifa other)) {
+            return false; // null or other class
+        }
+
+        if (id != null) {
+            return id.equals(other.id);
+        }
+        return super.equals(other);
+    }
 }

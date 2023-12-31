@@ -32,8 +32,8 @@ public class Contrato {
     @Column(name = "precio")
     private BigDecimal precio = BigDecimal.ZERO;
     public BigDecimal getPrecio() { return precio; }
-    public void setPrecio(BigDecimal precio) { this.precio = this.precio.add(precio); }
-    public void addPrecio(BigDecimal precio) { this.precio = this.precio.add(precio); }
+    public void setPrecio(BigDecimal nuevoPrecio) { this.precio = nuevoPrecio; }
+    public void addPrecio(BigDecimal nuevoPrecio) { this.precio = this.precio.add(nuevoPrecio); }
 
     @Column(name = "fechaInicio")
     private LocalDate fechaInicio;
@@ -54,12 +54,13 @@ public class Contrato {
     private List<Contrato_Tarifa> contratoTarifas = new ArrayList<Contrato_Tarifa>();
     public List<Contrato_Tarifa> getContratoTarifas() { return contratoTarifas; }
     public void setContratoTarifas(List<Contrato_Tarifa> contratoTarifas) { this.contratoTarifas = contratoTarifas; }
-    public void addContratoTarifas(Contrato_Tarifa contratoTarifa) {this.contratoTarifas.add(contratoTarifa); }
+    public void addContratoTarifas(Contrato_Tarifa contratoTarifa) { this.contratoTarifas.add(contratoTarifa); }
+    public void deleteContratoTarifa(Contrato_Tarifa contratoTarifa) { this.contratoTarifas.remove(contratoTarifa); }
 
     public BigDecimal calcularPrecioTotal() {
         BigDecimal precioTotal = BigDecimal.ZERO;
         for (Contrato_Tarifa contratoTarifa : contratoTarifas) 
-            this.addPrecio(contratoTarifa.getTarifa().getPrecio());
+            precioTotal = precioTotal.add(contratoTarifa.getTarifa().getPrecio());
         
         return precioTotal;
     }

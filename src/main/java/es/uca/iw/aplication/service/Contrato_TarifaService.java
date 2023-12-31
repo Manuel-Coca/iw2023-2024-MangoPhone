@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import es.uca.iw.aplication.repository.Contrato_TarifaRepository;
 import es.uca.iw.aplication.tables.Contrato;
 import es.uca.iw.aplication.tables.Contrato_Tarifa;
+import es.uca.iw.aplication.tables.tarifas.Tarifa;
 
 @Service
 public class Contrato_TarifaService {
@@ -15,12 +16,12 @@ public class Contrato_TarifaService {
 
     public Contrato_TarifaService(Contrato_TarifaRepository contratoTarifaRepository) { this.contratoTarifaRepository = contratoTarifaRepository; }
 
-    public void create(Contrato_Tarifa contratoFactura) {
-        contratoTarifaRepository.save(contratoFactura);
+    public void create(Contrato_Tarifa contrato_Tarifa) {
+        contratoTarifaRepository.save(contrato_Tarifa);
     }
 
-     public void remove(Contrato_Tarifa contratoFactura) {
-        contratoTarifaRepository.delete(contratoFactura);
+    public void remove(Contrato_Tarifa contrato_Tarifa) {
+        contratoTarifaRepository.delete(contrato_Tarifa);
     }
 
     public List<Contrato_Tarifa> findByContrato(Contrato contrato) {
@@ -28,4 +29,9 @@ public class Contrato_TarifaService {
         facturas = contratoTarifaRepository.findByContrato(contrato);
         return facturas;
     } 
+
+    public Contrato_Tarifa findByContratoAndTarifa(Contrato contrato, Tarifa tarifa) {
+        return contratoTarifaRepository.findByContratoAndTarifa(contrato, tarifa);
+    }
+
 }

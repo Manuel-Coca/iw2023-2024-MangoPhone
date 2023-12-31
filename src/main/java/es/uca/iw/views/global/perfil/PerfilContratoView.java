@@ -17,8 +17,11 @@ import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 
+import es.uca.iw.aplication.service.ContratoService;
 import es.uca.iw.aplication.service.Contrato_TarifaService;
 import es.uca.iw.aplication.service.CuentaUsuarioService;
+import es.uca.iw.aplication.service.UsuarioService;
+import es.uca.iw.aplication.tables.Contrato;
 import es.uca.iw.aplication.tables.Contrato_Tarifa;
 import es.uca.iw.aplication.tables.Factura;
 import es.uca.iw.aplication.tables.tarifas.Tarifa;
@@ -38,13 +41,17 @@ public class PerfilContratoView extends Div {
     @Autowired
     private Contrato_TarifaService contrato_TarifaService;
 
+    @Autowired
+    private ContratoService contratoService;
+
     private VaadinSession session = VaadinSession.getCurrent();
     private Optional<Tarifa> selectedTarifa;
 
 
-    public PerfilContratoView(CuentaUsuarioService cuentaUsuarioService, Contrato_TarifaService contrato_TarifaService) {
+    public PerfilContratoView(CuentaUsuarioService cuentaUsuarioService, Contrato_TarifaService contrato_TarifaService, ContratoService contratoService) {
         this.cuentaUsuarioService = cuentaUsuarioService;
         this.contrato_TarifaService = contrato_TarifaService;
+        this.contratoService = contratoService;
         
         VerticalLayout listaLayout = new VerticalLayout();
         Button atrasButton = new Button("Volver");
@@ -56,9 +63,13 @@ public class PerfilContratoView extends Div {
         Button bajaButton = new Button("Darse de baja");
         bajaButton.addClassName("boton-verde-secondary");
         bajaButton.addClickListener(event -> {
-            CuentaUsuario cuenta = cuentaUsuarioService.findByDuennoCuenta(((Usuario)session.getAttribute("loggedUser")));
-            List<Factura> facturaList = new ArrayList<Factura>();
-            System.out.println(selectedTarifa.get().getId());
+            Contrato_Tarifa tarifaContratada = contrato_TarifaService.findByContratoAndTarifa(((Usuario)session.getAttribute("loggedUser")).getCuentaUsuario().getContrato(), selectedTarifa.get());
+            
+            contrato_TarifaService.remove(tarifaContratada);
+            ((Usuario)session.getAttribute("loggedUser")).getCuentaUsuario().getContrato().deleteContratoTarifa(tarifaContratada);
+            contratoService.createContrato(((Usuario)session.getAttribute("loggedUser")).getCuentaUsuario().getContrato());
+
+            UI.getCurrent().getPage().setLocation("profile/contrato");
         });
 
         listaLayout.add(atrasButton, gridTarifa(), bajaButton);

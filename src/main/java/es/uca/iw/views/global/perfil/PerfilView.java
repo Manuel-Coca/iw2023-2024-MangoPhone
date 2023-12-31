@@ -126,7 +126,6 @@ public class PerfilView extends Div {
             PasswordField newPassField = new PasswordField("Nueva contraseña");
             dialogLayout.add(oldPassField, newPassField);
 
-            
             binderRegister.forField(oldPassField)
                 .asRequired("La antigua contraseña es obligatoria")
                 .bind(Usuario::getContrasena, Usuario::setContrasena);

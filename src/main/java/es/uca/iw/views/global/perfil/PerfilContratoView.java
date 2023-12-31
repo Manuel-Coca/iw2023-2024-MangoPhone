@@ -69,19 +69,7 @@ public class PerfilContratoView extends Div {
         bajaButton.addClassName("boton-verde-secondary");
         bajaButton.addClickListener(event -> {
             Contrato_Tarifa tarifaContratada = contrato_TarifaService.findByContratoAndTarifa(((Usuario)session.getAttribute("loggedUser")).getCuentaUsuario().getContrato(), selectedTarifa.get());
-            System.out.println(tarifaContratada.getId());
-            
-            System.out.println(contratoService.existeTarifa(((Usuario)session.getAttribute("loggedUser")).getCuentaUsuario().getContrato(), tarifaContratada.getTarifa()));
-            
-            contrato_TarifaService.remove(tarifaContratada.getId());
             contratoService.deleteTarifa(((Usuario)session.getAttribute("loggedUser")).getCuentaUsuario().getContrato(), tarifaContratada);
-
-            System.out.println(contratoService.existeTarifa(((Usuario)session.getAttribute("loggedUser")).getCuentaUsuario().getContrato(), tarifaContratada.getTarifa()));
-
-            /*
-            ((Usuario)session.getAttribute("loggedUser")).getCuentaUsuario().getContrato().deleteContratoTarifa(tarifaContratada);
-            contratoService.createContrato(((Usuario)session.getAttribute("loggedUser")).getCuentaUsuario().getContrato());
-            */
             UI.getCurrent().getPage().setLocation("profile/contrato");
         });
 

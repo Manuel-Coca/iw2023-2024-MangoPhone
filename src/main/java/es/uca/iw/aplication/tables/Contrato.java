@@ -50,7 +50,7 @@ public class Contrato {
     public Factura getFactura() { return factura; }
     public void setFactura(Factura factura) { this.factura = factura; }
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "contrato")
+    @OneToMany(fetch = FetchType.EAGER, /*cascade = CascadeType.ALL, orphanRemoval = true,*/ mappedBy = "contrato")
     private List<Contrato_Tarifa> contratoTarifas = new ArrayList<Contrato_Tarifa>();
     public List<Contrato_Tarifa> getContratoTarifas() { return contratoTarifas; }
     public void setContratoTarifas(List<Contrato_Tarifa> contratoTarifas) { this.contratoTarifas = contratoTarifas; }

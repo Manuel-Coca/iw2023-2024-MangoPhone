@@ -79,8 +79,11 @@ public class ContratoService {
         if(existeTarifa(contrato, contratoTarifa.getTarifa())) {
             int index = indexTarifa(contrato, contratoTarifa);
             contrato.getContratoTarifas().remove(index);
+
+            contratoTarifa.setContrato(null);
+            contratoTarifa.setTarifa(null);
+
             this.actualizarContrato(contrato);
-            contratoTarifaService.remove(contratoTarifa.getId());
         }
     }
 }

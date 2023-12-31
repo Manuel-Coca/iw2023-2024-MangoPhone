@@ -8,10 +8,10 @@ import java.util.Optional;
 import java.util.UUID;
 
 import es.uca.iw.aplication.tables.Contrato;
-import es.uca.iw.aplication.tables.Contrato_Factura;
+import es.uca.iw.aplication.tables.Contrato_Tarifa;
 
 @Repository
-public interface Contrato_FacturaRepository extends  JpaRepository<Contrato_Factura, UUID> {
-    Optional<Contrato_Factura> findById(UUID id);
-    List<Contrato_Factura>  findByContrato(Contrato contrato);
+public interface Contrato_TarifaRepository extends  JpaRepository<Contrato_Tarifa, UUID> {
+    Optional<Contrato_Tarifa> findById(UUID id);
+    List<Contrato_Tarifa>  findByContrato(Contrato contrato);
 }

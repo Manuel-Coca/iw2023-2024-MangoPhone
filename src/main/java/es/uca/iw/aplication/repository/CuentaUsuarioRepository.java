@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import es.uca.iw.aplication.tables.usuarios.CuentaUsuario;
-import es.uca.iw.aplication.tables.usuarios.Usuario;
 
 @Repository
 public interface CuentaUsuarioRepository extends JpaRepository<CuentaUsuario, UUID> {

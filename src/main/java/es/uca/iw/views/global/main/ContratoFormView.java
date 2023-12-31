@@ -25,9 +25,12 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 
 import es.uca.iw.aplication.service.ContratoService;
 import es.uca.iw.aplication.service.CuentaUsuarioService;
+import es.uca.iw.aplication.service.EmailService;
+import es.uca.iw.aplication.service.FacturaService;
 import es.uca.iw.aplication.service.TarifaService;
-import es.uca.iw.aplication.service.UsuarioService;
 import es.uca.iw.aplication.tables.Contrato;
+import es.uca.iw.aplication.tables.Factura;
+import es.uca.iw.aplication.tables.Factura.Estado;
 import es.uca.iw.aplication.tables.enumerados.Servicio;
 import es.uca.iw.aplication.tables.tarifas.Tarifa;
 import es.uca.iw.aplication.tables.usuarios.Usuario;
@@ -49,7 +52,9 @@ public class ContratoFormView extends Div {
     @Autowired
     private ContratoService contratoService;
     @Autowired
-    private UsuarioService usuarioService;
+    private EmailService emailService;
+    @Autowired
+    private FacturaService facturaService;
 
     private BigDecimal precioTotal = new BigDecimal(0);
     private H3 precioTitle = new H3("Precio total: " + String.valueOf(precioTotal) + " €/mes");
@@ -59,15 +64,19 @@ public class ContratoFormView extends Div {
     private SeleccionadorDeTarifas seleccionadorFibra = new SeleccionadorDeTarifas();
     private SeleccionadorDeTarifas seleccionadorFijo = new SeleccionadorDeTarifas();
     
-    public ContratoFormView(TarifaService tarifaService) {
+    public ContratoFormView(TarifaService tarifaService, ContratoService contratoService) {
         this.tarifaService = tarifaService;
+        this.contratoService = contratoService;
         add(crearContenido());
     }
     
     private Div crearContenido() {
         Div globalDiv = new Div();
         VerticalLayout globalVerticalLayout = new VerticalLayout();  
-        
+
+        // Recuperamos el usuari actual de la sesion
+        Usuario usuario = (Usuario)session.getAttribute("loggedUser");
+
         // Lista de tarifas por servicio
         List<Tarifa> tarifasMovil = tarifaService.getTarifaByServicio(Servicio.MOVIL);
         List<Tarifa> tarifasFibra = tarifaService.getTarifaByServicio(Servicio.FIBRA);
@@ -79,18 +88,24 @@ public class ContratoFormView extends Div {
         List<Div> cardsFijo = new ArrayList<>();
 
         for(Tarifa tarifa : tarifasMovil) {
-            Div card = crearTarjeta(tarifa, seleccionadorMovil, cardsMovil);
-            cardsMovil.add(card);
+            if(!contratoService.existeTarifa(usuario.getCuentaUsuario().getContrato(), tarifa)){
+                Div card = crearTarjeta(tarifa, seleccionadorMovil, cardsMovil);
+                cardsMovil.add(card);
+            }
         }
 
         for(Tarifa tarifa : tarifasFibra) {
-            Div card = crearTarjeta(tarifa, seleccionadorFibra, cardsFibra);
-            cardsFibra.add(card);
+            if(!contratoService.existeTarifa(usuario.getCuentaUsuario().getContrato(), tarifa)){
+                Div card = crearTarjeta(tarifa, seleccionadorFibra, cardsFibra);
+                cardsFibra.add(card);
+            }
         }
 
         for(Tarifa tarifa : tarifasFijo) {
-            Div card = crearTarjeta(tarifa, seleccionadorFijo, cardsFijo);
-            cardsFijo.add(card);
+            if(!contratoService.existeTarifa(usuario.getCuentaUsuario().getContrato(), tarifa)){
+                Div card = crearTarjeta(tarifa, seleccionadorFijo, cardsFijo);
+                cardsFijo.add(card);
+            }
         }
         
         // CREACION DE LAYOUT
@@ -144,30 +159,51 @@ public class ContratoFormView extends Div {
                 errorDialog.open();
             }
             else {
+                //Recuperamos usuario
                 Usuario usuario = (Usuario)session.getAttribute("loggedUser");
                 Contrato contrato = usuario.getCuentaUsuario().getContrato();
 
+                //Si no tiene contrato creamos uno, junto a su factura correspondiente y lo asignamos a la cuenta de usuario y viceversa
                 if(contrato == null) {
                     contrato = new Contrato();
                     contrato.setFechaInicio(LocalDate.now());
 
+                    contratoService.asignarCuentaUsuario(contrato, usuario.getCuentaUsuario());
+                    cuentaUsuarioService.asignarContrato(usuario.getCuentaUsuario(), contrato);
+
                     contratoService.createContrato(contrato);
-                }else usuario = usuarioService.loadUsuario(usuario);
+                    cuentaUsuarioService.actualizarCuentaUsuario(usuario.getCuentaUsuario());
+
+                    Factura factura = new Factura(Estado.NoPagado, LocalDate.now(), contrato);
+                    facturaService.createFactura(factura);
+                    contratoService.actualizarContrato(contrato);
+                }
                 
+                boolean alta = true;
+                //Añadimos las tarifas al contrato
                 if(seleccionadorFibra.tarifaSeleccionada != null)
-                    contratoService.addTarifa(contrato, usuario, seleccionadorFibra.tarifaSeleccionada, "Fibra");
+                    alta = alta && contratoService.addTarifa(contrato, seleccionadorFibra.tarifaSeleccionada);
                 
                 if(seleccionadorFijo.tarifaSeleccionada != null)
-                    contratoService.addTarifa(contrato, usuario, seleccionadorFijo.tarifaSeleccionada , "Fijo");
+                    alta = alta && contratoService.addTarifa(contrato, seleccionadorFijo.tarifaSeleccionada);
                 
                 if(seleccionadorMovil.tarifaSeleccionada != null)
-                    contratoService.addTarifa(contrato, usuario, seleccionadorMovil.tarifaSeleccionada , "Movil");
+                    alta = alta && contratoService.addTarifa(contrato, seleccionadorMovil.tarifaSeleccionada);
                 
-                contratoService.asignarCuentaUsuario(contrato, usuario.getCuentaUsuario());
-                cuentaUsuarioService.asignarContrato(usuario.getCuentaUsuario(), contrato);
-                
+                if(alta){
+                    ConfirmDialog errorDialog = new ConfirmDialog("Bienvenido", "Se le ha añadido su nueva tarifa", "Cerrar", event -> {
+                        UI.getCurrent().navigate("/profile");
+                    });
+                    errorDialog.open();
+                }
+                else{
+                    ConfirmDialog errorDialog = new ConfirmDialog("Ups!", "Ya tiene una tarifa contrada", "Cerrar", event -> {
+                        UI.getCurrent().navigate("/contratar");
+                    });
+                    errorDialog.open();
+                }
                 contratoService.actualizarContrato(contrato);
-                cuentaUsuarioService.actualizarCuentaUsuario(usuario.getCuentaUsuario());
+                emailService.sendFacturaEmail(usuario, contrato);
             }
         }
         catch(Exception e) {

@@ -2,6 +2,7 @@ package es.uca.iw.aplication.tables;
 
 import java.util.UUID;
 
+import es.uca.iw.aplication.tables.tarifas.Tarifa;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,8 +12,8 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "Contrato_Factura")
-public class Contrato_Factura {
+@Table(name = "Contrato_Tarifa")
+public class Contrato_Tarifa {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id")
@@ -26,14 +27,14 @@ public class Contrato_Factura {
     public void setContrato(Contrato contrato) { this.contrato = contrato; }
 
     @ManyToOne
-    private Factura factura = null;
-    public Factura getFactura() { return factura; }
-    public void setFactura(Factura factura) { this.factura = factura; }
-
-    public Contrato_Factura(Contrato contrato, Factura factura){
+    public Tarifa tarifa = null;
+    public Tarifa getTarifa() { return tarifa; }
+    public void setTarifa(Tarifa tarifa) { this.tarifa = tarifa; }
+    
+    public Contrato_Tarifa(Contrato contrato, Tarifa tarifa) {
         this.contrato = contrato;
-        this.factura = factura;
+        this.tarifa = tarifa;
     }
 
-    public Contrato_Factura(){}
+    public Contrato_Tarifa(){}
 }

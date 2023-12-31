@@ -1,4 +1,4 @@
-package es.uca.iw.aplication.endPoints;
+/*package es.uca.iw.aplication.endPoints;
 
 import java.util.Arrays;
 import java.util.List;
@@ -30,4 +30,4 @@ public class restApiController {
 
         return Arrays.asList(telephones);
     }
-}
+}*/

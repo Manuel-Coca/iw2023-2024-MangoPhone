@@ -1,12 +1,9 @@
 package es.uca.iw.aplication.tables;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.UUID;
 
-import es.uca.iw.aplication.tables.tarifas.Tarifa;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -26,12 +23,6 @@ public class Factura {
     public UUID getId() { return id; }
     public void setId(UUID newId) { this.id = newId; }
 
-    @Column(name = "precio")
-    private BigDecimal precio;
-    public BigDecimal getPrecio() { return precio; }
-    public void setPrecio(BigDecimal precio) { this.precio = (precio); }
-    public void addPrecio(BigDecimal precio) { this.precio = this.precio.add(precio); }
-
     @Column(name = "fechaEmision")
     private LocalDate fechaEmision;
     public LocalDate getFechaInicio() { return fechaEmision; }
@@ -42,17 +33,14 @@ public class Factura {
     public Estado getEstado() { return estado; }
     public void setEstado(Estado estado) { this.estado = estado; }
 
-    @ManyToOne
-    private Tarifa tarifa = null;
-    public Tarifa getTarifa() { return tarifa; }
-    public void setTarifa(Tarifa tarifa) { this.tarifa = tarifa; }
+    @OneToOne
+    private Contrato contrato = null;
+    public Contrato getContrato() { return contrato; }
+    public void setContrato(Contrato contrato) { this.contrato = contrato; }
 
-    public Factura(Estado estado, LocalDate fechaEmision, BigDecimal precio, Tarifa tarifaSeleccionada) {
+    public Factura(Estado estado, LocalDate fechaEmision, Contrato contrato) {
         this.estado = estado;
         this.fechaEmision = fechaEmision;
-        this.precio = precio;
-        this.tarifa = tarifaSeleccionada;
+        this.contrato = contrato;
     }
-
-    public Factura(){}
 }

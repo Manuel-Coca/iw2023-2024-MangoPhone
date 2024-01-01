@@ -22,7 +22,10 @@ public class ContratoService {
         contratoRepository.save(contrato);
     }
 
-    
+    /*
+     * Pre: Recibe un contrato, y tarifa distintos de null
+     * Post: Añade al objeto actual contrato la tarifa, devuelve true si se ha podido añadir correctamente, y false si no se ha podido
+    */
     public boolean addTarifa(Contrato contrato, Tarifa tarifa){
         if(!existeTarifa(contrato, tarifa)) {
             Contrato_Tarifa contratoTarifa = new Contrato_Tarifa(contrato, tarifa);
@@ -34,6 +37,10 @@ public class ContratoService {
         } else return false;
     }
 
+    /*
+     * Pre: Recibe un objeto contratoTarifa
+     * Post: Elimina del objeto contrato relacionado, el objeto contratoTarifa
+     */
     public void deleteTarifa(Contrato_Tarifa contratoTarifa) {
         if(existeTarifa(contratoTarifa.getContrato(), contratoTarifa.getTarifa())) {
             int index = indexTarifa(contratoTarifa.getContrato(), contratoTarifa);
@@ -43,6 +50,10 @@ public class ContratoService {
         }
     }
 
+    /*
+     * Pre: Recibe un contrato y una tarifa distintos de null
+     * Post: Devuelve true si existe la tarifa en el contrato, sino false
+     */
     public boolean existeTarifa(Contrato contrato, Tarifa tarifa) {
         if(contrato != null){
             if(contrato.getContratoTarifas() != null)
@@ -53,10 +64,18 @@ public class ContratoService {
         return false;
     }
 
+    /*
+     * Pre: Recibe un contrato y una cuentaUsuario
+     * Post: Enlaza la cuentaUsuario al contrato
+     */
     public void asignarCuentaUsuario(Contrato contrato, CuentaUsuario cuentaUsuario) {
         contrato.setCuentaUsuario(cuentaUsuario);
     }
 
+    /*
+     * Pre: Recibe un contrato existente en la base de datos
+     * Post: Actualiza el precio, y hace un update en la base de datos
+     */
     public void actualizarContrato(Contrato contrato) {
         contrato.setPrecio(contrato.calcularPrecioTotal());
         contratoRepository.save(contrato);

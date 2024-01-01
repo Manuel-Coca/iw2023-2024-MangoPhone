@@ -67,14 +67,30 @@ public class ContratoFormView extends Div {
     public ContratoFormView(TarifaService tarifaService, ContratoService contratoService) {
         this.tarifaService = tarifaService;
         this.contratoService = contratoService;
-        add(crearContenido());
+
+        if(session.getAttribute("loggedUser") == null) {
+            ConfirmDialog dialog = new ConfirmDialog("Aviso", "Debes iniciar sesión", "Iniciar sesion", event1 -> {
+                UI.getCurrent().getPage().setLocation("login");;
+            });
+            dialog.open();
+        }
+        else {
+            if(((Usuario)session.getAttribute("loggedUser")).getCuentaUsuario().getContrato() != null) {
+                ConfirmDialog dialog = new ConfirmDialog("Aviso", "Ya tienes un contrato con nosotros", "Ver mi contrato", event1 -> {
+                UI.getCurrent().getPage().setLocation("profile/contrato");;
+                });
+                dialog.open();
+            }
+            else add(crearContenido());
+        }
+
     }
     
     private Div crearContenido() {
         Div globalDiv = new Div();
         VerticalLayout globalVerticalLayout = new VerticalLayout();  
 
-        // Recuperamos el usuari actual de la sesion
+        // Recuperamos el usuario actual de la sesion
         Usuario usuario = (Usuario)session.getAttribute("loggedUser");
 
         // Lista de tarifas por servicio

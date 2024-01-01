@@ -15,11 +15,14 @@ import com.vaadin.flow.component.sidenav.SideNavItem;
 import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 
+import es.uca.iw.aplication.tables.usuarios.Usuario;
 import es.uca.iw.views.global.autenticacion.LoginView;
+import es.uca.iw.views.global.autenticacion.LogoutView;
 import es.uca.iw.views.global.main.AboutUsView;
 import es.uca.iw.views.global.main.ContratoFormView;
 import es.uca.iw.views.global.main.ServicesInfoView;
 import es.uca.iw.views.global.main.WelcomeView;
+import es.uca.iw.views.global.perfil.PerfilContratoView;
 import es.uca.iw.views.global.perfil.PerfilView;
 
 import org.vaadin.lineawesome.LineAwesomeIcon;
@@ -68,18 +71,24 @@ public class MainLayout extends AppLayout {
     }
 
     private SideNav crearNavegacion() {
+        VaadinSession session = VaadinSession.getCurrent();        
         SideNav nav = new SideNav();
 
         nav.addItem(new SideNavItem("Inicio", WelcomeView.class, LineAwesomeIcon.HOME_SOLID.create()));
         nav.addItem(new SideNavItem("Nuestros servicios", ServicesInfoView.class, LineAwesomeIcon.PHONE_SOLID.create()));
-        nav.addItem(new SideNavItem("Contrata", ContratoFormView.class, LineAwesomeIcon.PLUS_CIRCLE_SOLID.create()));
         nav.addItem(new SideNavItem("Sobre nosotros", AboutUsView.class, LineAwesomeIcon.INFO_SOLID.create()));
-
-        VaadinSession session = VaadinSession.getCurrent();        
-        if(session.getAttribute("Rol") == null) { nav.addItem(new SideNavItem("Iniciar Sesión", LoginView.class, LineAwesomeIcon.USER.create())); }
-        else {
+        
+        if(session.getAttribute("loggedUser") != null) {
             nav.addItem(new SideNavItem("Tu perfil", PerfilView.class, LineAwesomeIcon.USER.create()));  
-        }  
+            nav.addItem(new SideNavItem("Cerrar sesión", LogoutView.class, LineAwesomeIcon.USER.create()));  
+            
+            if(((Usuario)session.getAttribute("loggedUser")).getCuentaUsuario().getContrato() == null) nav.addItem(new SideNavItem("Contrata", ContratoFormView.class, LineAwesomeIcon.PLUS_CIRCLE_SOLID.create()));
+            else nav.addItem(new SideNavItem("Tu contrato", PerfilContratoView.class, LineAwesomeIcon.SCROLL_SOLID.create()));
+        }
+        else {
+            nav.addItem(new SideNavItem("Iniciar Sesión", LoginView.class, LineAwesomeIcon.USER.create()));
+            nav.addItem(new SideNavItem("Contratar", ContratoFormView.class, LineAwesomeIcon.PLUS_CIRCLE_SOLID.create()));
+        }
         //nav.addItem(new SideNavItem(session.getAttribute("Rol"), LoginView.class, LineAwesomeIcon.USER.create())); 
         return nav;
     }

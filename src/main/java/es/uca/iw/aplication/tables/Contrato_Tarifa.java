@@ -3,7 +3,6 @@ package es.uca.iw.aplication.tables;
 import java.util.UUID;
 
 import es.uca.iw.aplication.tables.tarifas.Tarifa;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,9 +10,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-
-// Si no se puede un campo multievaluado
-//  Contrato_tarifa
 
 @Entity
 @Table(name = "Contrato_Tarifa")

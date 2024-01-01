@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -22,9 +21,7 @@ import es.uca.iw.aplication.service.ContratoService;
 import es.uca.iw.aplication.service.Contrato_TarifaService;
 import es.uca.iw.aplication.service.CuentaUsuarioService;
 import es.uca.iw.aplication.service.UsuarioService;
-import es.uca.iw.aplication.tables.Contrato;
 import es.uca.iw.aplication.tables.Contrato_Tarifa;
-import es.uca.iw.aplication.tables.Factura;
 import es.uca.iw.aplication.tables.tarifas.Tarifa;
 import es.uca.iw.aplication.tables.usuarios.CuentaUsuario;
 import es.uca.iw.aplication.tables.usuarios.Usuario;
@@ -45,9 +42,6 @@ public class PerfilContratoView extends Div {
     @Autowired
     private ContratoService contratoService;
 
-    @Autowired
-    private UsuarioService usuarioService;
-
     private VaadinSession session = VaadinSession.getCurrent();
     private Optional<Tarifa> selectedTarifa;
 
@@ -56,7 +50,6 @@ public class PerfilContratoView extends Div {
         this.cuentaUsuarioService = cuentaUsuarioService;
         this.contrato_TarifaService = contrato_TarifaService;
         this.contratoService = contratoService;
-        this.usuarioService = usuarioService;
         
         VerticalLayout listaLayout = new VerticalLayout();
         Button atrasButton = new Button("Volver");
@@ -70,7 +63,7 @@ public class PerfilContratoView extends Div {
         bajaButton.addClickListener(event -> {
             Contrato_Tarifa tarifaContratada = contrato_TarifaService.findByContratoAndTarifa(((Usuario)session.getAttribute("loggedUser")).getCuentaUsuario().getContrato(), selectedTarifa.get());
             contratoService.deleteTarifa(tarifaContratada);
-            
+            contratoService.actualizarContrato(contratoService.findByCuentaUsuario(((Usuario)session.getAttribute("loggedUser")).getCuentaUsuario()));
             UI.getCurrent().getPage().setLocation("profile/contrato");
         });
 
@@ -110,19 +103,4 @@ public class PerfilContratoView extends Div {
         return tarifaList;
     }
 
-    private void SaveRequest(Usuario usuario) {
-        try {
-            usuarioService.createUsuario(usuario);
-            ConfirmDialog confirmDialog = new ConfirmDialog("Éxito", "Cambios realizados correctamente", "Confirmar", event1 -> {
-                UI.getCurrent().getPage().setLocation("profile");
-            });
-            confirmDialog.open();
-        }
-        catch (Exception e) {
-            ConfirmDialog errorDialog = new ConfirmDialog("Error", "Error al cambiar los datos", "Volver", event -> { 
-                UI.getCurrent().navigate("/profile");
-            });
-            errorDialog.open();
-        }
-    }
 }

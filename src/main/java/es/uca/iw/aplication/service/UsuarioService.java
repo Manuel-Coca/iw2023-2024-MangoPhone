@@ -84,19 +84,4 @@ public class UsuarioService implements UserDetailsService {
         else return new User(usuario.getNombre(), usuario.getContrasena(), usuario.getAuthorities());
     }
     
-    /*public Usuario loadUsuario(Usuario usuario){
-        List<Contrato_Tarifa> contratoTarifas = new ArrayList<Contrato_Tarifa>();
-        Contrato contrato = new Contrato();
-        contrato = contratoService.findByCuentaUsuario(usuario.getCuentaUsuario());
-        contratoTarifas =  contratoTarifaService.findByContrato(contrato);
-        contrato.setContratoTarifas(contratoTarifas);
-        usuario.getCuentaUsuario().setContrato(contrato);
-
-        System.out.println(usuario.getCuentaUsuario().getContrato().getContratoTarifas().toString());
-        return usuario;
-    }*/
-
-    /*private Collection<GrantedAuthority> getAuthorities(List<Rol> roles) {
-        return roles.stream().map(rol -> new SimpleGrantedAuthority(rol.toString())).collect(Collectors.toList());
-    }*/
 }

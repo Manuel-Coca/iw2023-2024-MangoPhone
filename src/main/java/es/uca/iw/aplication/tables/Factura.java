@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -33,6 +34,12 @@ public class Factura {
     public Estado getEstado() { return estado; }
     public void setEstado(Estado estado) { this.estado = estado; }
 
+    @Column(name = "documento")
+    @Lob
+    private byte[] data = null;
+    public byte[] getData() { return data; }
+    public void setData(byte[] data) { this.data = data; }
+
     @OneToOne
     private Contrato contrato = null;
     public Contrato getContrato() { return contrato; }
@@ -43,4 +50,6 @@ public class Factura {
         this.fechaEmision = fechaEmision;
         this.contrato = contrato;
     }
+
+    public Factura(){}
 }

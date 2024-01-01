@@ -203,8 +203,13 @@ public class ContratoFormView extends Div {
                     });
                     errorDialog.open();
                 }
+
+                contrato.getFactura().setData(facturaService.pdfToBinary(facturaService.generarFacturaPDF(usuario, contrato)));
+                facturaService.createFactura(contrato.getFactura());
                 contratoService.actualizarContrato(contrato);
+
                 emailService.sendFacturaEmail(usuario, contrato);
+                /*Actualizar el usuario de la sesion */
             }
         }
         catch(Exception e) {

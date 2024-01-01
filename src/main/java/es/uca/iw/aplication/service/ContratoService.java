@@ -22,28 +22,24 @@ public class ContratoService {
         contratoRepository.save(contrato);
     }
 
-    /*
-     * A partir de una tarifa, crea una factura de manera automatica, la asigna al contrato actual y la manda por correo
-    */
+    
     public boolean addTarifa(Contrato contrato, Tarifa tarifa){
         if(!existeTarifa(contrato, tarifa)) {
             Contrato_Tarifa contratoTarifa = new Contrato_Tarifa(contrato, tarifa);
             contratoTarifaService.create(contratoTarifa);
             contrato.addContratoTarifas(contratoTarifa);
             contrato.setPrecio(contrato.calcularPrecioTotal());
-
+            
             return true;
         } else return false;
     }
 
-    public boolean removeTarifa(Contrato contrato, Tarifa tarifa) {
-        if(!existeTarifa(contrato, tarifa)) {
-            return false;
-        } 
-        else {
-            //Contrato_Tarifa contratoTarifa = new Contrato_Tarifa(contrato, tarifa);
-            contrato.setPrecio(contrato.calcularPrecioTotal());
-            return true;
+    public void deleteTarifa(Contrato_Tarifa contratoTarifa) {
+        if(existeTarifa(contratoTarifa.getContrato(), contratoTarifa.getTarifa())) {
+            int index = indexTarifa(contratoTarifa.getContrato(), contratoTarifa);
+            contratoTarifa.getContrato().getContratoTarifas().remove(index);
+
+            contratoTarifaService.remove(contratoTarifa.getId());
         }
     }
 
@@ -73,15 +69,5 @@ public class ContratoService {
     public int indexTarifa(Contrato contrato, Contrato_Tarifa contratoTarifa) {
         if(contrato.getContratoTarifas() == null) return 0;
         else return contrato.getContratoTarifas().indexOf(contratoTarifa);
-    }
-
-    public void deleteTarifa(Contrato_Tarifa contratoTarifa) {
-        if(existeTarifa(contratoTarifa.getContrato(), contratoTarifa.getTarifa())) {
-            int index = indexTarifa(contratoTarifa.getContrato(), contratoTarifa);
-            contratoTarifa.getContrato().getContratoTarifas().remove(index);
-
-            contratoTarifaService.remove(contratoTarifa.getId());
-            this.actualizarContrato(contratoTarifa.getContrato());
-        }
     }
 }

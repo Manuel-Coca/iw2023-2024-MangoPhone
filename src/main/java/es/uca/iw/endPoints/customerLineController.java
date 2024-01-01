@@ -3,32 +3,25 @@ package es.uca.iw.endPoints;
 import java.util.Arrays;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import com.vaadin.flow.server.auth.AnonymousAllowed;
+
+@AnonymousAllowed
 @RestController
-@RequestMapping("/api-docs/v1")
+@RequestMapping("/CustomerLine")
 public class customerLineController {
-    @Value("${API.url}")
-    private String urlAPI;
+    private final CustomerLineService customerLineService;
 
-    @Value("${API.carrier}")
-    private String carrier;
+    public customerLineController(CustomerLineService customerLineService) { this.customerLineService = customerLineService; }
 
-    @RequestMapping("/")
-    public String prueba() {
-        return "prueba";
-    }
-
-    @GetMapping(value = "/")
-    public List<Object> getAllTelephones() {
-        String url = urlAPI + "/";
-        RestTemplate restTemplate = new RestTemplate();
-
-        Object[] telephones = restTemplate.getForObject(url, Object[].class);
-
-        return Arrays.asList(telephones);
+    @GetMapping("/Phones")
+    @AnonymousAllowed
+    public List<CustomerLine> callEndpoint() {
+        return customerLineService.getAllLines();
     }
 }

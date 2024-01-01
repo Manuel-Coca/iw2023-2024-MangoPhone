@@ -54,6 +54,7 @@ public class UsuarioService implements UserDetailsService {
     public String encriptarPass(String pass) { return passwordEncoder.encode(pass); }
 
     public Usuario buscarEmail(String email) { return usuarioRepository.findByCorreoElectronico(email); }
+    public Usuario findById(Usuario usuario) { return usuarioRepository.findById(usuario.getId()).get(); }
 
     public Token buscarToken(Usuario usuario) { return tokenRepository.findByUsuario(usuario); }
 

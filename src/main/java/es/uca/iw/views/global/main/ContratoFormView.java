@@ -28,6 +28,7 @@ import es.uca.iw.aplication.service.CuentaUsuarioService;
 import es.uca.iw.aplication.service.EmailService;
 import es.uca.iw.aplication.service.FacturaService;
 import es.uca.iw.aplication.service.TarifaService;
+import es.uca.iw.aplication.service.UsuarioService;
 import es.uca.iw.aplication.tables.Contrato;
 import es.uca.iw.aplication.tables.Factura;
 import es.uca.iw.aplication.tables.Factura.Estado;
@@ -55,6 +56,8 @@ public class ContratoFormView extends Div {
     private EmailService emailService;
     @Autowired
     private FacturaService facturaService;
+    @Autowired
+    private UsuarioService usuarioService;
 
     private BigDecimal precioTotal = new BigDecimal(0);
     private H3 precioTitle = new H3("Precio total: " + String.valueOf(precioTotal) + " €/mes");
@@ -64,9 +67,10 @@ public class ContratoFormView extends Div {
     private SeleccionadorDeTarifas seleccionadorFibra = new SeleccionadorDeTarifas();
     private SeleccionadorDeTarifas seleccionadorFijo = new SeleccionadorDeTarifas();
     
-    public ContratoFormView(TarifaService tarifaService, ContratoService contratoService) {
+    public ContratoFormView(TarifaService tarifaService, ContratoService contratoService, UsuarioService usuarioService) {
         this.tarifaService = tarifaService;
         this.contratoService = contratoService;
+        this.usuarioService = usuarioService;
         add(crearContenido());
     }
     
@@ -160,7 +164,7 @@ public class ContratoFormView extends Div {
             }
             else {
                 //Recuperamos usuario
-                Usuario usuario = (Usuario)session.getAttribute("loggedUser");
+                Usuario usuario = usuarioService.findById((Usuario)session.getAttribute("loggedUser"));
                 Contrato contrato = usuario.getCuentaUsuario().getContrato();
 
                 //Si no tiene contrato creamos uno, junto a su factura correspondiente y lo asignamos a la cuenta de usuario y viceversa

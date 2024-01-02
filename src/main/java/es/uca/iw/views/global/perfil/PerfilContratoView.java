@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.vaadin.flow.component.ItemLabelGenerator;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
@@ -27,7 +26,6 @@ import es.uca.iw.aplication.service.ContratoService;
 import es.uca.iw.aplication.service.Contrato_TarifaService;
 import es.uca.iw.aplication.service.CuentaUsuarioService;
 import es.uca.iw.aplication.service.TarifaService;
-import es.uca.iw.aplication.service.UsuarioService;
 import es.uca.iw.aplication.tables.Contrato_Tarifa;
 import es.uca.iw.aplication.tables.enumerados.Servicio;
 import es.uca.iw.aplication.tables.tarifas.Tarifa;
@@ -35,7 +33,7 @@ import es.uca.iw.aplication.tables.usuarios.CuentaUsuario;
 import es.uca.iw.aplication.tables.usuarios.Usuario;
 import es.uca.iw.views.templates.MainLayout;
 
-@PageTitle("Tus contratos")
+@PageTitle("Tu contrato")
 @Route(value = "profile/contrato", layout = MainLayout.class)
 @RouteAlias(value = "profile/contrato", layout = MainLayout.class)
 @AnonymousAllowed

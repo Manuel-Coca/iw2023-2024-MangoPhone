@@ -50,10 +50,10 @@ public class MyEmailService implements EmailService{
         /*MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, "utf-8");*/
 
-        String subject = "Buenas";
-        String body = "Debes activar tu cuenta. \n"
-            + "ve a " + getServerUrl() + " activación de usuario "
-            + "e introduce tu email y el siguiente codigo: "
+        String subject = "Código de activación de MangoPhone";
+        String body = "Muchas gracias por confiar en nosotros. \n"
+            + "Para activa su cuenta, haga click en el siguiente enlace" + getServerUrl() + "o vuelva a la página de MangoPhone."
+            + "Deberá introducir su correo electrónico y el siguiente código: "
             + code;
 
         try {

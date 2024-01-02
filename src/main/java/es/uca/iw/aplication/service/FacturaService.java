@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
@@ -35,6 +36,10 @@ public class FacturaService {
 
     public Factura findById(UUID id){
         return facturaRepository.findById(id).get();
+    }
+
+    public List<Factura> findByContrato(Contrato contrato) {
+        return facturaRepository.findByContrato(contrato);
     }
 
     public byte[] pdfToBinary(Document document) {

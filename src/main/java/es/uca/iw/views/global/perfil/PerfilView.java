@@ -104,10 +104,16 @@ public class PerfilView extends Div {
                 UI.getCurrent().getPage().setLocation("profile/facturas");
             });
 
+            Paragraph mensajesLink = new Paragraph("Ver o realizar consultas y reclamaciones");
+            facturasLink.addClassName("enlace");
+            facturasLink.addClickListener(event -> {
+                UI.getCurrent().getPage().setLocation("profile/mensaje");
+            });
+
             Anchor listaLlamadasLink = new Anchor("/profile/llamadas", "Ver desglose de llamadas");
             Anchor cerrarSesionLink = new Anchor("logout", "Cerrar sesión");
     
-            globalVerticalLayout.add(datosPersonalesLink, passwordLink, contratoLink, facturasLink, listaLlamadasLink, cerrarSesionLink);
+            globalVerticalLayout.add(datosPersonalesLink, passwordLink, contratoLink, facturasLink, listaLlamadasLink, mensajesLink, cerrarSesionLink);
     
             globalDiv.add(globalVerticalLayout);
             return globalDiv;

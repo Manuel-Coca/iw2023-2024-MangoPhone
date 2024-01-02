@@ -19,7 +19,7 @@ import java.util.UUID;
 import es.uca.iw.aplication.tables.usuarios.CuentaUsuario;
 
 @Entity
-@Table(name="Contrato")
+@Table(name = "Contrato")
 public class Contrato {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

@@ -13,7 +13,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="Factura")
+@Table(name = "Factura")
 public class Factura {
     public enum Estado{Pagado,NoPagado}; //Se incluiran mas estados
 

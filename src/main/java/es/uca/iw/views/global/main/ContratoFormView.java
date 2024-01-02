@@ -190,11 +190,11 @@ public class ContratoFormView extends Div {
                     contratoService.asignarCuentaUsuario(contrato, usuario.getCuentaUsuario());
                     cuentaUsuarioService.asignarContrato(usuario.getCuentaUsuario(), contrato);
 
-                    contratoService.createContrato(contrato);
-                    cuentaUsuarioService.actualizarCuentaUsuario(usuario.getCuentaUsuario());
+                    contratoService.save(contrato);
+                    cuentaUsuarioService.save(usuario.getCuentaUsuario());
 
                     Factura factura = new Factura(Estado.NoPagado, LocalDate.now(), contrato);
-                    facturaService.createFactura(factura);
+                    facturaService.save(factura);
                     contrato.setFactura(factura);
                     contratoService.actualizarContrato(contrato);
                 }
@@ -224,7 +224,7 @@ public class ContratoFormView extends Div {
                 }
 
                 contrato.getFactura().setData(facturaService.pdfToBinary(facturaService.generarFacturaPDF(usuario, contrato)));
-                facturaService.createFactura(contrato.getFactura());
+                facturaService.save(contrato.getFactura());
                 contratoService.actualizarContrato(contrato);
 
                 emailService.sendFacturaEmail(usuario, contrato);

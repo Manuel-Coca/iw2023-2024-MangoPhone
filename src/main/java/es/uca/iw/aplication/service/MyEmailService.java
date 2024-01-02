@@ -1,14 +1,10 @@
 package es.uca.iw.aplication.service;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.net.InetAddress;
 import java.time.LocalDate;
 
-import com.lowagie.text.Document;
-import com.lowagie.text.pdf.PdfWriter;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
@@ -24,7 +20,6 @@ import jakarta.mail.internet.MimeMessage;
 @Service
 public class MyEmailService implements EmailService{
     private final JavaMailSender mailSender;
-    private final FacturaService facturaService;
 
     @Value("${spring.mail.username}")
     private String mail;
@@ -32,9 +27,9 @@ public class MyEmailService implements EmailService{
     @Value("${server.port}")
     private int serverPort;
 
-    public MyEmailService(JavaMailSender mailSender, FacturaService facturaService) {
+    @Autowired
+    public MyEmailService(JavaMailSender mailSender) {
         this.mailSender = mailSender;
-        this.facturaService = facturaService;
     }
 
     private String getServerUrl() {
@@ -47,8 +42,6 @@ public class MyEmailService implements EmailService{
     @Override
     public boolean sendRegistartionEmail(Usuario usuario, String code) {
         SimpleMailMessage message = new SimpleMailMessage();
-        /*MimeMessage message = mailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message, "utf-8");*/
 
         String subject = "Código de activación de MangoPhone";
         String body = "Muchas gracias por confiar en nosotros. \n"
@@ -69,6 +62,11 @@ public class MyEmailService implements EmailService{
         return true;
     }
 
+    /*
+     * Pre:         Recibe un usuario y un contrato
+     * Post:        Crea un mensaje personalizado, junto a la factura asociada al contrato. Despues de enviar el correo elimina el fichero en el sistema
+     *              de archivos local
+     */
     public boolean sendFacturaEmail(Usuario usuario, Contrato contrato) {
         MimeMessage message = mailSender.createMimeMessage();
         try{

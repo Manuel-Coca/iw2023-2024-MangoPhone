@@ -19,8 +19,8 @@ import es.uca.iw.aplication.tables.usuarios.Token;
 @Service
 public class UsuarioService implements UserDetailsService {
     private final UsuarioRepository usuarioRepository;
-    private final TokenRepository tokenRepository;
     private final PasswordEncoder passwordEncoder;
+    private final TokenRepository tokenRepository;
     private CuentaUsuarioService cuentaUsuarioService;
 
     @Autowired
@@ -67,7 +67,7 @@ public class UsuarioService implements UserDetailsService {
             usuario.setActivo(true);
             CuentaUsuario cuentaUsuario = new CuentaUsuario();
             cuentaUsuario.setDuennoCuenta(usuario);
-            cuentaUsuarioService.createCuentaUsuario(cuentaUsuario);
+            cuentaUsuarioService.save(cuentaUsuario);
             usuario.setCuentaUsuario(cuentaUsuario);
             usuarioRepository.save(usuario);
             // Incluir Eliminación de token (En el caso que se quiera eliminar)

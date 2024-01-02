@@ -17,25 +17,33 @@ public class Contrato_TarifaService {
 
     public Contrato_TarifaService(Contrato_TarifaRepository contratoTarifaRepository) { this.contratoTarifaRepository = contratoTarifaRepository; }
 
-    public void create(Contrato_Tarifa contrato_Tarifa) {
-        contratoTarifaRepository.save(contrato_Tarifa);
-    }
+    /*
+     * Pre:     Recibe una instancia de Contrato_Tarifa
+     * Post:    Si no existe una tabla de dicha entidad se crea, sino se actualiza en la base de datos
+     */
+    public void save(Contrato_Tarifa contrato_Tarifa) { contratoTarifaRepository.save(contrato_Tarifa); }
 
-    public void remove(UUID contrato_Tarifa) {
-        contratoTarifaRepository.deleteById(contrato_Tarifa);
-    }
+    /*
+     * Pre:     Recibe el UUID de un objeto contrato_tarifa
+     * Post:    Si existe la entrada contrato_tarifa en la base de datos, la borra
+     */
+    public void remove(UUID contrato_Tarifa) { contratoTarifaRepository.deleteById(contrato_Tarifa); }
 
+    /*
+     * Pre:     Recibe un contrato 
+     * Post:    Si existe en la tabla Contrato_Tarifa, devuelve todos los objetos Contrato_Tarifa asociados
+     */
     public List<Contrato_Tarifa> findByContrato(Contrato contrato) {
         List<Contrato_Tarifa> facturas = new ArrayList<>();
         facturas = contratoTarifaRepository.findByContrato(contrato);
         return facturas;
     } 
 
+    /*
+     * Pre:     Recibe una instancia de Contrato y Tarifa
+     * Post:    Devuelve la instancia de Contrato_Tarifa donde contrato_id y tarifa_id, coinciden con los de los objetos pasados a la funcion
+     */
     public Contrato_Tarifa findByContratoAndTarifa(Contrato contrato, Tarifa tarifa) {
         return contratoTarifaRepository.findByContratoAndTarifa(contrato, tarifa);
-    }
-
-    public void Clean(){
-        contratoTarifaRepository.deleteByContratoIsNullAndTarifaIsNull();
     }
 }

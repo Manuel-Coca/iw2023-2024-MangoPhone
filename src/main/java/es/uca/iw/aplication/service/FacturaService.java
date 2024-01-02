@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.lowagie.text.Document;
@@ -24,30 +25,31 @@ import es.uca.iw.aplication.tables.usuarios.Usuario;
 public class FacturaService {
     private final FacturaRepository facturaRepository;
 
+    @Autowired
     public FacturaService(FacturaRepository facturaRepository) { this.facturaRepository = facturaRepository; }
 
-    public void createFactura(Factura factura){
-        facturaRepository.save(factura);
-    }
+    public void save(Factura factura){ facturaRepository.save(factura); }
 
-    public void removeFactura(Factura factura){
-        facturaRepository.delete(factura);
-    }
+    public void delete(Factura factura){ facturaRepository.delete(factura); }
 
-    public Factura findById(UUID id){
-        return facturaRepository.findById(id).get();
-    }
+    public Factura findById(UUID id){ return facturaRepository.findById(id).get(); }
 
-    public List<Factura> findByContrato(Contrato contrato) {
-        return facturaRepository.findByContrato(contrato);
-    }
+    public List<Factura> findByContrato(Contrato contrato) { return facturaRepository.findByContrato(contrato); }
 
+    /*
+     * Pre: Recibe un documento
+     * Post: Devuelve el documento un vector de bytes
+     */
     public byte[] pdfToBinary(Document document) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         byte[] pdfAsBytes = baos.toByteArray();
         return pdfAsBytes;
     }
 
+    /*
+     * Pre: Recibe un usuario y un contrato
+     * Post: Usando la api OpenPDF, genera un documento pdf (Documento usado en sendFacturaEmail)
+     */
     public Document generarFacturaPDF(Usuario usuario, Contrato contrato) {
         
             Document document = new Document();

@@ -1,6 +1,7 @@
 package es.uca.iw.views.global.perfil;
 
 import java.util.Random;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,6 +21,8 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
+import com.vaadin.flow.router.BeforeEvent;
+import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
@@ -34,7 +37,7 @@ import es.uca.iw.views.templates.MainLayout;
 @Route(value = "profile", layout = MainLayout.class)
 @RouteAlias(value = "profile", layout = MainLayout.class)
 @AnonymousAllowed
-public class PerfilView extends Div {
+public class PerfilView extends Div implements HasUrlParameter<String>{
 
     @Autowired
     UsuarioService usuarioService;
@@ -42,12 +45,18 @@ public class PerfilView extends Div {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    private Usuario user;
+
     private final VaadinSession session = VaadinSession.getCurrent();
-    private Object loggedUser = VaadinSession.getCurrent().getAttribute("loggedUser");
     private Object profilePic = VaadinSession.getCurrent().getAttribute("profilePic");
 
     public PerfilView(UsuarioService usuarioService) {
         this.usuarioService = usuarioService;
+    }
+    
+    @Override
+    public void setParameter(BeforeEvent event, String userId) {
+        this.user = usuarioService.findById(UUID.fromString(userId));
         add(crearContenido());
     }
 
@@ -63,14 +72,14 @@ public class PerfilView extends Div {
             session.setAttribute("profilePic", randomNum);
         }
         
-        if(loggedUser != null) {
-            Avatar profilePic = new Avatar(((Usuario)session.getAttribute("loggedUser")).getNombre());
+        if(user != null) {
+            Avatar profilePic = new Avatar(user.getNombre());
             profilePic.setImage("/icons/profilepics/image" + session.getAttribute("profilePic") + ".svg");
             profilePic.setHeight("150px");
             profilePic.setWidth("150px");            
             nameBlock.add(profilePic);
             
-            Paragraph userName = new Paragraph(((Usuario)session.getAttribute("loggedUser")).getNombre() + " " + (((Usuario)session.getAttribute("loggedUser")).getApellidos()));
+            Paragraph userName = new Paragraph(user.getNombre() + " " + user.getApellidos());
             userName.addClassName("profile-name");
             nameBlock.setAlignItems(FlexComponent.Alignment.CENTER);
             nameBlock.add(userName);
@@ -95,7 +104,7 @@ public class PerfilView extends Div {
             Paragraph contratoLink = new Paragraph("Gestionar tu contrato");
             contratoLink.addClassName("enlace");
             contratoLink.addClickListener(event -> {
-                UI.getCurrent().getPage().setLocation("profile/contrato");
+                UI.getCurrent().getPage().setLocation("profile/" + session.getAttribute("idLoggedUser") + "/contrato");
             });
 
             Paragraph facturasLink = new Paragraph("Ver tus facturas");
@@ -160,10 +169,10 @@ public class PerfilView extends Div {
             Button confirmar = new Button("Cambiar");
             confirmar.addClassName("boton-naranja-primary");
             confirmar.addClickListener(event -> {
-                if( binderRegister.validate().isOk() && passwordEncoder.matches(oldPassField.getValue(), ((Usuario)session.getAttribute("loggedUser")).getContrasena())) {
-                    ((Usuario)session.getAttribute("loggedUser")).setContrasena(newPassField.getValue());
-                    SaveRequest(((Usuario)session.getAttribute("loggedUser")));
-                    ((Usuario)session.getAttribute("loggedUser")).setContrasena(passwordEncoder.encode(newPassField.getValue()));
+                if( binderRegister.validate().isOk() && passwordEncoder.matches(oldPassField.getValue(), user.getContrasena())) {
+                    user.setContrasena(newPassField.getValue());
+                    SaveRequest(user);
+                    user.setContrasena(passwordEncoder.encode(newPassField.getValue()));
                 }
             });
             editDialog.getFooter().add(cerrarModal, confirmar);
@@ -174,25 +183,25 @@ public class PerfilView extends Div {
         else {
             // Nombre
             TextField nombreField = new TextField("Nombre");
-            nombreField.setValue(((Usuario)session.getAttribute("loggedUser")).getNombre());
+            nombreField.setValue(user.getNombre());
             nombreField.setWidthFull();
             dialogLayout.add(nombreField);
             
             // Apellidos
             TextField apellidosField = new TextField("Apellidos");
-            apellidosField.setValue(((Usuario)session.getAttribute("loggedUser")).getApellidos());
+            apellidosField.setValue(user.getApellidos());
             apellidosField.setWidthFull();
             dialogLayout.add(apellidosField);
     
             // Email
             TextField mailField = new TextField("Correo electrónico");
-            mailField.setValue(((Usuario)session.getAttribute("loggedUser")).getCorreoElectronico());
+            mailField.setValue(user.getCorreoElectronico());
             mailField.setWidthFull();
             dialogLayout.add(mailField);
     
             // Nacimiento
             DatePicker dateField = new DatePicker("Fecha de nacimiento");
-            dateField.setValue(((Usuario)session.getAttribute("loggedUser")).getFechaNacimiento());
+            dateField.setValue(user.getFechaNacimiento());
             dialogLayout.add(dateField);
             
             
@@ -226,12 +235,12 @@ public class PerfilView extends Div {
             confirmar.addClassName("boton-naranja-primary");
             confirmar.addClickListener(event -> {
                 if(binderRegister.validate().isOk()) {
-                    ((Usuario)session.getAttribute("loggedUser")).setNombre(nombreField.getValue());
-                    ((Usuario)session.getAttribute("loggedUser")).setApellidos(apellidosField.getValue());
-                    ((Usuario)session.getAttribute("loggedUser")).setCorreoElectronico(mailField.getValue());
-                    ((Usuario)session.getAttribute("loggedUser")).setFechaNacimiento(dateField.getValue());
+                    user.setNombre(nombreField.getValue());
+                    user.setApellidos(apellidosField.getValue());
+                    user.setCorreoElectronico(mailField.getValue());
+                    user.setFechaNacimiento(dateField.getValue());
     
-                    SaveRequest(((Usuario)session.getAttribute("loggedUser")));
+                    SaveRequest(user);
                 }
             });
             editDialog.getFooter().add(cerrarModal, confirmar);
@@ -248,13 +257,13 @@ public class PerfilView extends Div {
         try {
             usuarioService.createUsuario(usuario);
             ConfirmDialog confirmDialog = new ConfirmDialog("Éxito", "Cambios realizados correctamente", "Confirmar", event1 -> {
-                UI.getCurrent().getPage().setLocation("profile");
+                UI.getCurrent().getPage().setLocation("profile/" + session.getAttribute("idLoggedUser"));
             });
             confirmDialog.open();
         }
         catch (Exception e) {
             ConfirmDialog errorDialog = new ConfirmDialog("Error", "Error al cambiar los datos", "Volver", event -> { 
-                UI.getCurrent().navigate("/profile");
+                UI.getCurrent().navigate("profile/" + session.getAttribute("idLoggedUser"));
             });
             errorDialog.open();
         }

@@ -3,6 +3,7 @@ package es.uca.iw.views.global.perfil;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -16,6 +17,8 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.data.binder.Binder;
+import com.vaadin.flow.router.BeforeEvent;
+import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
@@ -26,6 +29,7 @@ import es.uca.iw.aplication.service.ContratoService;
 import es.uca.iw.aplication.service.Contrato_TarifaService;
 import es.uca.iw.aplication.service.CuentaUsuarioService;
 import es.uca.iw.aplication.service.TarifaService;
+import es.uca.iw.aplication.service.UsuarioService;
 import es.uca.iw.aplication.tables.Contrato_Tarifa;
 import es.uca.iw.aplication.tables.enumerados.Servicio;
 import es.uca.iw.aplication.tables.tarifas.Tarifa;
@@ -37,7 +41,7 @@ import es.uca.iw.views.templates.MainLayout;
 @Route(value = "profile/contrato", layout = MainLayout.class)
 @RouteAlias(value = "profile/contrato", layout = MainLayout.class)
 @AnonymousAllowed
-public class PerfilContratoView extends Div {
+public class PerfilContratoView extends Div implements HasUrlParameter<String> {
 
     @Autowired
     private CuentaUsuarioService cuentaUsuarioService;
@@ -51,16 +55,29 @@ public class PerfilContratoView extends Div {
     @Autowired
     private TarifaService tarifaService;
 
+    @Autowired
+    private UsuarioService usuarioService;
+
     private VaadinSession session = VaadinSession.getCurrent();
     private Optional<Tarifa> selectedTarifa;
+    private Usuario user;
 
 
-    public PerfilContratoView(CuentaUsuarioService cuentaUsuarioService, Contrato_TarifaService contrato_TarifaService, ContratoService contratoService, TarifaService tarifaService) {
+    public PerfilContratoView(CuentaUsuarioService cuentaUsuarioService, Contrato_TarifaService contrato_TarifaService, ContratoService contratoService, TarifaService tarifaService, UsuarioService usuarioService) {
         this.cuentaUsuarioService = cuentaUsuarioService;
         this.contrato_TarifaService = contrato_TarifaService;
         this.contratoService = contratoService;
         this.tarifaService = tarifaService;
-        
+        this.usuarioService = usuarioService;
+    }
+    
+    @Override
+    public void setParameter(BeforeEvent event, String userId) {
+        this.user = usuarioService.findById(UUID.fromString(userId));
+        add(crearContenido());
+    }
+
+    private VerticalLayout crearContenido() {
         VerticalLayout listaLayout = new VerticalLayout();
         HorizontalLayout botonesLayout = new HorizontalLayout();
 
@@ -85,7 +102,7 @@ public class PerfilContratoView extends Div {
             editDialog.open();
         });
 
-        List<Contrato_Tarifa> tarifasContratadas = contrato_TarifaService.findByContrato(((Usuario)session.getAttribute("loggedUser")).getCuentaUsuario().getContrato());
+        List<Contrato_Tarifa> tarifasContratadas = contrato_TarifaService.findByContrato(user.getCuentaUsuario().getContrato());
         for(Contrato_Tarifa elemento : tarifasContratadas) {
             if(elemento.getTarifa().getServicio() == Servicio.MOVIL) nuevaTarifaMovil.setVisible(false);
             if(elemento.getTarifa().getServicio() == Servicio.FIBRA) nuevaTarifaFibra.setVisible(false);
@@ -102,9 +119,9 @@ public class PerfilContratoView extends Div {
         Button bajaButton = new Button("Darse de baja");
         bajaButton.addClassName("boton-verde-secondary");
         bajaButton.addClickListener(event -> {
-            Contrato_Tarifa tarifaContratada = contrato_TarifaService.findByContratoAndTarifa(((Usuario)session.getAttribute("loggedUser")).getCuentaUsuario().getContrato(), selectedTarifa.get());
+            Contrato_Tarifa tarifaContratada = contrato_TarifaService.findByContratoAndTarifa(user.getCuentaUsuario().getContrato(), selectedTarifa.get());
             contratoService.deleteTarifa(tarifaContratada);
-            contratoService.actualizarContrato(contratoService.findByCuentaUsuario(((Usuario)session.getAttribute("loggedUser")).getCuentaUsuario()));
+            contratoService.actualizarContrato(contratoService.findByCuentaUsuario(user.getCuentaUsuario()));
             UI.getCurrent().getPage().setLocation("profile/contrato");
         });
         
@@ -113,12 +130,12 @@ public class PerfilContratoView extends Div {
         atrasButton.addClickListener(event -> { 
             UI.getCurrent().navigate("profile");
         });
-
+        
         botonesLayout.add(nuevaTarifaMovil, nuevaTarifaFibra, nuevaTarifaFijo, cambiarTarifaButton, bajaButton, atrasButton);
-
+        
         listaLayout.add(gridTarifa(), botonesLayout);
-
-        add(listaLayout);
+        
+        return listaLayout;
     }
 
     private Grid<Tarifa> gridTarifa() {
@@ -140,7 +157,7 @@ public class PerfilContratoView extends Div {
     } 
     
     private List<Tarifa> getTarifasContratadas() {
-        CuentaUsuario cuenta = cuentaUsuarioService.findByDuennoCuenta(((Usuario)session.getAttribute("loggedUser")));
+        CuentaUsuario cuenta = cuentaUsuarioService.findByDuennoCuenta(user);
         List<Contrato_Tarifa> contratoTarifaList = contrato_TarifaService.findByContrato(cuenta.getContrato());
         List<Tarifa> tarifaList = new ArrayList<Tarifa>();
 
@@ -150,7 +167,7 @@ public class PerfilContratoView extends Div {
 
         return tarifaList;
     }
-
+    
     private List<Tarifa> getTarifas(Servicio servicio, Tarifa selectedTarifa) {
         List<Tarifa> tarifas = new ArrayList<Tarifa>();
         tarifas = tarifaService.getTarifaByServicio(servicio);
@@ -194,10 +211,10 @@ public class PerfilContratoView extends Div {
         confirmar.addClassName("boton-naranja-primary");
         confirmar.addClickListener(event2 -> {
             if(binder.validate().isOk()) {
-                Contrato_Tarifa tarifaContratada = contrato_TarifaService.findByContratoAndTarifa(((Usuario)session.getAttribute("loggedUser")).getCuentaUsuario().getContrato(), selectedTarifa.get());
+                Contrato_Tarifa tarifaContratada = contrato_TarifaService.findByContratoAndTarifa(user.getCuentaUsuario().getContrato(), selectedTarifa.get());
                 contratoService.deleteTarifa(tarifaContratada);
-                contratoService.addTarifa(contratoService.findByCuentaUsuario(((Usuario)session.getAttribute("loggedUser")).getCuentaUsuario()), tarifaField.getValue());
-                contratoService.actualizarContrato(contratoService.findByCuentaUsuario(((Usuario)session.getAttribute("loggedUser")).getCuentaUsuario()));
+                contratoService.addTarifa(contratoService.findByCuentaUsuario(user.getCuentaUsuario()), tarifaField.getValue());
+                contratoService.actualizarContrato(contratoService.findByCuentaUsuario(user.getCuentaUsuario()));
                 UI.getCurrent().getPage().setLocation("profile/contrato");
             }
         });
@@ -243,8 +260,8 @@ public class PerfilContratoView extends Div {
         confirmar.addClassName("boton-naranja-primary");
         confirmar.addClickListener(event2 -> {
             if(binder.validate().isOk()) {
-                contratoService.addTarifa(contratoService.findByCuentaUsuario(((Usuario)session.getAttribute("loggedUser")).getCuentaUsuario()), tarifaField.getValue());
-                contratoService.actualizarContrato(contratoService.findByCuentaUsuario(((Usuario)session.getAttribute("loggedUser")).getCuentaUsuario()));
+                contratoService.addTarifa(contratoService.findByCuentaUsuario(user.getCuentaUsuario()), tarifaField.getValue());
+                contratoService.actualizarContrato(contratoService.findByCuentaUsuario(user.getCuentaUsuario()));
                 UI.getCurrent().getPage().setLocation("profile/contrato");
             }
         });
@@ -256,5 +273,6 @@ public class PerfilContratoView extends Div {
         return editDialog;
 
     }
+
 
 }

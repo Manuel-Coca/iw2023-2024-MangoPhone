@@ -79,7 +79,7 @@ public class MainLayout extends AppLayout {
         nav.addItem(new SideNavItem("Sobre nosotros", AboutUsView.class, LineAwesomeIcon.INFO_SOLID.create()));
         
         if(session.getAttribute("loggedUser") != null) {
-            nav.addItem(new SideNavItem("Tu perfil", PerfilView.class, LineAwesomeIcon.USER.create()));  
+            nav.addItem(new SideNavItem("Tu perfil", "profile/" + session.getAttribute("idLoggedUser"), LineAwesomeIcon.USER.create()));  
             nav.addItem(new SideNavItem("Cerrar sesión", LogoutView.class, LineAwesomeIcon.USER.create()));  
             
             if(((Usuario)session.getAttribute("loggedUser")).getCuentaUsuario().getContrato() == null) nav.addItem(new SideNavItem("Contrata", ContratoFormView.class, LineAwesomeIcon.PLUS_CIRCLE_SOLID.create()));

@@ -1,5 +1,7 @@
 package es.uca.iw.views.global.perfil;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -25,8 +27,13 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 import es.uca.iw.aplication.service.ContratoService;
 import es.uca.iw.aplication.service.Contrato_TarifaService;
 import es.uca.iw.aplication.service.CuentaUsuarioService;
+import es.uca.iw.aplication.service.EmailService;
+import es.uca.iw.aplication.service.FacturaService;
+import es.uca.iw.aplication.service.MyEmailService;
 import es.uca.iw.aplication.service.TarifaService;
 import es.uca.iw.aplication.tables.Contrato_Tarifa;
+import es.uca.iw.aplication.tables.Factura;
+import es.uca.iw.aplication.tables.Factura.Estado;
 import es.uca.iw.aplication.tables.enumerados.Servicio;
 import es.uca.iw.aplication.tables.tarifas.Tarifa;
 import es.uca.iw.aplication.tables.usuarios.CuentaUsuario;
@@ -51,15 +58,22 @@ public class PerfilContratoView extends Div {
     @Autowired
     private TarifaService tarifaService;
 
+    @Autowired
+    private FacturaService facturaService;
+
+    @Autowired
+    private MyEmailService emailService;
+
     private VaadinSession session = VaadinSession.getCurrent();
     private Optional<Tarifa> selectedTarifa;
 
 
-    public PerfilContratoView(CuentaUsuarioService cuentaUsuarioService, Contrato_TarifaService contrato_TarifaService, ContratoService contratoService, TarifaService tarifaService) {
+    public PerfilContratoView(CuentaUsuarioService cuentaUsuarioService, Contrato_TarifaService contrato_TarifaService, ContratoService contratoService, TarifaService tarifaService, FacturaService facturaService, EmailService emailService) {
         this.cuentaUsuarioService = cuentaUsuarioService;
         this.contrato_TarifaService = contrato_TarifaService;
         this.contratoService = contratoService;
         this.tarifaService = tarifaService;
+        this.facturaService = facturaService;
         
         VerticalLayout listaLayout = new VerticalLayout();
         HorizontalLayout botonesLayout = new HorizontalLayout();
@@ -244,7 +258,12 @@ public class PerfilContratoView extends Div {
         confirmar.addClickListener(event2 -> {
             if(binder.validate().isOk()) {
                 contratoService.addTarifa(contratoService.findByCuentaUsuario(((Usuario)session.getAttribute("loggedUser")).getCuentaUsuario()), tarifaField.getValue());
+                Factura factura =  new Factura(Estado.Pagado, LocalDate.now(), ((Usuario)session.getAttribute("loggedUser")).getCuentaUsuario().getContrato(), ("Factura-" + "-" + ((Usuario)session.getAttribute("loggedUser")).getUsername() + "-" + LocalDateTime.now() + ".pdf"));
+                facturaService.save(factura);
+                contratoService.addFactura(contratoService.findByCuentaUsuario(((Usuario)session.getAttribute("loggedUser")).getCuentaUsuario()), factura);
                 contratoService.actualizarContrato(contratoService.findByCuentaUsuario(((Usuario)session.getAttribute("loggedUser")).getCuentaUsuario()));
+                facturaService.generarFacturaPDF(((Usuario)session.getAttribute("loggedUser")), ((Usuario)session.getAttribute("loggedUser")).getCuentaUsuario().getContrato(), factura);
+                emailService.sendFacturaEmail(((Usuario)session.getAttribute("loggedUser")), factura);
                 UI.getCurrent().getPage().setLocation("profile/contrato");
             }
         });

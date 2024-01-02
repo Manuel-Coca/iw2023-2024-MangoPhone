@@ -17,12 +17,16 @@ public class CuentaUsuarioService {
         this.cuentaUsuarioRepository = cuentaUsuarioRepository; 
     }
 
+    /*************************************************************************** Interfaz Común ************************************************************************************/
      /*
      * Pre:     Recibe una cuenta de usuario
      * Post:    Si no existe crea una nueva entrada en la base de datos con los datos de la cuenta de usuario, sino actualiza
      */
     public void save(CuentaUsuario cuentaUsuario){ cuentaUsuarioRepository.save(cuentaUsuario); }
+    public void delete(CuentaUsuario cuentaUsuario) { cuentaUsuarioRepository.delete(cuentaUsuario); }
+    public CuentaUsuario getCuentaUsuarioById(CuentaUsuario cuentaUsuario) { return cuentaUsuarioRepository.findById(cuentaUsuario.getId()).get(); }
 
+    /*************************************************************************** Interfaz Personalizada ************************************************************************************/
     /*
      * Pre: Recibe una cuenta de usuario y un contrato
      * Post: Asigna a la cuenta de usuario el contrato

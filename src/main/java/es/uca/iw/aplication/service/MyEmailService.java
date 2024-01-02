@@ -12,7 +12,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
-import es.uca.iw.aplication.tables.Contrato;
+import es.uca.iw.aplication.tables.Factura;
 import es.uca.iw.aplication.tables.usuarios.Usuario;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -67,7 +67,7 @@ public class MyEmailService implements EmailService{
      * Post:        Crea un mensaje personalizado, junto a la factura asociada al contrato. Despues de enviar el correo elimina el fichero en el sistema
      *              de archivos local
      */
-    public boolean sendFacturaEmail(Usuario usuario, Contrato contrato) {
+    public boolean sendFacturaEmail(Usuario usuario, Factura factura) {
         MimeMessage message = mailSender.createMimeMessage();
         try{
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "utf-8");
@@ -102,7 +102,7 @@ public class MyEmailService implements EmailService{
                             "</html>\r\n" + 
                             "", true);
 
-                String nombreFichero = "Factura-" + "-" + usuario.getNombre() + "-" + LocalDate.now() + ".pdf";
+                String nombreFichero = factura.getfileName();
                 String path = "doc\\recibo-facturas" + nombreFichero;
                 File file = new File(path);
                 helper.addAttachment(nombreFichero, file);

@@ -3,7 +3,6 @@ package es.uca.iw.aplication.service;
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,12 +26,15 @@ public class FacturaService {
 
     @Autowired
     public FacturaService(FacturaRepository facturaRepository) { this.facturaRepository = facturaRepository; }
-
+    
+    /*************************************************************************** Interfaz Común ************************************************************************************/
     public void save(Factura factura){ facturaRepository.save(factura); }
 
     public void delete(Factura factura){ facturaRepository.delete(factura); }
 
-    public Factura findById(UUID id){ return facturaRepository.findById(id).get(); }
+    public Factura getFacturaById(UUID id){ return facturaRepository.findById(id).get(); }
+
+    /*************************************************************************** Interfaz Personalizada ************************************************************************************/
 
     public List<Factura> findByContrato(Contrato contrato) { return facturaRepository.findByContrato(contrato); }
 
@@ -50,11 +52,11 @@ public class FacturaService {
      * Pre: Recibe un usuario y un contrato
      * Post: Usando la api OpenPDF, genera un documento pdf (Documento usado en sendFacturaEmail)
      */
-    public Document generarFacturaPDF(Usuario usuario, Contrato contrato) {
+    public Document generarFacturaPDF(Usuario usuario, Contrato contrato, Factura factura) {
         
             Document document = new Document();
 
-            String nombreFichero = "Factura-" + "-" + usuario.getNombre() + "-" + LocalDate.now() + ".pdf";
+            String nombreFichero = factura.getfileName();
             String path = "doc\\recibo-facturas" + nombreFichero;
 
             try {

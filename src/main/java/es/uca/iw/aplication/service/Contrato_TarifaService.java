@@ -17,6 +17,8 @@ public class Contrato_TarifaService {
 
     public Contrato_TarifaService(Contrato_TarifaRepository contratoTarifaRepository) { this.contratoTarifaRepository = contratoTarifaRepository; }
 
+
+    /*************************************************************************** Interfaz Común ************************************************************************************/
     /*
      * Pre:     Recibe una instancia de Contrato_Tarifa
      * Post:    Si no existe una tabla de dicha entidad se crea, sino se actualiza en la base de datos
@@ -27,8 +29,11 @@ public class Contrato_TarifaService {
      * Pre:     Recibe el UUID de un objeto contrato_tarifa
      * Post:    Si existe la entrada contrato_tarifa en la base de datos, la borra
      */
-    public void remove(UUID contrato_Tarifa) { contratoTarifaRepository.deleteById(contrato_Tarifa); }
+    public void delete(UUID contrato_Tarifa) { contratoTarifaRepository.deleteById(contrato_Tarifa); }
 
+    public Contrato_Tarifa getContrato_TarifaById(UUID contrato_tarifa) { return contratoTarifaRepository.findById(contrato_tarifa).get(); }
+
+    /*************************************************************************** Interfaz Personalizada ************************************************************************************/
     /*
      * Pre:     Recibe un contrato 
      * Post:    Si existe en la tabla Contrato_Tarifa, devuelve todos los objetos Contrato_Tarifa asociados

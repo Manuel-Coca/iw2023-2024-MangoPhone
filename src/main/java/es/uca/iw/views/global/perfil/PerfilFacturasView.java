@@ -1,16 +1,11 @@
 package es.uca.iw.views.global.perfil;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.lowagie.text.Anchor;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
@@ -20,7 +15,6 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
-import com.vaadin.flow.server.StreamResource;
 import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 
@@ -45,7 +39,6 @@ public class PerfilFacturasView extends Div {
 
     private VaadinSession session = VaadinSession.getCurrent();
     private Factura selectedFactura;
-
 
     public PerfilFacturasView(FacturaService facturaService, ContratoService contratoService) {
         this.facturaService = facturaService;

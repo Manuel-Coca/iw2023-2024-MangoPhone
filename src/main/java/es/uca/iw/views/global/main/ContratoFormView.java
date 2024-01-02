@@ -2,6 +2,7 @@ package es.uca.iw.views.global.main;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,6 +71,7 @@ public class ContratoFormView extends Div {
     public ContratoFormView(TarifaService tarifaService, ContratoService contratoService, UsuarioService usuarioService) {
         this.tarifaService = tarifaService;
         this.contratoService = contratoService;
+        this.usuarioService = usuarioService;
 
         if(session.getAttribute("loggedUser") == null) {
             ConfirmDialog dialog = new ConfirmDialog("Aviso", "Debes iniciar sesión", "Iniciar sesion", event1 -> {
@@ -94,7 +96,7 @@ public class ContratoFormView extends Div {
         VerticalLayout globalVerticalLayout = new VerticalLayout();  
 
         // Recuperamos el usuario actual de la sesion
-        Usuario usuario = (Usuario)session.getAttribute("loggedUser");
+        Usuario usuario = usuarioService.findById((Usuario)session.getAttribute("loggedUser"));
 
         // Lista de tarifas por servicio
         List<Tarifa> tarifasMovil = tarifaService.getTarifaByServicio(Servicio.MOVIL);
@@ -193,9 +195,6 @@ public class ContratoFormView extends Div {
                     contratoService.save(contrato);
                     cuentaUsuarioService.save(usuario.getCuentaUsuario());
 
-                    Factura factura = new Factura(Estado.NoPagado, LocalDate.now(), contrato);
-                    facturaService.save(factura);
-                    contrato.setFactura(factura);
                     contratoService.actualizarContrato(contrato);
                 }
                 
@@ -210,11 +209,20 @@ public class ContratoFormView extends Div {
                 if(seleccionadorMovil.tarifaSeleccionada != null)
                     alta = alta && contratoService.addTarifa(contrato, seleccionadorMovil.tarifaSeleccionada);
                 
+
                 if(alta){
                     ConfirmDialog errorDialog = new ConfirmDialog("Bienvenido", "Se le ha añadido su nueva tarifa", "Cerrar", event -> {
                         UI.getCurrent().navigate("/profile");
                     });
                     errorDialog.open();
+
+                    Factura factura =  new Factura(Estado.Pagado, LocalDate.now(), contrato, ("Factura-" + "-" + usuario.getNombre() + "-" + LocalDateTime.now() + ".pdf"));
+                    facturaService.save(factura);
+                    contratoService.addFactura(contrato, factura);
+                    contratoService.actualizarContrato(contrato);
+
+                    facturaService.generarFacturaPDF(usuario, contrato, factura);
+                    emailService.sendFacturaEmail(usuario, factura);
                 }
                 else{
                     ConfirmDialog errorDialog = new ConfirmDialog("Ups!", "Ya tiene una tarifa contrada", "Cerrar", event -> {
@@ -222,13 +230,6 @@ public class ContratoFormView extends Div {
                     });
                     errorDialog.open();
                 }
-
-                contrato.getFactura().setData(facturaService.pdfToBinary(facturaService.generarFacturaPDF(usuario, contrato)));
-                facturaService.save(contrato.getFactura());
-                contratoService.actualizarContrato(contrato);
-
-                emailService.sendFacturaEmail(usuario, contrato);
-                /*Actualizar el usuario de la sesion */
             }
         }
         catch(Exception e) {

@@ -1,5 +1,7 @@
 package es.uca.iw.views.global.perfil;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import com.vaadin.flow.component.UI;
@@ -59,5 +61,12 @@ public class PerfilMensajeView extends Div {
         });
         
         return gridMensaje;
+    }
+
+    private List<Mensaje> getMensajes() {
+        List<Mensaje> mensajes = new ArrayList<Mensaje>();
+
+
+        return mensajes;
     }
 }

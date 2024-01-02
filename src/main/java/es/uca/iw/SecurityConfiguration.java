@@ -43,7 +43,7 @@ public class SecurityConfiguration extends VaadinWebSecurity {
                 .requestMatchers((new AntPathRequestMatcher("/images/**"))).permitAll()
                 .requestMatchers((new AntPathRequestMatcher("/icons/**"))).permitAll()
                 .requestMatchers((new AntPathRequestMatcher("/CustomerLine"))).permitAll()
-                .requestMatchers((new AntPathRequestMatcher("/CustomerLine/Phones"))).permitAll());
+                .requestMatchers((new AntPathRequestMatcher("/CustomerLine/**"))).permitAll());
         super.configure(http);
         setLoginView(http, LoginView.class);
     }

@@ -1,5 +1,8 @@
 package es.uca.iw.views.global.perfil;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -9,12 +12,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.page.Page;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
+import com.vaadin.flow.server.StreamResource;
 import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 
@@ -50,8 +57,13 @@ public class PerfilFacturasView extends Div {
         Button descargarButton = new Button("Descargar factura");
         descargarButton.addClassName("boton-verde-secondary");
         descargarButton.addClickListener(event -> {
-            // LOGICA DE DESCARGA DE PDF
+            facturaService.crearFacturaPDFLocal(((Usuario) VaadinSession.getCurrent().getAttribute("loggedUser")).getCuentaUsuario().getContrato(), selectedFactura);
+            Anchor anchor = new Anchor("\\doc\\recibo-facturas\\" + selectedFactura.getfileName(), "Download PDF");
+            anchor.getElement().setAttribute("download", selectedFactura.getfileName());
+            add(anchor);
+            facturaService.eliminarFacturaPDFLocal(selectedFactura);
         });
+        
         
         Button atrasButton = new Button("Volver");
         atrasButton.addClassName("boton-naranja-primary");
@@ -70,6 +82,7 @@ public class PerfilFacturasView extends Div {
         Grid<Factura> gridFactura = new Grid<Factura>(Factura.class, false);
         gridFactura.addColumn(Factura::getFechaInicio).setHeader("Fecha de emisión");
         gridFactura.addColumn(Factura::getEstado).setHeader("Estado");
+        gridFactura.addColumn(Factura::getfileName).setHeader("Documento");
         
         gridFactura.setItems(getFacturas(contratoService.findByCuentaUsuario(((Usuario)session.getAttribute("loggedUser")).getCuentaUsuario())));
 

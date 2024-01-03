@@ -8,6 +8,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.lowagie.text.Document;
 import com.vaadin.flow.component.ItemLabelGenerator;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
@@ -258,12 +259,17 @@ public class PerfilContratoView extends Div {
         confirmar.addClickListener(event2 -> {
             if(binder.validate().isOk()) {
                 contratoService.addTarifa(contratoService.findByCuentaUsuario(((Usuario)session.getAttribute("loggedUser")).getCuentaUsuario()), tarifaField.getValue());
-                Factura factura =  new Factura(Estado.Pagado, LocalDate.now(), ((Usuario)session.getAttribute("loggedUser")).getCuentaUsuario().getContrato(), ("Factura-" + "-" + ((Usuario)session.getAttribute("loggedUser")).getUsername() + "-" + LocalDateTime.now() + ".pdf"));
+                
+                Factura factura =  new Factura(Estado.Pagado, LocalDate.now(), ((Usuario)session.getAttribute("loggedUser")).getCuentaUsuario().getContrato(), facturaService.generarNombreFactura(((Usuario)session.getAttribute("loggedUser"))));
                 facturaService.save(factura);
                 contratoService.addFactura(contratoService.findByCuentaUsuario(((Usuario)session.getAttribute("loggedUser")).getCuentaUsuario()), factura);
                 contratoService.actualizarContrato(contratoService.findByCuentaUsuario(((Usuario)session.getAttribute("loggedUser")).getCuentaUsuario()));
-                facturaService.generarFacturaPDF(((Usuario)session.getAttribute("loggedUser")), ((Usuario)session.getAttribute("loggedUser")).getCuentaUsuario().getContrato(), factura);
+                facturaService.save(factura);
+
+                facturaService.crearFacturaPDFLocal(((Usuario)session.getAttribute("loggedUser")).getCuentaUsuario().getContrato(), factura);
                 emailService.sendFacturaEmail(((Usuario)session.getAttribute("loggedUser")), factura);
+                facturaService.eliminarFacturaPDFLocal(factura);
+
                 UI.getCurrent().getPage().setLocation("profile/contrato");
             }
         });

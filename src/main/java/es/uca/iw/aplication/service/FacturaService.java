@@ -1,9 +1,13 @@
 package es.uca.iw.aplication.service;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +18,7 @@ import com.lowagie.text.DocumentException;
 import com.lowagie.text.Element;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.pdf.PdfWriter;
+import com.vaadin.flow.component.html.Anchor;
 
 import es.uca.iw.aplication.repository.FacturaRepository;
 import es.uca.iw.aplication.tables.Contrato;
@@ -23,9 +28,10 @@ import es.uca.iw.aplication.tables.usuarios.Usuario;
 @Service
 public class FacturaService {
     private final FacturaRepository facturaRepository;
+    private final MyEmailService mEmailService;
 
     @Autowired
-    public FacturaService(FacturaRepository facturaRepository) { this.facturaRepository = facturaRepository; }
+    public FacturaService(FacturaRepository facturaRepository, MyEmailService mailService) { this.facturaRepository = facturaRepository; this.mEmailService = mailService; }
     
     /*************************************************************************** Interfaz Común ************************************************************************************/
     public void save(Factura factura){ facturaRepository.save(factura); }
@@ -48,16 +54,43 @@ public class FacturaService {
         return pdfAsBytes;
     }
 
+    public void rescatarFacturaPDF(Factura factura){
+        String nombreFichero = factura.getfileName();
+        String path = "doc\\recibo-facturas\\" + nombreFichero;
+        FileInputStream fileInputStream = null;
+		File file = new File(path);
+		byte[] fileArray = new byte[(int) file.length()];
+
+		try {
+			// Con este código se obtienen los bytes del archivo.
+			fileInputStream = new FileInputStream(file);
+			fileInputStream.read(fileArray);
+			fileInputStream.close();
+
+			// Con este código se agregan los bytes al archivo.
+			FileOutputStream fileOuputStream = new FileOutputStream(path);
+			fileOuputStream.write(fileArray);
+			fileOuputStream.close();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    }
+
+
+    public String generarNombreFactura(Usuario usuario) {
+        return "Factura" + "-" + usuario.getNombre() + "-" + LocalDateTime.now().getYear() +  LocalDateTime.now().getMonth() +  LocalDateTime.now().getDayOfMonth() + LocalDateTime.now().getHour() + LocalDateTime.now().getMinute() + LocalDateTime.now().getSecond() + ".pdf";
+    }
+
     /*
      * Pre: Recibe un usuario y un contrato
      * Post: Usando la api OpenPDF, genera un documento pdf (Documento usado en sendFacturaEmail)
      */
-    public Document generarFacturaPDF(Usuario usuario, Contrato contrato, Factura factura) {
-        
+    public void crearFacturaPDFLocal(Contrato contrato, Factura factura) {
             Document document = new Document();
 
             String nombreFichero = factura.getfileName();
-            String path = "doc\\recibo-facturas" + nombreFichero;
+            String path = "doc\\recibo-facturas\\" + nombreFichero;
 
             try {
                 PdfWriter.getInstance(document, new FileOutputStream(path));
@@ -82,10 +115,18 @@ public class FacturaService {
                 document.add(new Paragraph("Precio Total: " + contrato.getPrecio()  + " €"));
                 document.close();
 
+                File file = new File(path);
             } catch (DocumentException | IOException e) {
                 e.printStackTrace();
-            }
-        return document;                           
+            }    
+    }
+
+    /*  Pre:      Recibe una factura
+     *  Post:    La elimina del sistema de archivos local
+     */
+    public void eliminarFacturaPDFLocal(Factura factura) {
+        File file = new File("doc\\recibo-facturas\\" + factura.getfileName());
+        file.delete();
     }
 
 }

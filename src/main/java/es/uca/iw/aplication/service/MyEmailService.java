@@ -103,11 +103,12 @@ public class MyEmailService implements EmailService{
                             "", true);
 
                 String nombreFichero = factura.getfileName();
-                String path = "doc\\recibo-facturas" + nombreFichero;
+                String path = "doc\\recibo-facturas\\" + nombreFichero;
+                
                 File file = new File(path);
                 helper.addAttachment(nombreFichero, file);
                 mailSender.send(message);
-                file.delete();
+
         }catch(MessagingException e) {
             e.printStackTrace();
             return false;

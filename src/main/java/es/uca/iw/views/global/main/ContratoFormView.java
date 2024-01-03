@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.lowagie.text.Document;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
@@ -216,13 +217,17 @@ public class ContratoFormView extends Div {
                     });
                     errorDialog.open();
 
-                    Factura factura =  new Factura(Estado.Pagado, LocalDate.now(), contrato, ("Factura-" + "-" + usuario.getNombre() + "-" + LocalDateTime.now() + ".pdf"));
+                    Factura factura =  new Factura(Estado.Pagado, LocalDate.now(), contrato, facturaService.generarNombreFactura(usuario));
                     facturaService.save(factura);
                     contratoService.addFactura(contrato, factura);
                     contratoService.actualizarContrato(contrato);
+                    
 
-                    facturaService.generarFacturaPDF(usuario, contrato, factura);
+                    facturaService.crearFacturaPDFLocal(contrato, factura);
                     emailService.sendFacturaEmail(usuario, factura);
+                    facturaService.eliminarFacturaPDFLocal(factura);
+
+                    facturaService.save(factura);
                 }
                 else{
                     ConfirmDialog errorDialog = new ConfirmDialog("Ups!", "Ya tiene una tarifa contrada", "Cerrar", event -> {

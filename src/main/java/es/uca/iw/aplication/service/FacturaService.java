@@ -9,11 +9,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.List;
-import java.util.Random;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -88,9 +86,10 @@ public class FacturaService {
         return pdfAsBytes;
     }
 
+    // A LO MEJOR SOBRA
     public void rescatarFacturaPDF(Factura factura){
         String nombreFichero = factura.getfileName();
-        String path = "doc\\recibo-facturas\\" + nombreFichero;
+        String path = "src\\main\\java\\es\\uca\\iw\\docs_facturas" + nombreFichero;
         FileInputStream fileInputStream = null;
 		File file = new File(path);
 		byte[] fileArray = new byte[(int) file.length()];
@@ -111,9 +110,9 @@ public class FacturaService {
 		}
     }
 
-
     public String generarNombreFactura(Usuario usuario) {
-        return "Factura" + "-" + usuario.getNombre() + "-" + LocalDateTime.now().getYear() +  LocalDateTime.now().getMonth() +  LocalDateTime.now().getDayOfMonth() + LocalDateTime.now().getHour() + LocalDateTime.now().getMinute() + LocalDateTime.now().getSecond() + ".pdf";
+        // Version simplificada del estandar de la expedicion de facturas de la Agencia Estatal de Administración Tributaria (AEAT)
+        return LocalDateTime.now().getYear() + "/" + LocalDateTime.now().getMonth() + "/" + usuario.getDNI() + "@" + usuario.getNombre() + ".pdf";
     }
 
     /*
@@ -124,7 +123,7 @@ public class FacturaService {
             Document document = new Document();
 
             String nombreFichero = factura.getfileName();
-            String path = "doc\\recibo-facturas\\" + nombreFichero;
+            String path = "src\\main\\java\\es\\uca\\iw\\docs_facturas" + nombreFichero;
 
             try {
                 PdfWriter.getInstance(document, new FileOutputStream(path));
@@ -159,7 +158,7 @@ public class FacturaService {
      *  Post: La elimina del sistema de archivos local
      */
     public void eliminarFacturaPDFLocal(Factura factura) {
-        File file = new File("doc\\recibo-facturas\\" + factura.getfileName());
+        File file = new File("src\\main\\java\\es\\uca\\iw\\docs_facturas" + factura.getfileName());
         file.delete();
     }
 

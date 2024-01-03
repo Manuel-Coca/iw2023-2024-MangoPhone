@@ -2,7 +2,6 @@ package es.uca.iw.aplication.service;
 
 import java.io.File;
 import java.net.InetAddress;
-import java.time.LocalDate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -103,7 +102,7 @@ public class MyEmailService implements EmailService{
                             "", true);
 
                 String nombreFichero = factura.getfileName();
-                String path = "doc\\recibo-facturas\\" + nombreFichero;
+                String path = "src\\main\\java\\es\\uca\\iw\\docs_facturas" + nombreFichero;
                 
                 File file = new File(path);
                 helper.addAttachment(nombreFichero, file);

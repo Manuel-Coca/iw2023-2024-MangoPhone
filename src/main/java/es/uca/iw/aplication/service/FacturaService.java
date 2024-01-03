@@ -5,12 +5,16 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.lowagie.text.Document;
@@ -18,20 +22,28 @@ import com.lowagie.text.DocumentException;
 import com.lowagie.text.Element;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.pdf.PdfWriter;
-import com.vaadin.flow.component.html.Anchor;
 
 import es.uca.iw.aplication.repository.FacturaRepository;
 import es.uca.iw.aplication.tables.Contrato;
 import es.uca.iw.aplication.tables.Contrato_Tarifa;
 import es.uca.iw.aplication.tables.Factura;
+import es.uca.iw.aplication.tables.Factura.Estado;
 import es.uca.iw.aplication.tables.usuarios.Usuario;
+
 @Service
 public class FacturaService {
     private final FacturaRepository facturaRepository;
+    private final ContratoService contratoService;
     private final MyEmailService mEmailService;
+    private final UsuarioService usuarioService;
 
     @Autowired
-    public FacturaService(FacturaRepository facturaRepository, MyEmailService mailService) { this.facturaRepository = facturaRepository; this.mEmailService = mailService; }
+    public FacturaService(FacturaRepository facturaRepository, MyEmailService mailService, ContratoService contratoService, UsuarioService usuarioService){ 
+        this.facturaRepository = facturaRepository; 
+        this.mEmailService = mailService; 
+        this.contratoService = contratoService;
+        this.usuarioService = usuarioService;
+    }
     
     /*************************************************************************** Interfaz Común ************************************************************************************/
     public void save(Factura factura){ facturaRepository.save(factura); }
@@ -40,9 +52,31 @@ public class FacturaService {
 
     public Factura getFacturaById(UUID id){ return facturaRepository.findById(id).get(); }
 
+    public List<Factura> findByContrato(Contrato contrato) { return facturaRepository.findByContrato(contrato); }
+    
     /*************************************************************************** Interfaz Personalizada ************************************************************************************/
 
-    public List<Factura> findByContrato(Contrato contrato) { return facturaRepository.findByContrato(contrato); }
+    @Scheduled(cron = "0 0 1 * * *")
+    public void generarFacturaMensual() {
+        List<Usuario> todosUsuarios = usuarioService.findAll();
+        System.out.println(todosUsuarios);
+        for(Usuario usuario : todosUsuarios) {
+            if(usuario.getCuentaUsuario().getContrato() != null) {
+                if((Period.between(usuario.getCuentaUsuario().getContrato().getFechaInicio(), LocalDate.now()).getMonths() >= 1 &&
+                (Period.between(usuario.getCuentaUsuario().getContrato().getFechaInicio(), LocalDate.now()).getDays() == 0))){
+                    Factura factura = new Factura(Estado.Pagado, LocalDate.now(), usuario.getCuentaUsuario().getContrato(), generarNombreFactura(usuario));
+                    save(factura);
+                    contratoService.addFactura(usuario.getCuentaUsuario().getContrato(), factura);
+                    contratoService.actualizarContrato(usuario.getCuentaUsuario().getContrato());
+                    
+                    crearFacturaPDFLocal(usuario.getCuentaUsuario().getContrato(), factura);
+                    mEmailService.sendFacturaEmail(usuario, factura);
+                    eliminarFacturaPDFLocal(factura);
+                    save(factura);
+                }
+            }
+        }
+    }
 
     /*
      * Pre: Recibe un documento
@@ -121,8 +155,8 @@ public class FacturaService {
             }    
     }
 
-    /*  Pre:      Recibe una factura
-     *  Post:    La elimina del sistema de archivos local
+    /*  Pre: Recibe una factura
+     *  Post: La elimina del sistema de archivos local
      */
     public void eliminarFacturaPDFLocal(Factura factura) {
         File file = new File("doc\\recibo-facturas\\" + factura.getfileName());

@@ -1,6 +1,7 @@
 package es.uca.iw.aplication.service;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
@@ -55,6 +56,7 @@ public class UsuarioService implements UserDetailsService {
 
     public Usuario buscarEmail(String email) { return usuarioRepository.findByCorreoElectronico(email); }
     public Usuario findById(Usuario usuario) { return usuarioRepository.findById(usuario.getId()).get(); }
+    public List<Usuario> findAll() { return usuarioRepository.findAll(); }
 
     public Token buscarToken(Usuario usuario) { return tokenRepository.findByUsuario(usuario); }
 

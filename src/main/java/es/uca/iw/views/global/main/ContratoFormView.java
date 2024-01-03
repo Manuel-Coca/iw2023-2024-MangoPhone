@@ -215,7 +215,7 @@ public class ContratoFormView extends Div {
                     });
                     errorDialog.open();
 
-                    Factura factura =  new Factura(Estado.Pagado, LocalDate.now(), contrato, facturaService.generarNombreFactura(usuario));
+                    Factura factura = new Factura(Estado.Pagado, LocalDate.now(), contrato, facturaService.generarNombreFactura(usuario));
                     facturaService.save(factura);
                     contratoService.addFactura(contrato, factura);
                     contratoService.actualizarContrato(contrato);

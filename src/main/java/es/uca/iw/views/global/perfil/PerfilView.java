@@ -21,11 +21,14 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
+import com.vaadin.flow.router.BeforeEnterEvent;
+import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.BeforeEvent;
 import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
+import com.vaadin.flow.router.RouterLayout;
 import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 
@@ -34,10 +37,10 @@ import es.uca.iw.aplication.tables.usuarios.Usuario;
 import es.uca.iw.views.templates.MainLayout;
 
 @PageTitle("Tu perfil")
-@Route(value = "profile", layout = MainLayout.class)
-@RouteAlias(value = "profile", layout = MainLayout.class)
+@Route(value = "profile/:userId", layout = MainLayout.class)
+@RouteAlias(value = "profile/:userId", layout = MainLayout.class)
 @AnonymousAllowed
-public class PerfilView extends Div implements HasUrlParameter<String>{
+public class PerfilView extends Div implements RouterLayout, BeforeEnterObserver{
 
     @Autowired
     UsuarioService usuarioService;
@@ -55,8 +58,8 @@ public class PerfilView extends Div implements HasUrlParameter<String>{
     }
     
     @Override
-    public void setParameter(BeforeEvent event, String userId) {
-        this.user = usuarioService.findById(UUID.fromString(userId));
+    public void beforeEnter(BeforeEnterEvent event) {
+        user = usuarioService.findById(UUID.fromString(event.getRouteParameters().get("userId").get()));
         add(crearContenido());
     }
 

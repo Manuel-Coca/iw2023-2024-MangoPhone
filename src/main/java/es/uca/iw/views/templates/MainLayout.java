@@ -54,7 +54,7 @@ public class MainLayout extends AppLayout {
         bloqueLogoNombre.add(mangoIcon, mangoName);
         bloqueLogoNombre.setAlignItems(Alignment.CENTER);
         bloqueLogoNombre.addClickListener(event -> {
-            UI.getCurrent().navigate("home");
+            UI.getCurrent().getPage().setLocation("home");        
         });
 
         addToNavbar(true, toggle, bloqueLogoNombre);
@@ -89,7 +89,6 @@ public class MainLayout extends AppLayout {
             nav.addItem(new SideNavItem("Iniciar Sesión", LoginView.class, LineAwesomeIcon.USER.create()));
             nav.addItem(new SideNavItem("Contratar", ContratoFormView.class, LineAwesomeIcon.PLUS_CIRCLE_SOLID.create()));
         }
-        //nav.addItem(new SideNavItem(session.getAttribute("Rol"), LoginView.class, LineAwesomeIcon.USER.create())); 
         return nav;
     }
 

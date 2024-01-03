@@ -17,11 +17,12 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.data.binder.Binder;
-import com.vaadin.flow.router.BeforeEvent;
-import com.vaadin.flow.router.HasUrlParameter;
+import com.vaadin.flow.router.BeforeEnterEvent;
+import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
+import com.vaadin.flow.router.RouterLayout;
 import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 
@@ -38,10 +39,10 @@ import es.uca.iw.aplication.tables.usuarios.Usuario;
 import es.uca.iw.views.templates.MainLayout;
 
 @PageTitle("Tu contrato")
-@Route(value = "profile/contrato", layout = MainLayout.class)
-@RouteAlias(value = "profile/contrato", layout = MainLayout.class)
+@Route(value = "profile/:userId/contrato", layout = MainLayout.class)
+@RouteAlias(value = "profile/:userId/contrato", layout = MainLayout.class)
 @AnonymousAllowed
-public class PerfilContratoView extends Div implements HasUrlParameter<String> {
+public class PerfilContratoView extends Div implements RouterLayout, BeforeEnterObserver {
 
     @Autowired
     private CuentaUsuarioService cuentaUsuarioService;
@@ -72,10 +73,11 @@ public class PerfilContratoView extends Div implements HasUrlParameter<String> {
     }
     
     @Override
-    public void setParameter(BeforeEvent event, String userId) {
-        this.user = usuarioService.findById(UUID.fromString(userId));
+    public void beforeEnter(BeforeEnterEvent event) {
+        user = usuarioService.findById(UUID.fromString(event.getRouteParameters().get("userId").get()));
         add(crearContenido());
     }
+
 
     private VerticalLayout crearContenido() {
         VerticalLayout listaLayout = new VerticalLayout();
@@ -215,7 +217,7 @@ public class PerfilContratoView extends Div implements HasUrlParameter<String> {
                 contratoService.deleteTarifa(tarifaContratada);
                 contratoService.addTarifa(contratoService.findByCuentaUsuario(user.getCuentaUsuario()), tarifaField.getValue());
                 contratoService.actualizarContrato(contratoService.findByCuentaUsuario(user.getCuentaUsuario()));
-                UI.getCurrent().getPage().setLocation("profile/contrato");
+                UI.getCurrent().getPage().setLocation("profile/" + session.getAttribute("idLoggedUser") + "/contrato");
             }
         });
         editDialog.getFooter().add(cerrarModal, confirmar);
@@ -262,7 +264,7 @@ public class PerfilContratoView extends Div implements HasUrlParameter<String> {
             if(binder.validate().isOk()) {
                 contratoService.addTarifa(contratoService.findByCuentaUsuario(user.getCuentaUsuario()), tarifaField.getValue());
                 contratoService.actualizarContrato(contratoService.findByCuentaUsuario(user.getCuentaUsuario()));
-                UI.getCurrent().getPage().setLocation("profile/contrato");
+                UI.getCurrent().getPage().setLocation("profile/" + session.getAttribute("idLoggedUser") + "/contrato");
             }
         });
         editDialog.getFooter().add(cerrarModal, confirmar);

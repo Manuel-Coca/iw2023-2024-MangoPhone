@@ -102,7 +102,7 @@ public class MyEmailService implements EmailService{
                             "", true);
 
                 String nombreFichero = factura.getfileName();
-                String path = "src\\main\\java\\es\\uca\\iw\\docs_facturas" + nombreFichero;
+                String path = "docs_facturas\\" + nombreFichero;
                 
                 File file = new File(path);
                 helper.addAttachment(nombreFichero, file);

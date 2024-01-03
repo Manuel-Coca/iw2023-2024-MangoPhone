@@ -1,10 +1,13 @@
 package es.uca.iw.aplication.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import es.uca.iw.aplication.repository.ContratoRepository;
 import es.uca.iw.aplication.tables.Contrato;
+import es.uca.iw.aplication.tables.Contrato_Factura;
 import es.uca.iw.aplication.tables.Contrato_Tarifa;
+import es.uca.iw.aplication.tables.Factura;
 import es.uca.iw.aplication.tables.tarifas.Tarifa;
 import es.uca.iw.aplication.tables.usuarios.CuentaUsuario;
 
@@ -12,24 +15,52 @@ import es.uca.iw.aplication.tables.usuarios.CuentaUsuario;
 public class ContratoService {
     private final ContratoRepository contratoRepository;
     private final Contrato_TarifaService contratoTarifaService;
+    private final Contrato_FacturaService contrato_FacturaService;
     
-    public ContratoService(ContratoRepository contratoRepository, Contrato_TarifaService contratoTarifaService) { 
+    @Autowired
+    public ContratoService(ContratoRepository contratoRepository, Contrato_TarifaService contratoTarifaService, Contrato_FacturaService contrato_FacturaService) { 
         this.contratoRepository = contratoRepository; 
         this.contratoTarifaService = contratoTarifaService;
+        this.contrato_FacturaService = contrato_FacturaService;
     }
 
-    public void createContrato(Contrato contrato){
+    
+    /*************************************************************************** Interfaz Común ************************************************************************************/
+    /*
+     * Pre:     Recibe un contrato
+     * Post:    Si no existe crea una nueva entrada en la base de datos con los datos del contrato, sino actualiza
+     */
+    public void save(Contrato contrato){ contratoRepository.save(contrato); }
+
+    public void delete(Contrato contrato) { contratoRepository.delete(contrato); }
+
+    public Contrato getContratoById(Contrato contrato) { return contratoRepository.findById(contrato.getId()).get(); }
+
+    /*************************************************************************** Interfaz Personalizada ************************************************************************************/
+    /*
+     * Pre:     Recibe un contrato existente en la base de datos
+     * Post:    Actualiza el precio, y hace un update en la base de datos
+     */
+    public void actualizarContrato(Contrato contrato) {
+        contrato.setPrecio(contrato.calcularPrecioTotal());
         contratoRepository.save(contrato);
     }
 
     /*
-     * Pre: Recibe un contrato, y tarifa distintos de null
-     * Post: Añade al objeto actual contrato la tarifa, devuelve true si se ha podido añadir correctamente, y false si no se ha podido
+     * Pre:     Recibe un contrato y una cuentaUsuario
+     * Post:    Enlaza la cuentaUsuario al contrato
+     */
+    public void asignarCuentaUsuario(Contrato contrato, CuentaUsuario cuentaUsuario) { contrato.setCuentaUsuario(cuentaUsuario); }
+
+
+    /*
+     * Pre:     Recibe un contrato, y tarifa distintos de null
+     * Post:    Añade al objeto actual contrato la tarifa, devuelve true si se ha podido añadir correctamente, y false si no se ha podido
     */
     public boolean addTarifa(Contrato contrato, Tarifa tarifa){
         if(!existeTarifa(contrato, tarifa)) {
             Contrato_Tarifa contratoTarifa = new Contrato_Tarifa(contrato, tarifa);
-            contratoTarifaService.create(contratoTarifa);
+            contratoTarifaService.save(contratoTarifa);
             contrato.addContratoTarifas(contratoTarifa);
             contrato.setPrecio(contrato.calcularPrecioTotal());
             
@@ -38,55 +69,93 @@ public class ContratoService {
     }
 
     /*
-     * Pre: Recibe un objeto contratoTarifa
-     * Post: Elimina del objeto contrato relacionado, el objeto contratoTarifa
+     * Pre:     Recibe un objeto contratoTarifa
+     * Post:    Elimina del objeto contrato relacionado, el objeto contratoTarifa
      */
     public void deleteTarifa(Contrato_Tarifa contratoTarifa) {
         if(existeTarifa(contratoTarifa.getContrato(), contratoTarifa.getTarifa())) {
             int index = indexTarifa(contratoTarifa.getContrato(), contratoTarifa);
             contratoTarifa.getContrato().getContratoTarifas().remove(index);
 
-            contratoTarifaService.remove(contratoTarifa.getId());
+            contratoTarifaService.delete(contratoTarifa.getId());
         }
     }
 
     /*
-     * Pre: Recibe un contrato y una tarifa distintos de null
-     * Post: Devuelve true si existe la tarifa en el contrato, sino false
+     * Pre:     Recibe un contrato y una tarifa distintos de null
+     * Post:    Devuelve true si existe la tarifa en el contrato, sino false
      */
     public boolean existeTarifa(Contrato contrato, Tarifa tarifa) {
         if(contrato != null){
             if(contrato.getContratoTarifas() != null)
-            for(Contrato_Tarifa contratoTarifa : contrato.getContratoTarifas())
-                if(contratoTarifa.getTarifa().getId().equals(tarifa.getId()))
-                    return true;
+                for(Contrato_Tarifa contratoTarifa : contrato.getContratoTarifas())
+                    if(contratoTarifa.getTarifa().getId().equals(tarifa.getId()))
+                        return true;
         }
         return false;
     }
 
     /*
-     * Pre: Recibe un contrato y una cuentaUsuario
-     * Post: Enlaza la cuentaUsuario al contrato
+     * Pre:     Recibe un objeto contrato y contrato_tarifa
+     * Post:    Si el contrato tiene entidades contrato_tarifa asociadas, devuelve el indice que ocupa el objeto contrato_tarifa
      */
-    public void asignarCuentaUsuario(Contrato contrato, CuentaUsuario cuentaUsuario) {
-        contrato.setCuentaUsuario(cuentaUsuario);
-    }
-
-    /*
-     * Pre: Recibe un contrato existente en la base de datos
-     * Post: Actualiza el precio, y hace un update en la base de datos
-     */
-    public void actualizarContrato(Contrato contrato) {
-        contrato.setPrecio(contrato.calcularPrecioTotal());
-        contratoRepository.save(contrato);
-    }
-
-    public Contrato findByCuentaUsuario(CuentaUsuario cuentaUsuario) {
-        return contratoRepository.findByCuentaUsuarioId(cuentaUsuario.getId()).get();
-    }
-
     public int indexTarifa(Contrato contrato, Contrato_Tarifa contratoTarifa) {
         if(contrato.getContratoTarifas() == null) return 0;
         else return contrato.getContratoTarifas().indexOf(contratoTarifa);
+    }
+    
+     /*
+     * Pre:     Recibe un contrato, y Factura distintos de null
+     * Post:    Añade al objeto actual contrato la Factura, devuelve true si se ha podido añadir correctamente, y false si no se ha podido
+    */
+    public boolean addFactura(Contrato contrato, Factura factura){
+        if(!existeFactura(contrato, factura)) {
+            Contrato_Factura contratoFactura = new Contrato_Factura(contrato, factura);
+            contrato_FacturaService.save(contratoFactura);
+            contrato.addContratoFacturas(contratoFactura);
+            
+            return true;
+        } else return false;
+    }
+
+    /*
+     * Pre:     Recibe un objeto contratoFactura
+     * Post:    Elimina del objeto contrato relacionado, el objeto contratoFactura
+     */
+    public void deleteFactura(Contrato_Factura contratoFactura) {
+        if(existeFactura(contratoFactura.getContrato(), contratoFactura.getFactura())) {
+            int index = indexFactura(contratoFactura.getContrato(), contratoFactura);
+            contratoFactura.getContrato().getContratoFacturas().remove(index);
+
+            contrato_FacturaService.delete(contratoFactura.getId());
+        }
+    }
+
+    /*
+     * Pre:     Recibe un contrato y una Factura distintos de null
+     * Post:    Devuelve true si existe la Factura en el contrato, sino false
+     */
+    public boolean existeFactura(Contrato contrato, Factura Factura) {
+        if(contrato != null){
+            if(contrato.getContratoFacturas() != null)
+                for(Contrato_Factura contratoFactura : contrato.getContratoFacturas())
+                    if(contratoFactura.getFactura().getId().equals(Factura.getId()))
+                        return true;
+        }
+        return false;
+    }
+
+    /*
+     * Pre:     Recibe un objeto contrato y contrato_Factura
+     * Post:    Si el contrato tiene entidades contrato_Factura asociadas, devuelve el indice que ocupa el objeto contrato_Factura
+     */
+    public int indexFactura(Contrato contrato, Contrato_Factura contratoFactura) {
+        if(contrato.getContratoFacturas() == null) return 0;
+        else return contrato.getContratoFacturas().indexOf(contratoFactura);
+    }
+
+
+    public Contrato findByCuentaUsuario(CuentaUsuario cuentaUsuario) {
+        return contratoRepository.findByCuentaUsuarioId(cuentaUsuario.getId()).get();
     }
 }

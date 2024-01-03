@@ -5,7 +5,7 @@ import java.util.UUID;
 
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -34,21 +34,27 @@ public class Factura {
     public Estado getEstado() { return estado; }
     public void setEstado(Estado estado) { this.estado = estado; }
 
-    @Column(name = "documento")
+    @Column(name = "nombreDocumento")
+    private String fileName = null;
+    public String getfileName() { return fileName; }
+    public void setfileName(String fileName) { this.fileName = fileName; }
+
+    @Column(name = "documentoData")
     @Lob
     private byte[] data = null;
     public byte[] getData() { return data; }
     public void setData(byte[] data) { this.data = data; }
 
-    @OneToOne
+    @ManyToOne
     private Contrato contrato = null;
     public Contrato getContrato() { return contrato; }
     public void setContrato(Contrato contrato) { this.contrato = contrato; }
 
-    public Factura(Estado estado, LocalDate fechaEmision, Contrato contrato) {
+    public Factura(Estado estado, LocalDate fechaEmision, Contrato contrato, String fileName) {
         this.estado = estado;
         this.fechaEmision = fechaEmision;
         this.contrato = contrato;
+        this.fileName = fileName;
     }
 
     public Factura(){}

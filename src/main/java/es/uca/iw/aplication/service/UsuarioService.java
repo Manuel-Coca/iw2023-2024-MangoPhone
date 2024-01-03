@@ -1,6 +1,7 @@
 package es.uca.iw.aplication.service;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
@@ -19,8 +20,8 @@ import es.uca.iw.aplication.tables.usuarios.Token;
 @Service
 public class UsuarioService implements UserDetailsService {
     private final UsuarioRepository usuarioRepository;
-    private final TokenRepository tokenRepository;
     private final PasswordEncoder passwordEncoder;
+    private final TokenRepository tokenRepository;
     private CuentaUsuarioService cuentaUsuarioService;
 
     @Autowired
@@ -55,6 +56,7 @@ public class UsuarioService implements UserDetailsService {
 
     public Usuario buscarEmail(String email) { return usuarioRepository.findByCorreoElectronico(email); }
     public Usuario findById(Usuario usuario) { return usuarioRepository.findById(usuario.getId()).get(); }
+    public List<Usuario> findAll() { return usuarioRepository.findAll(); }
 
     public Token buscarToken(Usuario usuario) { return tokenRepository.findByUsuario(usuario); }
 
@@ -67,7 +69,7 @@ public class UsuarioService implements UserDetailsService {
             usuario.setActivo(true);
             CuentaUsuario cuentaUsuario = new CuentaUsuario();
             cuentaUsuario.setDuennoCuenta(usuario);
-            cuentaUsuarioService.createCuentaUsuario(cuentaUsuario);
+            cuentaUsuarioService.save(cuentaUsuario);
             usuario.setCuentaUsuario(cuentaUsuario);
             usuarioRepository.save(usuario);
             // Incluir Eliminación de token (En el caso que se quiera eliminar)

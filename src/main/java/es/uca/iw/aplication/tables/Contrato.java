@@ -44,10 +44,12 @@ public class Contrato {
     public void setCuentaUsuario(CuentaUsuario cuentaUsuario) { this.cuentaUsuario = cuentaUsuario; }
     public CuentaUsuario getUsuario() { return cuentaUsuario; }
 
-    @OneToOne
-    private Factura factura = null;
-    public Factura getFactura() { return factura; }
-    public void setFactura(Factura factura) { this.factura = factura; }
+   @OneToMany(fetch = FetchType.EAGER, orphanRemoval = true, mappedBy = "contrato")
+    private List<Contrato_Factura> contratoFacturas = new ArrayList<Contrato_Factura>();
+    public List<Contrato_Factura> getContratoFacturas() { return contratoFacturas; }
+    public void setContratoFacturas(List<Contrato_Factura> contratoFacturas) { this.contratoFacturas = contratoFacturas; }
+    public void addContratoFacturas(Contrato_Factura contratoFactura) { this.contratoFacturas.add(contratoFactura); }
+    public void deleteContratoFactura(Contrato_Factura contratoFactura) { this.contratoFacturas.remove(contratoFactura); }
 
     @OneToMany(fetch = FetchType.EAGER, orphanRemoval = true, mappedBy = "contrato")
     private List<Contrato_Tarifa> contratoTarifas = new ArrayList<Contrato_Tarifa>();

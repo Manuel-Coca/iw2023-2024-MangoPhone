@@ -105,6 +105,7 @@ public class PerfilContratoView extends Div {
             Contrato_Tarifa tarifaContratada = contrato_TarifaService.findByContratoAndTarifa(((Usuario)session.getAttribute("loggedUser")).getCuentaUsuario().getContrato(), selectedTarifa.get());
             contratoService.deleteTarifa(tarifaContratada);
             contratoService.actualizarContrato(contratoService.findByCuentaUsuario(((Usuario)session.getAttribute("loggedUser")).getCuentaUsuario()));
+
             UI.getCurrent().getPage().setLocation("profile/contrato");
         });
         
@@ -198,6 +199,7 @@ public class PerfilContratoView extends Div {
                 contratoService.deleteTarifa(tarifaContratada);
                 contratoService.addTarifa(contratoService.findByCuentaUsuario(((Usuario)session.getAttribute("loggedUser")).getCuentaUsuario()), tarifaField.getValue());
                 contratoService.actualizarContrato(contratoService.findByCuentaUsuario(((Usuario)session.getAttribute("loggedUser")).getCuentaUsuario()));
+
                 UI.getCurrent().getPage().setLocation("profile/contrato");
             }
         });
@@ -245,6 +247,7 @@ public class PerfilContratoView extends Div {
             if(binder.validate().isOk()) {
                 contratoService.addTarifa(contratoService.findByCuentaUsuario(((Usuario)session.getAttribute("loggedUser")).getCuentaUsuario()), tarifaField.getValue());
                 contratoService.actualizarContrato(contratoService.findByCuentaUsuario(((Usuario)session.getAttribute("loggedUser")).getCuentaUsuario()));
+
                 UI.getCurrent().getPage().setLocation("profile/contrato");
             }
         });

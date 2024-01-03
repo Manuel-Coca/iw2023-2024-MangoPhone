@@ -5,9 +5,10 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpEntity;
-import es.uca.iw.endPoints.CustomerLine;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,7 @@ public class CustomerLineService {
     private RestTemplate restTemplate;
 
     /**
-     * Metodo que Obtiene la operación Get /
+     * Metodo que Obtiene la operación GET /
      * con toda la información de las lineas
      * de teléfono activas.
      * @return List<CustomerLine>
@@ -51,65 +52,107 @@ public class CustomerLineService {
     }
 
     /**
-     * Metodo que Obtiene la operación Get /{id}
+     * Metodo que Obtiene la operación GET /{id}
      * con toda la información de la linea
      * de teléfono.
-     * @return CustomerLine
-    */
+     * @param id
+     * @return
+     */
     public CustomerLine getOneLine(String id) {
         String urlFinal = url + "/" + id + "?carrier=" + carrier;
         CustomerLine customerLines = restTemplate.getForObject(urlFinal, CustomerLine.class);
         return customerLines;
     }
 
+    /**
+     * Metodo que realiza la operación DELETE /{id}
+     * con toda la información de la linea
+     * de teléfono.
+     * @param id
+     */
     public void deleteLine(String id) {
-        String urlFinal = url + "/{id}";
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("carrier",carrier);
+        String urlFinal = url + "/" + id + "?carrier=" + carrier;
 
         RequestCallback requestCallback = restTemplate.httpEntityCallback(null, String.class);
         ResponseExtractor<ResponseEntity<Void>> responseExtractor = restTemplate.responseEntityExtractor(Void.class);
 
-        restTemplate.execute(urlFinal, HttpMethod.DELETE, requestCallback, responseExtractor, id, headers);
+        restTemplate.execute(urlFinal, HttpMethod.DELETE, requestCallback, responseExtractor);
     }
 
-    public void patchLine(CustomerLine customerLine) {
-        String urlFinal = url + "/{id}";
+    /**
+     * Metodo que realiza la operación PATCH /{id}
+     * con toda la información de la linea
+     * de teléfono.
+     * @param customerLine
+     * @param id
+     */
+    public CustomerLine patchLine(String id, CustomerLine customerLine) {
+        String urlFinal = url + "/" + id;
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("accept","application/hal+json");
 
-        HttpEntity<CustomerLine> resqEntity = new HttpEntity<>(customerLine,headers);
-
-        restTemplate.patchForObject(urlFinal, resqEntity, Void.class, customerLine.getId());
+        HttpEntity<CustomerLine> resqEntity = new HttpEntity<>(customerLine, headers);
+        return restTemplate.patchForObject(urlFinal, resqEntity, CustomerLine.class, headers);
+        //System.out.println("\n" + resqEntity.getBody().getCarrier() + "\n");
     }
 
-    public List<DataUsageRecord> dataUsageCustomer(CustomerLine customerLine, String startDate, String endDate) {
-        String urlFinal;
-        if(startDate == null && endDate == null) urlFinal = url + "/" + customerLine.getId() + "/?carrier=" + carrier;
-        else if(startDate != null) urlFinal = url + "/" + customerLine.getId() + "/?carrier=" + carrier + "&startDate=" + startDate;
-        else if(endDate != null) urlFinal = url + "/" + customerLine.getId() + "/?carrier=" + carrier + "&endDate=" + endDate;
-        else urlFinal = url + "/" + customerLine.getId() + "/?carrier=" + carrier + "&startDate=" + startDate + "&endDate=" + endDate;
-        
+    private boolean validarFechaYFormato(String fecha, String formato) {
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(formato);
+            LocalDate.parse(fecha, formatter);
+            return true;
+        } catch (DateTimeParseException e) {
+            return false;
+        }
+    }
+
+    /**
+     * Metodo que realiza la operación GET /{id}/datausagerecords
+     * con toda la información de la linea
+     * de teléfono sobre sus datos usados.
+     * @param startDate
+     * @param endDate
+     * @return List<DataUsageRecord>
+     */
+    public List<DataUsageRecord> dataUsageCustomer(String id, String startDate, String endDate) {
+        String urlFinal = url + "/" + id + "/datausagerecords?carrier=" + carrier;
+
+        if (validarFechaYFormato(startDate, "yyyy-MM-dd")) urlFinal = urlFinal + "&startDate=" + startDate;
+        if (validarFechaYFormato(endDate, "yyyy-MM-dd")) urlFinal = urlFinal + "&endDate=" + endDate;
+
         DataUsageRecord[] dataUsageRecord = restTemplate.getForObject(urlFinal, DataUsageRecord[].class);
         
         return Arrays.asList(dataUsageRecord);
     }
 
-    public List<CallRecord> callRecordCustomer(CustomerLine customerLine, String startDate, String endDate) {
-        String urlFinal;
-        if(startDate == null && endDate == null) urlFinal = url + "/" + customerLine.getId() + "/?carrier=" + carrier;
-        else if(startDate != null) urlFinal = url + "/" + customerLine.getId() + "/?carrier=" + carrier + "&startDate=" + startDate;
-        else if(endDate != null) urlFinal = url + "/" + customerLine.getId() + "/?carrier=" + carrier + "&endDate=" + endDate;
-        else urlFinal = url + "/" + customerLine.getId() + "/?carrier=" + carrier + "&startDate=" + startDate + "&endDate=" + endDate;
+    /**
+     * Metodo que realiza la operación GET /{id}/callrecords
+     * con toda la información de la linea
+     * de teléfono sobre sus llamadas.
+     * @param startDate
+     * @param endDate
+     * @return List<CallRecord>
+     */
+    public List<CallRecord> callRecordCustomer(String id, String startDate, String endDate) {
+        String urlFinal = url + "/" + id + "/callrecords?carrier=" + carrier;
+
+        if (validarFechaYFormato(startDate, "yyyy-MM-dd")) urlFinal = urlFinal + "&startDate=" + startDate;
+        if (validarFechaYFormato(endDate, "yyyy-MM-dd")) urlFinal = urlFinal + "&endDate=" + endDate;
         
         CallRecord[] callRecord = restTemplate.getForObject(urlFinal, CallRecord[].class);
         
         return Arrays.asList(callRecord);
     }
 
+    /**
+     * Metodo que realiza la operación GET search/phoneNumber/{phoneNumber}
+     * con toda la información de la linea
+     * de teléfono sobre sus llamadas.
+     * @param phoneNumber
+     * @return CustomerLine
+     */
     public CustomerLine getOneLineByPhoneNumber(String phoneNumber) {
         String urlFinal = url + "/search/phoneNumber/" + phoneNumber + "?carrier=" + carrier;
         CustomerLine customerLines = restTemplate.getForObject(urlFinal, CustomerLine.class);

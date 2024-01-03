@@ -22,17 +22,61 @@ public class customerLineController {
     @AnonymousAllowed
     public void lineReg() { 
         CustomerLine customerLine = new CustomerLine();
-        customerLine.setName("Rafael");
-        customerLine.setSurname("LealPardo");
+        customerLine.setName("Juan");
+        customerLine.setSurname("GarciaCandom");
         customerLine.setCarrier("MangoPhone");
-        customerLine.setPhoneNumber("111223344");
+        customerLine.setPhoneNumber("444223344");
         customerLineService.lineRegister(customerLine);
     }
 
     @GetMapping("/OnePhone")
     @AnonymousAllowed
     public CustomerLine getOneLine() { 
-        String id = "0b333275-839a-4d65-bb63-4635aa056537";
+        String id = "aa636a3e-a0ae-4485-8053-8012ee2e7975";
         return customerLineService.getOneLine(id);
+    }
+
+    @GetMapping("/deleteLine")
+    @AnonymousAllowed
+    public void deleteLine() { 
+        String id = "aa636a3e-a0ae-4485-8053-8012ee2e7975";
+        customerLineService.deleteLine(id);
+    }
+
+    @GetMapping("/modifyLine")
+    @AnonymousAllowed
+    public CustomerLine modifyLine() { 
+        String id = "aa636a3e-a0ae-4485-8053-8012ee2e7975";
+        CustomerLine customerLine = new CustomerLine();
+        customerLine.setName("ManuYJuan");
+        customerLine.setSurname("CocaGarcía");
+        customerLine.setCarrier("MangoPhone");
+        customerLine.setPhoneNumber("111223344");
+        return customerLineService.patchLine(id, customerLine);
+    }
+
+    @GetMapping("/dataUsage")
+    @AnonymousAllowed
+    public List<DataUsageRecord> dataUsageLine() {
+        String id = "ce2476ee-cf17-44b8-98ff-0aba52bfcd6f";
+        String startDate = ""; 
+        String endDate = "";
+        return customerLineService.dataUsageCustomer(id, startDate, endDate);
+    }
+
+    @GetMapping("/callRecord")
+    @AnonymousAllowed
+    public List<CallRecord> callRecordLine() {
+        String id = "aa636a3e-a0ae-4485-8053-8012ee2e7975";
+        String startDate = "2024-01-02"; 
+        String endDate = "2024-01-03";
+        return customerLineService.callRecordCustomer(id, startDate, endDate);
+    }
+
+    @GetMapping("/PhoneLine")
+    @AnonymousAllowed
+    public CustomerLine getOneLineByPhoneNumber() {
+        String phoneNumber = "111223344"; 
+        return customerLineService.getOneLineByPhoneNumber(phoneNumber);
     }
 }

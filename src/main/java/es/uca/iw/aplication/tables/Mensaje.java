@@ -39,6 +39,9 @@ public class Mensaje {
     public Emisor getEmisor() { return emisor; }
     public void setEmisor(Emisor emisor) { this.emisor = emisor; }
 
+    // emisor_id
+    // asunto
+
     @Lob
     @Column(name = "cuerpo")
     private String cuerpo;

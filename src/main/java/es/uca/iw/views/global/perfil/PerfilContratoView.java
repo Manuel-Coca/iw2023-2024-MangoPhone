@@ -1,14 +1,12 @@
 package es.uca.iw.views.global.perfil;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.lowagie.text.Document;
 import com.vaadin.flow.component.ItemLabelGenerator;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
@@ -117,9 +115,18 @@ public class PerfilContratoView extends Div {
         Button bajaButton = new Button("Darse de baja");
         bajaButton.addClassName("boton-verde-secondary");
         bajaButton.addClickListener(event -> {
+            Factura factura =  new Factura(Estado.Pagado, LocalDate.now(), ((Usuario)session.getAttribute("loggedUser")).getCuentaUsuario().getContrato(), facturaService.generarNombreFactura(((Usuario)session.getAttribute("loggedUser"))));
+            facturaService.save(factura);
             Contrato_Tarifa tarifaContratada = contrato_TarifaService.findByContratoAndTarifa(((Usuario)session.getAttribute("loggedUser")).getCuentaUsuario().getContrato(), selectedTarifa.get());
             contratoService.deleteTarifa(tarifaContratada);
             contratoService.actualizarContrato(contratoService.findByCuentaUsuario(((Usuario)session.getAttribute("loggedUser")).getCuentaUsuario()));
+            
+            facturaService.save(factura);
+
+            facturaService.crearFacturaPDFLocal(((Usuario)session.getAttribute("loggedUser")).getCuentaUsuario().getContrato(), factura);
+            emailService.sendFacturaEmail(((Usuario)session.getAttribute("loggedUser")), factura);
+            facturaService.eliminarFacturaPDFLocal(factura);
+
             UI.getCurrent().getPage().setLocation("profile/contrato");
         });
         
@@ -209,10 +216,18 @@ public class PerfilContratoView extends Div {
         confirmar.addClassName("boton-naranja-primary");
         confirmar.addClickListener(event2 -> {
             if(binder.validate().isOk()) {
+                Factura factura =  new Factura(Estado.Pagado, LocalDate.now(), ((Usuario)session.getAttribute("loggedUser")).getCuentaUsuario().getContrato(), facturaService.generarNombreFactura(((Usuario)session.getAttribute("loggedUser"))));
+                facturaService.save(factura);
                 Contrato_Tarifa tarifaContratada = contrato_TarifaService.findByContratoAndTarifa(((Usuario)session.getAttribute("loggedUser")).getCuentaUsuario().getContrato(), selectedTarifa.get());
                 contratoService.deleteTarifa(tarifaContratada);
                 contratoService.addTarifa(contratoService.findByCuentaUsuario(((Usuario)session.getAttribute("loggedUser")).getCuentaUsuario()), tarifaField.getValue());
                 contratoService.actualizarContrato(contratoService.findByCuentaUsuario(((Usuario)session.getAttribute("loggedUser")).getCuentaUsuario()));
+                facturaService.save(factura);
+
+                facturaService.crearFacturaPDFLocal(((Usuario)session.getAttribute("loggedUser")).getCuentaUsuario().getContrato(), factura);
+                emailService.sendFacturaEmail(((Usuario)session.getAttribute("loggedUser")), factura);
+                facturaService.eliminarFacturaPDFLocal(factura);
+
                 UI.getCurrent().getPage().setLocation("profile/contrato");
             }
         });

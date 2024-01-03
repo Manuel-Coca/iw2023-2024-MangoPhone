@@ -3,6 +3,7 @@ package es.uca.iw.views.global.perfil;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Div;
@@ -21,6 +23,7 @@ import com.vaadin.flow.component.page.Page;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
+import com.vaadin.flow.server.InputStreamFactory;
 import com.vaadin.flow.server.StreamResource;
 import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
@@ -54,14 +57,20 @@ public class PerfilFacturasView extends Div {
         VerticalLayout listaLayout = new VerticalLayout();
         HorizontalLayout botonesLayout = new HorizontalLayout();
 
-        Button descargarButton = new Button("Descargar factura");
+        Button descargarButton = new Button("Seleccionar factura");
         descargarButton.addClassName("boton-verde-secondary");
         descargarButton.addClickListener(event -> {
-            facturaService.crearFacturaPDFLocal(((Usuario) VaadinSession.getCurrent().getAttribute("loggedUser")).getCuentaUsuario().getContrato(), selectedFactura);
-            Anchor anchor = new Anchor("\\doc\\recibo-facturas\\" + selectedFactura.getfileName(), "Download PDF");
-            anchor.getElement().setAttribute("download", selectedFactura.getfileName());
-            add(anchor);
-            facturaService.eliminarFacturaPDFLocal(selectedFactura);
+            ConfirmDialog confirmDialog = new ConfirmDialog("Confirmar Descarga",
+                    "¿Estás seguro de que quieres descargar el archivo?",
+                    "Sí", e -> {
+                        // Si el usuario hace clic en "Sí", procede con la descarga
+                        downloadFile();
+                    },
+                    "Cancelar", e -> {
+                        // Si el usuario hace clic en "Cancelar", no hagas nada
+                    });
+        
+            confirmDialog.open();
         });
         
         
@@ -101,4 +110,30 @@ public class PerfilFacturasView extends Div {
         facturas = facturaService.findByContrato(contrato);
         return facturas;
     }
+
+    // Función para descargar el archivo
+        private void downloadFile() {
+            Anchor anchor = new Anchor(new StreamResource(selectedFactura.getfileName(), new InputStreamFactory() {
+                @Override
+                public InputStream createInputStream() {
+                    File file = new File("doc\\recibo-facturas\\" + selectedFactura.getfileName());
+                    try {
+                        return new FileInputStream(file);
+                    } catch (FileNotFoundException e) {
+                        // TODO: Manejar FileNotFoundException de alguna manera
+                        throw new RuntimeException(e);
+                    }
+                }
+            }), "");
+            anchor.getElement().setAttribute("download", true);
+
+            // JavaScript para abrir en nueva pestaña
+            anchor.getElement().executeJs("this.target='_blank'");
+
+            anchor.add(new Button(selectedFactura.getfileName()));
+            add(anchor);
+
+            // Simula el clic en el enlace para iniciar la descarga automáticamente
+            anchor.getElement().executeJs("this.click()");
+        }
 }

@@ -20,6 +20,7 @@ import es.uca.iw.views.global.autenticacion.LogoutView;
 import es.uca.iw.views.marketing.CrearTarifaView;
 import es.uca.iw.views.marketing.ListaTarifasView;
 import es.uca.iw.views.marketing.MarkentingHomeView;
+import es.uca.iw.views.sac.ContratosClientesView;
 
 import org.vaadin.lineawesome.LineAwesomeIcon;
 
@@ -28,61 +29,60 @@ import org.vaadin.lineawesome.LineAwesomeIcon;
  */
 public class MainLayoutTrabajadores extends AppLayout {
     
-    private final VaadinSession session = VaadinSession.getCurrent();
-    
     public MainLayoutTrabajadores() {
         setPrimarySection(Section.NAVBAR);
         crearMenu();
         crearHeader();
         crearFooter();
     }
-
+    
     private void crearHeader() {
         DrawerToggle toggle = new DrawerToggle();
         toggle.setAriaLabel("Menu toggle");
-
+        
         Image mangoIcon = new Image("icons/mango-fruit-icon.svg", "logo");
         mangoIcon.setWidth("30px");
         mangoIcon.setHeight("30px");
-
+        
         H1 mangoName = new H1("Mango");
         mangoName.addClassNames("titulo-custom");
-
+        
         HorizontalLayout bloqueLogoNombre = new HorizontalLayout();
         bloqueLogoNombre.add(mangoIcon, mangoName);
         bloqueLogoNombre.setAlignItems(Alignment.CENTER);
         bloqueLogoNombre.addClickListener(event -> {
             UI.getCurrent().navigate("home");
         });
-
+        
         addToNavbar(true, toggle, bloqueLogoNombre);
     }
-
+    
     private void crearMenu() {
         H1 appName = new H1("Menú");
         appName.addClassNames(LumoUtility.FontSize.LARGE, LumoUtility.Margin.NONE);
         Header header = new Header(appName);
-
+        
         Scroller scroller = new Scroller(crearNavegacion());
-
+        
         addToDrawer(header, scroller, crearFooter());
     }
-
+    
     private SideNav crearNavegacion() {
+        VaadinSession session = VaadinSession.getCurrent();
         SideNav nav = new SideNav();
-
+        
         if(session.getAttribute("Rol").equals(Rol.MARKETING)) {
             nav.addItem(new SideNavItem("Inicio", MarkentingHomeView.class, LineAwesomeIcon.HOME_SOLID.create()));
             nav.addItem(new SideNavItem("Crear tarifa", CrearTarifaView.class, LineAwesomeIcon.PLUS_CIRCLE_SOLID.create()));
             nav.addItem(new SideNavItem("Ver tarifas", ListaTarifasView.class, LineAwesomeIcon.LIST_SOLID.create()));
             nav.addItem(new SideNavItem("Cerrar sesión", LogoutView.class, LineAwesomeIcon.USER.create()));  
         }
-        else if(session.getAttribute("Rol").equals(Rol.FINANZAS.toString())) {
+        else if(session.getAttribute("Rol").equals(Rol.FINANZAS)) {
             //---
             nav.addItem(new SideNavItem("Cerrar sesión", LogoutView.class, LineAwesomeIcon.USER.create()));  
         }
-        else if(session.getAttribute("Rol").equals(Rol.SAC.toString())) {
-            //---
+        else if(session.getAttribute("Rol").equals(Rol.SAC)) {
+            nav.addItem(new SideNavItem("Gestionar contratos", ContratosClientesView.class, LineAwesomeIcon.SCROLL_SOLID.create()));  
             nav.addItem(new SideNavItem("Cerrar sesión", LogoutView.class, LineAwesomeIcon.USER.create()));  
         }
 

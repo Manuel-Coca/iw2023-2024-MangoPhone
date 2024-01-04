@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import es.uca.iw.aplication.repository.UsuarioRepository;
 import es.uca.iw.aplication.repository.TokenRepository;
 import es.uca.iw.aplication.tables.usuarios.Usuario;
+import es.uca.iw.aplication.tables.enumerados.Rol;
 import es.uca.iw.aplication.tables.usuarios.CuentaUsuario;
 import es.uca.iw.aplication.tables.usuarios.Token;
 
@@ -57,6 +58,7 @@ public class UsuarioService implements UserDetailsService {
     public Usuario buscarEmail(String email) { return usuarioRepository.findByCorreoElectronico(email); }
     public Usuario findById(Usuario usuario) { return usuarioRepository.findById(usuario.getId()).get(); }
     public List<Usuario> findAll() { return usuarioRepository.findAll(); }
+    public List<Usuario> findByRol(Rol rol) { return usuarioRepository.findByRol(rol); }
 
     public Token buscarToken(Usuario usuario) { return tokenRepository.findByUsuario(usuario); }
 

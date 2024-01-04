@@ -6,6 +6,7 @@ import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import es.uca.iw.aplication.tables.enumerados.Rol;
 import es.uca.iw.aplication.tables.usuarios.CuentaUsuario;
 import es.uca.iw.aplication.tables.usuarios.Usuario;
 
@@ -25,6 +26,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario, UUID> {
     Usuario findByTelefono(String telefono);
 
     Usuario findByCuentaUsuario(CuentaUsuario cuentaUsuario);
+
+    List<Usuario> findByRol(Rol rol);
 
     List<Usuario> findByActivoTrue();
 

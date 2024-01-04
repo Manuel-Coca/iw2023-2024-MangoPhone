@@ -67,10 +67,13 @@ public class ContratoFormView extends Div {
     private SeleccionadorDeTarifas seleccionadorFibra = new SeleccionadorDeTarifas();
     private SeleccionadorDeTarifas seleccionadorFijo = new SeleccionadorDeTarifas();
     
-    public ContratoFormView(TarifaService tarifaService, ContratoService contratoService, UsuarioService usuarioService) {
+    public ContratoFormView(TarifaService tarifaService, ContratoService contratoService, UsuarioService usuarioService, FacturaService facturaService, EmailService emailService, CuentaUsuarioService cuentaUsuarioService) {
         this.tarifaService = tarifaService;
         this.contratoService = contratoService;
         this.usuarioService = usuarioService;
+        this.facturaService = facturaService;
+        this.emailService = emailService;
+        this.cuentaUsuarioService = cuentaUsuarioService;
 
         if(session.getAttribute("loggedUser") == null) {
             ConfirmDialog dialog = new ConfirmDialog("Aviso", "Debes iniciar sesión", "Iniciar sesion", event1 -> {

@@ -134,7 +134,7 @@ public class LoginView extends Div {
                     session.setAttribute("Rol", usuario.getRol());
                     session.setAttribute("loggedUser", usuario);
                     ConfirmDialog dialogBienvenida = new ConfirmDialog("Bienvenido", "Cliente, " + usuario.getNombre(), "Entrar", event -> {
-                        UI.getCurrent().navigate("/home"); //Cambiar por perfil de cliente
+                        UI.getCurrent().navigate("profile"); //Perfil de cliente
                     });
                     dialogBienvenida.open();
                 } 
@@ -142,7 +142,7 @@ public class LoginView extends Div {
                     session.setAttribute("Rol", usuario.getRol());
                     session.setAttribute("loggedUser", usuario);
                     ConfirmDialog dialogBienvenida = new ConfirmDialog("Bienvenido", "SAC, " + usuario.getNombre(), "Entrar", event -> {
-                        UI.getCurrent().navigate("/home"); //Cambiar por perfil de SAC
+                        UI.getCurrent().navigate("sachome"); //Perfil de SAC
                     });
                     dialogBienvenida.open();
                 } 
@@ -150,7 +150,7 @@ public class LoginView extends Div {
                     session.setAttribute("Rol", usuario.getRol());
                     session.setAttribute("loggedUser", usuario);
                     ConfirmDialog dialogBienvenida = new ConfirmDialog("Bienvenido", "MARK, " + usuario.getNombre(), "Entrar", event -> {
-                        UI.getCurrent().navigate("/marketinghome"); //Cambiar por perfil de Marketing
+                        UI.getCurrent().navigate("marketinghome"); //Perfil de Marketing
                     });
                     dialogBienvenida.open();
                 } 

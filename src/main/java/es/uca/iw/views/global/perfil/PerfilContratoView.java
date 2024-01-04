@@ -232,6 +232,9 @@ public class PerfilContratoView extends Div {
             ); 
         }
 
+        binder.forField(tarifaField)
+                .asRequired("La nueva tarifa es obligatoria");
+
         dialogLayout.add(tarifaField);
         
         // Botones

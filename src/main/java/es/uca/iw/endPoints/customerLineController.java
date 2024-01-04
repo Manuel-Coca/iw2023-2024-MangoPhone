@@ -2,9 +2,12 @@ package es.uca.iw.endPoints;
 
 import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
+
+import reactor.core.publisher.Mono;
 
 @AnonymousAllowed
 @RestController
@@ -45,17 +48,17 @@ public class customerLineController {
 
     @GetMapping("/modifyLine")
     @AnonymousAllowed
-    public CustomerLine modifyLine() { 
+    public Mono<CustomerLine> modifyLine() { 
         String id = "aa636a3e-a0ae-4485-8053-8012ee2e7975";
         CustomerLine customerLine = new CustomerLine();
         customerLine.setName("ManuYJuan");
-        customerLine.setSurname("CocaGarcía");
+        customerLine.setSurname("CocaGarcia");
         customerLine.setCarrier("MangoPhone");
         customerLine.setPhoneNumber("111223344");
-        return customerLineService.patchLine(id, customerLine);
+        return customerLineService.realizarSolicitudPatch(id, customerLine);
     }
 
-    @GetMapping("/dataUsage")
+    @PatchMapping("/dataUsage")
     @AnonymousAllowed
     public List<DataUsageRecord> dataUsageLine() {
         String id = "ce2476ee-cf17-44b8-98ff-0aba52bfcd6f";

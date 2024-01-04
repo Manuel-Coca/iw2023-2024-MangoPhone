@@ -15,6 +15,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RequestCallback;
 import org.springframework.web.client.ResponseExtractor;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.BodyInserters;
+import org.springframework.web.reactive.function.client.WebClient;
+
+import reactor.core.publisher.Mono;
 
 @Service
 public class CustomerLineService {
@@ -23,6 +27,8 @@ public class CustomerLineService {
 
     @Autowired
     private RestTemplate restTemplate;
+    @Autowired
+    private WebClient webClient;
 
     /**
      * Metodo que Obtiene la operación GET /
@@ -88,14 +94,25 @@ public class CustomerLineService {
      */
     public CustomerLine patchLine(String id, CustomerLine customerLine) {
         String urlFinal = url + "/" + id;
-
+        
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.set("accept","application/hal+json");
+        headers.set("Accept", "application/hal+json");
+        headers.set("Content-Type", "application/json");
 
         HttpEntity<CustomerLine> resqEntity = new HttpEntity<>(customerLine, headers);
-        return restTemplate.patchForObject(urlFinal, resqEntity, CustomerLine.class, headers);
-        //System.out.println("\n" + resqEntity.getBody().getCarrier() + "\n");
+        System.out.println("\n" +  "\n");
+        CustomerLine customerLine2 = restTemplate.exchange(urlFinal, HttpMethod.PATCH, resqEntity, CustomerLine.class).getBody();
+        return customerLine2;
+    }
+
+    public Mono<CustomerLine> realizarSolicitudPatch(String id, CustomerLine customerLine) {
+        String urlFinal = url + "/" + id;
+        return webClient.patch()
+                .uri(urlFinal)
+                .body(BodyInserters.fromValue(customerLine))
+                .retrieve()
+                .bodyToMono(CustomerLine.class);
     }
 
     private boolean validarFechaYFormato(String fecha, String formato) {

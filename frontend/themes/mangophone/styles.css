@@ -75,7 +75,7 @@
 }
 
 .margen-top-mid {
-    margin-top: 80px;
+    margin-top: 30px;
 }
 
 .margen-top-big {
@@ -237,8 +237,8 @@
 .card-contrato {
     display: flex;
     flex-direction: column;
-    height: 150px;
-    width: 150px;
+    height: 120px;
+    width: 120px;
 
     border-style: solid;
     border-color:rgba(255, 165, 0);
@@ -255,8 +255,8 @@
 .card-contrato-clicked {
     display: flex;
     flex-direction: column;
-    height: 150px;
-    width: 150px;
+    height: 120px;
+    width: 120px;
 
     border-style: solid;
     border-color:rgba(0, 100, 0);

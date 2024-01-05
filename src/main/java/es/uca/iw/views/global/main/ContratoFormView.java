@@ -11,9 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
+import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H3;
+import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -107,7 +109,7 @@ public class ContratoFormView extends Div {
         VerticalLayout globalVerticalLayout = new VerticalLayout();  
 
         // Recuperamos el usuario actual de la sesion
-        Usuario usuario = usuarioService.findById((Usuario)session.getAttribute("loggedUser"));
+        Usuario usuario = usuarioService.findById(UUID.fromString(session.getAttribute("loggedUserId").toString()));
 
         // Lista de tarifas por servicio
         List<Tarifa> tarifasMovil = tarifaService.getTarifaByServicio(Servicio.MOVIL);
@@ -141,15 +143,42 @@ public class ContratoFormView extends Div {
         }
         
         // CREACION DE LAYOUT
-        Button confirmButton = new Button("Continuar");
+        Button confirmButton = new Button("Contratar");
         confirmButton.addClassName("boton-contratar");
         confirmButton.addClickListener(event -> {
-            verificarSeleccion();
+            Dialog confirmDialog = new Dialog();
+            confirmDialog.setHeaderTitle("¿Desea continuar?");
+            confirmDialog.add("¿Estás seguro de que desea contratar las tarifas seleccionadas?");
+
+            Button cerrarDialog = new Button("No");
+            cerrarDialog.addClassName("boton-verde-secondary");
+            cerrarDialog.addClickListener(eventCerrar -> { confirmDialog.close(); });
+
+            Button confirmarButton = new Button("Si");
+            confirmarButton.addClassName("boton-naranja-primary");
+            confirmarButton.addClickListener(eventConfirm -> { verificarSeleccion(); confirmDialog.close(); });
+            
+            confirmDialog.getFooter().add(cerrarDialog, confirmarButton);
+            confirmDialog.open();
+        });
+
+        Image infoIcon = new Image("icons/info-icon.svg", "info");
+        infoIcon.setWidth("30px");
+        infoIcon.setHeight("30px");
+        infoIcon.addClickListener(eventInfo -> {
+            Dialog infoDialog = new Dialog();
+            infoDialog.setHeaderTitle("Ayuda");
+            infoDialog.add("Aquí puedes contratar tarifas móvil, de fibra y de fijo. Cualquier combinación de ellas es posible pero solo podrás contratar una por servicio");
+            Button cerrarDialog = new Button("Cerrar");
+            cerrarDialog.addClassName("boton-verde-secondary");
+            cerrarDialog.addClickListener(eventCerrar -> { infoDialog.close(); });
+            infoDialog.getFooter().add(cerrarDialog);
+            infoDialog.open();
         });
 
         HorizontalLayout headerBlock = new HorizontalLayout();
         headerBlock.setAlignItems(Alignment.CENTER);
-        headerBlock.add(precioTitle, confirmButton);
+        headerBlock.add(precioTitle, confirmButton, infoIcon);
 
         globalVerticalLayout.add(headerBlock);
 
@@ -192,7 +221,7 @@ public class ContratoFormView extends Div {
             }
             else {
                 //Recuperamos usuario
-                Usuario usuario = usuarioService.findById((Usuario)session.getAttribute("loggedUser"));
+                Usuario usuario = usuarioService.findById(UUID.fromString(session.getAttribute("loggedUserId").toString()));
                 Contrato contrato = usuario.getCuentaUsuario().getContrato();
 
                 //Si no tiene contrato creamos uno, junto a su factura correspondiente y lo asignamos a la cuenta de usuario y viceversa
@@ -222,10 +251,10 @@ public class ContratoFormView extends Div {
                 
 
                 if(alta){
-                    ConfirmDialog errorDialog = new ConfirmDialog("Bienvenido", "Se le ha añadido su nueva tarifa", "Cerrar", event -> {
+                    ConfirmDialog okDialog = new ConfirmDialog("Éxito", "Se ha creado su contrato correctamente. Puede verlo en su perfil.", "Confirmar", event -> {
                         UI.getCurrent().navigate("/profile");
                     });
-                    errorDialog.open();
+                    okDialog.open();
 
                     Factura factura = new Factura(Estado.Pagado, LocalDate.now(), contrato, facturaService.generarNombreFactura(usuario));
                     facturaService.save(factura);
@@ -239,7 +268,7 @@ public class ContratoFormView extends Div {
 
                     facturaService.save(factura);
                 }
-                else{
+                else {
                     ConfirmDialog errorDialog = new ConfirmDialog("Ups!", "Ya tiene una tarifa contrada", "Cerrar", event -> {
                         UI.getCurrent().navigate("/contratar");
                     });

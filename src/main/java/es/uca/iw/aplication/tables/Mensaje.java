@@ -2,18 +2,22 @@ package es.uca.iw.aplication.tables;
 
 import java.util.Date;
 import java.util.UUID;
+
+import es.uca.iw.aplication.tables.usuarios.CuentaUsuario;
+import es.uca.iw.aplication.tables.usuarios.Usuario;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "Mensaje")
 public class Mensaje {
-    public enum Tipo { Online, Offline, Reclamacion, Consulta };
+    public enum Tipo { Reclamacion, Consulta };
     public enum Estado { Abierto, Cerrado };
     public enum Emisor { Trabajador, Cliente };
 
@@ -39,23 +43,25 @@ public class Mensaje {
     public Emisor getEmisor() { return emisor; }
     public void setEmisor(Emisor emisor) { this.emisor = emisor; }
 
-    // emisor_id
-    // asunto
+    @ManyToOne
+    private CuentaUsuario cuentaUsuario;
+    public CuentaUsuario getUsuario() { return cuentaUsuario; }
+    public void setUsuario(CuentaUsuario cuentaUsuario) { this.cuentaUsuario = cuentaUsuario; }
 
     @Lob
-    @Column(name = "cuerpo")
-    private String cuerpo;
-    public String getCuerpo() { return cuerpo; }
-    public void setCuerpo(String cuerpo) { this.cuerpo = cuerpo; }
+    @Column(name = "asunto")
+    private String asunto;
+    public String getCuerpo() { return asunto; }
+    public void setCuerpo(String asunto) { this.asunto = asunto; }
 
     @Column(name = "fechaEmision")
     private Date fechaEmision;
     public Date getFechaEmision() { return fechaEmision; }
     public void setFechaEmision(Date fecha) { this.fechaEmision = fecha; }
 
-    public Mensaje(Tipo tipo, Date fecha, String cuerpo){
+    public Mensaje(Tipo tipo, Date fecha, String asunto){
         this.tipo = tipo;
         this.fechaEmision = fecha;
-        this.cuerpo = cuerpo;
+        this.asunto = asunto;
     }
 }

@@ -1,5 +1,7 @@
 package es.uca.iw.views.global.autenticacion;
 
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
@@ -15,7 +17,6 @@ import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 
-import es.uca.iw.aplication.service.FacturaService;
 import es.uca.iw.aplication.service.UsuarioService;
 import es.uca.iw.aplication.tables.usuarios.Usuario;
 
@@ -32,13 +33,30 @@ public class ActivarView extends Div {
 
     public ActivarView(UsuarioService usuarioService) {
         this.usuarioService = usuarioService;
-        if(((Usuario)session.getAttribute("loggedUser")) == null || !((Usuario)session.getAttribute("loggedUser")).getActivo()) {
+        
+        if(session.getAttribute("justRegisteredUser") != null && (boolean)session.getAttribute("justRegisteredUser") == true) {
             add(crearContenido());
-        }else{
-            ConfirmDialog dialog = new ConfirmDialog("Aviso", "El usuario ya está activo", "Inicio", evento -> {
-                UI.getCurrent().navigate("/home");
-            });
-            dialog.open();
+            session.setAttribute("justRegisteredUser", false);
+        }
+        else {
+            if(session.getAttribute("loggedUserId") == null) {
+                ConfirmDialog dialog = new ConfirmDialog("Error", "Debes iniciar sesión", "Iniciar sesión", evento -> {
+                    UI.getCurrent().navigate("login");
+                });
+                dialog.open();
+            }
+            else {
+                Usuario loggedUser = usuarioService.findById(UUID.fromString(session.getAttribute("loggedUserId").toString()));
+                if(loggedUser.getActivo() == false) {
+                    add(crearContenido());
+                }
+                else {
+                    ConfirmDialog dialog = new ConfirmDialog("Aviso", "El usuario ya está activo", "Inicio", evento -> {
+                        UI.getCurrent().navigate("home");
+                    });
+                    dialog.open();
+                }
+            }
         }
     }
 

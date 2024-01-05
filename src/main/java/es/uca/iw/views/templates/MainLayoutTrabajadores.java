@@ -15,13 +15,18 @@ import com.vaadin.flow.component.sidenav.SideNavItem;
 import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 
+import es.uca.iw.aplication.service.UsuarioService;
 import es.uca.iw.aplication.tables.enumerados.Rol;
+import es.uca.iw.aplication.tables.usuarios.Usuario;
 import es.uca.iw.views.global.autenticacion.LogoutView;
 import es.uca.iw.views.marketing.CrearTarifaView;
 import es.uca.iw.views.marketing.ListaTarifasView;
 import es.uca.iw.views.marketing.MarkentingHomeView;
 import es.uca.iw.views.sac.ContratosClientesView;
 
+import java.util.UUID;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.lineawesome.LineAwesomeIcon;
 
 /**
@@ -29,7 +34,11 @@ import org.vaadin.lineawesome.LineAwesomeIcon;
  */
 public class MainLayoutTrabajadores extends AppLayout {
     
-    public MainLayoutTrabajadores() {
+    @Autowired
+    private UsuarioService usuarioService;
+
+    public MainLayoutTrabajadores(UsuarioService usuarioService) {
+        this.usuarioService = usuarioService;
         setPrimarySection(Section.NAVBAR);
         crearMenu();
         crearHeader();
@@ -69,19 +78,20 @@ public class MainLayoutTrabajadores extends AppLayout {
     
     private SideNav crearNavegacion() {
         VaadinSession session = VaadinSession.getCurrent();
-        SideNav nav = new SideNav();
         
-        if(session.getAttribute("Rol").equals(Rol.MARKETING)) {
+        Usuario loggedUser = usuarioService.findById(UUID.fromString(session.getAttribute("loggedUserId").toString()));
+        SideNav nav = new SideNav();
+        if(loggedUser.getRol().equals(Rol.MARKETING)) {
             nav.addItem(new SideNavItem("Inicio", MarkentingHomeView.class, LineAwesomeIcon.HOME_SOLID.create()));
             nav.addItem(new SideNavItem("Crear tarifa", CrearTarifaView.class, LineAwesomeIcon.PLUS_CIRCLE_SOLID.create()));
             nav.addItem(new SideNavItem("Ver tarifas", ListaTarifasView.class, LineAwesomeIcon.LIST_SOLID.create()));
             nav.addItem(new SideNavItem("Cerrar sesión", LogoutView.class, LineAwesomeIcon.USER.create()));  
         }
-        else if(session.getAttribute("Rol").equals(Rol.FINANZAS)) {
+        else if(loggedUser.getRol().equals(Rol.FINANZAS)) {
             //---
             nav.addItem(new SideNavItem("Cerrar sesión", LogoutView.class, LineAwesomeIcon.USER.create()));  
         }
-        else if(session.getAttribute("Rol").equals(Rol.SAC)) {
+        else if(loggedUser.getRol().equals(Rol.SAC)) {
             nav.addItem(new SideNavItem("Gestionar contratos", ContratosClientesView.class, LineAwesomeIcon.SCROLL_SOLID.create()));  
             nav.addItem(new SideNavItem("Cerrar sesión", LogoutView.class, LineAwesomeIcon.USER.create()));  
         }

@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -28,6 +29,7 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 
 import es.uca.iw.aplication.service.ContratoService;
 import es.uca.iw.aplication.service.FacturaService;
+import es.uca.iw.aplication.service.UsuarioService;
 import es.uca.iw.aplication.tables.Contrato;
 import es.uca.iw.aplication.tables.Factura;
 import es.uca.iw.aplication.tables.usuarios.Usuario;
@@ -45,43 +47,64 @@ public class PerfilFacturasView extends Div {
     @Autowired
     private ContratoService contratoService;
 
+    @Autowired
+    private UsuarioService usuarioService;
+
     private VaadinSession session = VaadinSession.getCurrent();
     private Factura selectedFactura;
 
-    public PerfilFacturasView(FacturaService facturaService, ContratoService contratoService) {
+    public PerfilFacturasView(FacturaService facturaService, ContratoService contratoService, UsuarioService usuarioService) {
         this.facturaService = facturaService;
         this.contratoService = contratoService;
+        this.usuarioService = usuarioService;
 
-        VerticalLayout listaLayout = new VerticalLayout();
-        HorizontalLayout botonesLayout = new HorizontalLayout();
-
-        Button descargarButton = new Button("Seleccionar factura");
-        descargarButton.addClassName("boton-verde-secondary");
-        descargarButton.addClickListener(event -> {
-            ConfirmDialog confirmDialog = new ConfirmDialog("Confirmar Descarga",
-                    "¿Estás seguro de que quieres descargar el archivo?",
-                    "Sí", e -> {
-                        // Si el usuario hace clic en "Sí", procede con la descarga
-                        downloadFile();
-                    },
-                    "Cancelar", e -> {
-                        // Si el usuario hace clic en "Cancelar", no hagas nada
-                    });
+        if(session.getAttribute("loggedUserId") == null ) {
+            ConfirmDialog errorDialog = new ConfirmDialog("Error", "Inicia sesión para ver tus facturas", "Iniciar sesión", event -> { 
+                UI.getCurrent().navigate("login");
+            });
+            errorDialog.open();
+        }
+        else {
+            Usuario loggedUser = usuarioService.findById(UUID.fromString(session.getAttribute("loggedUserId").toString()));
+            if(loggedUser.getActivo() == false) {
+                ConfirmDialog errorDialog = new ConfirmDialog("Error", "Debes activar tu cuenta para ver tus facturas", "profile", event -> { 
+                    UI.getCurrent().navigate("profile");
+                });
+                errorDialog.open();
+            }
+            else {
+                VerticalLayout listaLayout = new VerticalLayout();
+                HorizontalLayout botonesLayout = new HorizontalLayout();
         
-            confirmDialog.open();
-        });
+                Button descargarButton = new Button("Seleccionar factura");
+                descargarButton.addClassName("boton-verde-secondary");
+                descargarButton.addClickListener(event -> {
+                    ConfirmDialog confirmDialog = new ConfirmDialog("Confirmar Descarga",
+                            "¿Estás seguro de que quieres descargar el archivo?",
+                            "Sí", e -> {
+                                // Si el usuario hace clic en "Sí", procede con la descarga
+                                downloadFile();
+                            },
+                            "Cancelar", e -> {
+                                // Si el usuario hace clic en "Cancelar", no hagas nada
+                            });
+                
+                    confirmDialog.open();
+                });
+                
+                Button atrasButton = new Button("Volver");
+                atrasButton.addClassName("boton-naranja-primary");
+                atrasButton.addClickListener(event -> { 
+                    UI.getCurrent().navigate("profile");
+                });
         
-        Button atrasButton = new Button("Volver");
-        atrasButton.addClassName("boton-naranja-primary");
-        atrasButton.addClickListener(event -> { 
-            UI.getCurrent().navigate("profile");
-        });
-
-        botonesLayout.add(descargarButton, atrasButton);
-
-        listaLayout.add(gridFactura(), botonesLayout);
-
-        add(listaLayout);
+                botonesLayout.add(descargarButton, atrasButton);
+        
+                listaLayout.add(gridFactura(), botonesLayout);
+        
+                add(listaLayout);
+            }
+        }
     }
 
     private Grid<Factura> gridFactura() {

@@ -2,6 +2,7 @@ package es.uca.iw.aplication.service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
@@ -39,7 +40,15 @@ public class UsuarioService implements UserDetailsService {
         usuarioRepository.save(usuario);
     }
 
-    public void updateUsuario(Usuario usuario) throws Exception{ 
+    public void updateUsuarioOnlyPass(Usuario usuario) throws Exception { 
+        if(usuarioRepository.existsById(usuario.getId())) {
+            usuario.setContrasena(passwordEncoder.encode(usuario.getContrasena()));
+            usuarioRepository.save(usuario);
+        }
+        else throw new Exception("El usuario no existe");
+    }
+
+    public void updateUsuarioRegularData(Usuario usuario) throws Exception { 
         if(usuarioRepository.existsById(usuario.getId())) usuarioRepository.save(usuario);
         else throw new Exception("El usuario no existe");
     }
@@ -57,6 +66,7 @@ public class UsuarioService implements UserDetailsService {
 
     public Usuario buscarEmail(String email) { return usuarioRepository.findByCorreoElectronico(email); }
     public Usuario findById(Usuario usuario) { return usuarioRepository.findById(usuario.getId()).get(); }
+    public Usuario findById(UUID id) { return usuarioRepository.findById(id).get(); }
     public List<Usuario> findAll() { return usuarioRepository.findAll(); }
     public List<Usuario> findByRol(Rol rol) { return usuarioRepository.findByRol(rol); }
 

@@ -1,6 +1,7 @@
 package es.uca.iw.views.global.perfil;
 
 import java.util.Random;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -42,16 +43,26 @@ public class PerfilView extends Div {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    private final VaadinSession session = VaadinSession.getCurrent();
-    private Object loggedUser = VaadinSession.getCurrent().getAttribute("loggedUser");
+    private VaadinSession session = VaadinSession.getCurrent();
     private Object profilePic = VaadinSession.getCurrent().getAttribute("profilePic");
 
     public PerfilView(UsuarioService usuarioService) {
         this.usuarioService = usuarioService;
-        add(crearContenido());
+
+        if(session.getAttribute("loggedUserId") == null) {
+            ConfirmDialog errorDialog = new ConfirmDialog("Error", "Inicia sesión para ver tu perfil", "Iniciar sesión", event -> { 
+                UI.getCurrent().navigate("login");
+            });
+            errorDialog.open();
+        }
+        else {
+            Usuario loggedUser = usuarioService.findById(UUID.fromString(session.getAttribute("loggedUserId").toString()));
+            if(loggedUser.getActivo() == false) add(crearContenidoNoActivo(loggedUser));
+            else add(crearContenidoActivo(loggedUser));
+        }
     }
 
-    private Div crearContenido() {
+    private Div crearContenidoNoActivo(Usuario loggedUser) {
         Div globalDiv = new Div();
         VerticalLayout globalVerticalLayout = new VerticalLayout();
 
@@ -64,13 +75,73 @@ public class PerfilView extends Div {
         }
         
         if(loggedUser != null) {
-            Avatar profilePic = new Avatar(((Usuario)session.getAttribute("loggedUser")).getNombre());
+            Avatar profilePic = new Avatar(loggedUser.getNombre());
             profilePic.setImage("/icons/profilepics/image" + session.getAttribute("profilePic") + ".svg");
             profilePic.setHeight("150px");
             profilePic.setWidth("150px");            
             nameBlock.add(profilePic);
             
-            Paragraph userName = new Paragraph(((Usuario)session.getAttribute("loggedUser")).getNombre() + " " + (((Usuario)session.getAttribute("loggedUser")).getApellidos()));
+            Paragraph userName = new Paragraph(loggedUser.getNombre() + " " + (loggedUser.getApellidos()));
+            userName.addClassName("profile-name");
+            nameBlock.setAlignItems(FlexComponent.Alignment.CENTER);
+            nameBlock.add(userName);
+            
+            globalVerticalLayout.add(nameBlock);
+
+            // Opciones
+            Paragraph datosPersonalesLink = new Paragraph("Cambiar datos personales");
+            datosPersonalesLink.addClassName("enlace");
+            datosPersonalesLink.addClickListener(event -> {
+                Dialog editDialog = crearModalEditarPerfil(false, loggedUser);
+                editDialog.open();
+            });
+
+            Paragraph passwordLink = new Paragraph("Cambiar contraseña");
+            passwordLink.addClassName("enlace");
+            passwordLink.addClickListener(event -> {
+                Dialog editDialog = crearModalEditarPerfil(true, loggedUser);
+                editDialog.open();
+            });
+
+            Paragraph activarLink = new Paragraph("Activar perfil");
+            activarLink.addClassName("enlace");
+            activarLink.addClickListener(event -> {
+                UI.getCurrent().getPage().setLocation("activar");
+            });
+
+            Paragraph cerrarSesionLink = new Paragraph("Cerrar sesión");
+            cerrarSesionLink.addClassName("enlace");
+            cerrarSesionLink.addClickListener(event -> {
+                UI.getCurrent().getPage().setLocation("logout");
+            });
+    
+            globalVerticalLayout.add(datosPersonalesLink, passwordLink, activarLink, cerrarSesionLink);
+            globalDiv.add(globalVerticalLayout);
+        }
+
+        return globalDiv;
+    }
+
+    private Div crearContenidoActivo(Usuario loggedUser) {
+        Div globalDiv = new Div();
+        VerticalLayout globalVerticalLayout = new VerticalLayout();
+
+        // Foto + nombre
+        HorizontalLayout nameBlock = new HorizontalLayout();
+        if(profilePic == null) {
+            Random rand = new Random();
+            int randomNum = rand.nextInt((13 - 1) + 1) + 1;
+            session.setAttribute("profilePic", randomNum);
+        }
+        
+        if(loggedUser != null) {
+            Avatar profilePic = new Avatar(loggedUser.getNombre());
+            profilePic.setImage("/icons/profilepics/image" + session.getAttribute("profilePic") + ".svg");
+            profilePic.setHeight("150px");
+            profilePic.setWidth("150px");            
+            nameBlock.add(profilePic);
+            
+            Paragraph userName = new Paragraph(loggedUser.getNombre() + " " + (loggedUser.getApellidos()));
             userName.addClassName("profile-name");
             nameBlock.setAlignItems(FlexComponent.Alignment.CENTER);
             nameBlock.add(userName);
@@ -81,14 +152,14 @@ public class PerfilView extends Div {
             Paragraph datosPersonalesLink = new Paragraph("Cambiar datos personales");
             datosPersonalesLink.addClassName("enlace");
             datosPersonalesLink.addClickListener(event -> {
-                Dialog editDialog = crearModalEditarPerfil(false);
+                Dialog editDialog = crearModalEditarPerfil(false, loggedUser);
                 editDialog.open();
             });
 
             Paragraph passwordLink = new Paragraph("Cambiar contraseña");
             passwordLink.addClassName("enlace");
             passwordLink.addClickListener(event -> {
-                Dialog editDialog = crearModalEditarPerfil(true);
+                Dialog editDialog = crearModalEditarPerfil(true, loggedUser);
                 editDialog.open();
             });
 
@@ -125,7 +196,7 @@ public class PerfilView extends Div {
         }
     }
     
-    private Dialog crearModalEditarPerfil(boolean password) {
+    private Dialog crearModalEditarPerfil(boolean password, Usuario loggedUser) {
         Dialog editDialog = new Dialog();
         // Binding
         Binder<Usuario> binderRegister = new Binder<>(Usuario.class);
@@ -135,6 +206,7 @@ public class PerfilView extends Div {
             // Nombre
             PasswordField oldPassField = new PasswordField("Antigua contraseña");
             PasswordField newPassField = new PasswordField("Nueva contraseña");
+            newPassField.setHelperText("La contraseña debe tener al menos 8 caracteres, un número y un caracter especial");
             dialogLayout.add(oldPassField, newPassField);
 
             binderRegister.forField(oldPassField)
@@ -144,11 +216,8 @@ public class PerfilView extends Div {
             binderRegister.forField(newPassField)
                 .asRequired("La nueva contraseña es obligatoria")
                 //.withValidator(password1 -> password1.length() >= 8, "La contraseña debe tener al menos 8 caracteres")
-                //.withValidator(password1 -> password1.matches(".*[A-Z].*"), "La contraseña debe tener al menos una mayúscula")
-                //.withValidator(password1 -> password1.matches(".*[a-z].*"), "La contraseña debe tener al menos una minúscula")
                 //.withValidator(password1 -> password1.matches(".*[0-9].*"), "La contraseña debe tener al menos un número")
                 //.withValidator(password1 -> password1.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?].*"), "La contraseña debe tener al menos un caracter especial")
-                //.withValidator(password1 -> password1.equals(confirmPasswordField.getValue()), "Las contraseñas no coinciden")
                 .bind(Usuario::getContrasena, Usuario::setContrasena);
 
             // Botones
@@ -160,10 +229,16 @@ public class PerfilView extends Div {
             Button confirmar = new Button("Cambiar");
             confirmar.addClassName("boton-naranja-primary");
             confirmar.addClickListener(event -> {
-                if( binderRegister.validate().isOk() && passwordEncoder.matches(oldPassField.getValue(), ((Usuario)session.getAttribute("loggedUser")).getContrasena())) {
-                    ((Usuario)session.getAttribute("loggedUser")).setContrasena(newPassField.getValue());
-                    SaveRequest(((Usuario)session.getAttribute("loggedUser")));
-                    ((Usuario)session.getAttribute("loggedUser")).setContrasena(passwordEncoder.encode(newPassField.getValue()));
+                if(binderRegister.validate().isOk() && passwordEncoder.matches(oldPassField.getValue(), loggedUser.getContrasena())) {
+                    loggedUser.setContrasena(newPassField.getValue());
+                    SaveRequestUpdatePass(loggedUser);
+                }
+                else {
+                    Dialog errorDialog = new Dialog();
+                    errorDialog.setHeaderTitle("Error");
+                    errorDialog.add("Las contraseñas antiguas no coinciden");
+                    errorDialog.getFooter().add(new Button("Cerrar", event1 -> {errorDialog.close();}));
+                    errorDialog.open();
                 }
             });
             editDialog.getFooter().add(cerrarModal, confirmar);
@@ -174,25 +249,25 @@ public class PerfilView extends Div {
         else {
             // Nombre
             TextField nombreField = new TextField("Nombre");
-            nombreField.setValue(((Usuario)session.getAttribute("loggedUser")).getNombre());
+            nombreField.setValue(loggedUser.getNombre());
             nombreField.setWidthFull();
             dialogLayout.add(nombreField);
             
             // Apellidos
             TextField apellidosField = new TextField("Apellidos");
-            apellidosField.setValue(((Usuario)session.getAttribute("loggedUser")).getApellidos());
+            apellidosField.setValue(loggedUser.getApellidos());
             apellidosField.setWidthFull();
             dialogLayout.add(apellidosField);
     
             // Email
             TextField mailField = new TextField("Correo electrónico");
-            mailField.setValue(((Usuario)session.getAttribute("loggedUser")).getCorreoElectronico());
+            mailField.setValue(loggedUser.getCorreoElectronico());
             mailField.setWidthFull();
             dialogLayout.add(mailField);
     
             // Nacimiento
             DatePicker dateField = new DatePicker("Fecha de nacimiento");
-            dateField.setValue(((Usuario)session.getAttribute("loggedUser")).getFechaNacimiento());
+            dateField.setValue(loggedUser.getFechaNacimiento());
             dialogLayout.add(dateField);
             
             
@@ -226,12 +301,12 @@ public class PerfilView extends Div {
             confirmar.addClassName("boton-naranja-primary");
             confirmar.addClickListener(event -> {
                 if(binderRegister.validate().isOk()) {
-                    ((Usuario)session.getAttribute("loggedUser")).setNombre(nombreField.getValue());
-                    ((Usuario)session.getAttribute("loggedUser")).setApellidos(apellidosField.getValue());
-                    ((Usuario)session.getAttribute("loggedUser")).setCorreoElectronico(mailField.getValue());
-                    ((Usuario)session.getAttribute("loggedUser")).setFechaNacimiento(dateField.getValue());
+                    loggedUser.setNombre(nombreField.getValue());
+                    loggedUser.setApellidos(apellidosField.getValue());
+                    loggedUser.setCorreoElectronico(mailField.getValue());
+                    loggedUser.setFechaNacimiento(dateField.getValue());
     
-                    SaveRequest(((Usuario)session.getAttribute("loggedUser")));
+                    SaveRequestUpdateData(loggedUser);
                 }
             });
             editDialog.getFooter().add(cerrarModal, confirmar);
@@ -244,9 +319,9 @@ public class PerfilView extends Div {
         return editDialog;
     }
 
-    private void SaveRequest(Usuario usuario) {
+    private void SaveRequestUpdatePass(Usuario usuario) {
         try {
-            usuarioService.createUsuario(usuario);
+            usuarioService.updateUsuarioOnlyPass(usuario);
             ConfirmDialog confirmDialog = new ConfirmDialog("Éxito", "Cambios realizados correctamente", "Confirmar", event1 -> {
                 UI.getCurrent().getPage().setLocation("profile");
             });
@@ -254,7 +329,23 @@ public class PerfilView extends Div {
         }
         catch (Exception e) {
             ConfirmDialog errorDialog = new ConfirmDialog("Error", "Error al cambiar los datos", "Volver", event -> { 
-                UI.getCurrent().navigate("/profile");
+                UI.getCurrent().navigate("profile");
+            });
+            errorDialog.open();
+        }
+    }
+
+    private void SaveRequestUpdateData(Usuario usuario) {
+        try {
+            usuarioService.updateUsuarioRegularData(usuario);
+            ConfirmDialog confirmDialog = new ConfirmDialog("Éxito", "Cambios realizados correctamente", "Confirmar", event1 -> {
+                UI.getCurrent().getPage().setLocation("profile");
+            });
+            confirmDialog.open();
+        }
+        catch (Exception e) {
+            ConfirmDialog errorDialog = new ConfirmDialog("Error", "Error al cambiar los datos", "Volver", event -> { 
+                UI.getCurrent().navigate("profile");
             });
             errorDialog.open();
         }

@@ -3,12 +3,14 @@ package es.uca.iw.views.global.perfil;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.flow.component.ItemLabelGenerator;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
@@ -26,6 +28,7 @@ import es.uca.iw.aplication.service.ContratoService;
 import es.uca.iw.aplication.service.Contrato_TarifaService;
 import es.uca.iw.aplication.service.CuentaUsuarioService;
 import es.uca.iw.aplication.service.TarifaService;
+import es.uca.iw.aplication.service.UsuarioService;
 import es.uca.iw.aplication.tables.Contrato_Tarifa;
 import es.uca.iw.aplication.tables.enumerados.Servicio;
 import es.uca.iw.aplication.tables.tarifas.Tarifa;
@@ -51,75 +54,96 @@ public class PerfilContratoView extends Div {
     @Autowired
     private TarifaService tarifaService;
 
+    @Autowired
+    private UsuarioService usuarioService;
+
     private VaadinSession session = VaadinSession.getCurrent();
     private Optional<Tarifa> selectedTarifa;
 
 
-    public PerfilContratoView(CuentaUsuarioService cuentaUsuarioService, Contrato_TarifaService contrato_TarifaService, ContratoService contratoService, TarifaService tarifaService) {
+    public PerfilContratoView(CuentaUsuarioService cuentaUsuarioService, Contrato_TarifaService contrato_TarifaService, ContratoService contratoService, TarifaService tarifaService, UsuarioService usuarioService) {
         this.cuentaUsuarioService = cuentaUsuarioService;
         this.contrato_TarifaService = contrato_TarifaService;
         this.contratoService = contratoService;
         this.tarifaService = tarifaService;
+        this.usuarioService = usuarioService;
         
-        VerticalLayout listaLayout = new VerticalLayout();
-        HorizontalLayout botonesLayout = new HorizontalLayout();
-
-        Button nuevaTarifaMovil = new Button("Añadir tarifa movil");
-        nuevaTarifaMovil.addClassName("boton-verde-secondary");
-        nuevaTarifaMovil.addClickListener(event -> {
-            Dialog editDialog = crearModalNuevaTarifa(Servicio.MOVIL);
-            editDialog.open();
-        });
-
-        Button nuevaTarifaFibra = new Button("Añadir tarifa de fibra");
-        nuevaTarifaFibra.addClassName("boton-verde-secondary");
-        nuevaTarifaFibra.addClickListener(event -> {
-            Dialog editDialog = crearModalNuevaTarifa(Servicio.FIBRA);
-            editDialog.open();
-        });
-
-        Button nuevaTarifaFijo = new Button("Añadir tarifa de fijo");
-        nuevaTarifaFijo.addClassName("boton-verde-secondary");
-        nuevaTarifaFijo.addClickListener(event -> {
-            Dialog editDialog = crearModalNuevaTarifa(Servicio.FIJO);
-            editDialog.open();
-        });
-
-        List<Contrato_Tarifa> tarifasContratadas = contrato_TarifaService.findByContrato(((Usuario)session.getAttribute("loggedUser")).getCuentaUsuario().getContrato());
-        for(Contrato_Tarifa elemento : tarifasContratadas) {
-            if(elemento.getTarifa().getServicio() == Servicio.MOVIL) nuevaTarifaMovil.setVisible(false);
-            if(elemento.getTarifa().getServicio() == Servicio.FIBRA) nuevaTarifaFibra.setVisible(false);
-            if(elemento.getTarifa().getServicio() == Servicio.FIJO) nuevaTarifaFijo.setVisible(false);
+        if(session.getAttribute("loggedUserId") == null ) {
+            ConfirmDialog errorDialog = new ConfirmDialog("Error", "Inicia sesión para ver tu contrato", "Iniciar sesión", event -> { 
+                UI.getCurrent().navigate("login");
+            });
+            errorDialog.open();
         }
-
-        Button cambiarTarifaButton = new Button("Cambiar de tarifa");
-        cambiarTarifaButton.addClassName("boton-verde-secondary");
-        cambiarTarifaButton.addClickListener(event -> {
-            Dialog editDialog = crearModalCambioTarifa();
-            editDialog.open();
-        });
+        else {
+            Usuario loggedUser = usuarioService.findById(UUID.fromString(session.getAttribute("loggedUserId").toString()));
+            if(loggedUser.getActivo() == false) {
+                ConfirmDialog errorDialog = new ConfirmDialog("Error", "Debes activar tu cuenta para ver tu contrato", "profile", event -> { 
+                    UI.getCurrent().navigate("profile");
+                });
+                errorDialog.open();
+            }
+            else {
+                VerticalLayout listaLayout = new VerticalLayout();
+                HorizontalLayout botonesLayout = new HorizontalLayout();
         
-        Button bajaButton = new Button("Darse de baja");
-        bajaButton.addClassName("boton-verde-secondary");
-        bajaButton.addClickListener(event -> {
-            Contrato_Tarifa tarifaContratada = contrato_TarifaService.findByContratoAndTarifa(((Usuario)session.getAttribute("loggedUser")).getCuentaUsuario().getContrato(), selectedTarifa.get());
-            contratoService.deleteTarifa(tarifaContratada);
-            contratoService.actualizarContrato(contratoService.findByCuentaUsuario(((Usuario)session.getAttribute("loggedUser")).getCuentaUsuario()));
-
-            UI.getCurrent().getPage().setLocation("profile/contrato");
-        });
+                Button nuevaTarifaMovil = new Button("Añadir tarifa movil");
+                nuevaTarifaMovil.addClassName("boton-verde-secondary");
+                nuevaTarifaMovil.addClickListener(event -> {
+                    Dialog editDialog = crearModalNuevaTarifa(Servicio.MOVIL);
+                    editDialog.open();
+                });
         
-        Button atrasButton = new Button("Volver");
-        atrasButton.addClassName("boton-naranja-primary");
-        atrasButton.addClickListener(event -> { 
-            UI.getCurrent().navigate("profile");
-        });
-
-        botonesLayout.add(nuevaTarifaMovil, nuevaTarifaFibra, nuevaTarifaFijo, cambiarTarifaButton, bajaButton, atrasButton);
-
-        listaLayout.add(gridTarifa(), botonesLayout);
-
-        add(listaLayout);
+                Button nuevaTarifaFibra = new Button("Añadir tarifa de fibra");
+                nuevaTarifaFibra.addClassName("boton-verde-secondary");
+                nuevaTarifaFibra.addClickListener(event -> {
+                    Dialog editDialog = crearModalNuevaTarifa(Servicio.FIBRA);
+                    editDialog.open();
+                });
+        
+                Button nuevaTarifaFijo = new Button("Añadir tarifa de fijo");
+                nuevaTarifaFijo.addClassName("boton-verde-secondary");
+                nuevaTarifaFijo.addClickListener(event -> {
+                    Dialog editDialog = crearModalNuevaTarifa(Servicio.FIJO);
+                    editDialog.open();
+                });
+        
+                List<Contrato_Tarifa> tarifasContratadas = contrato_TarifaService.findByContrato(((Usuario)session.getAttribute("loggedUser")).getCuentaUsuario().getContrato());
+                for(Contrato_Tarifa elemento : tarifasContratadas) {
+                    if(elemento.getTarifa().getServicio() == Servicio.MOVIL) nuevaTarifaMovil.setVisible(false);
+                    if(elemento.getTarifa().getServicio() == Servicio.FIBRA) nuevaTarifaFibra.setVisible(false);
+                    if(elemento.getTarifa().getServicio() == Servicio.FIJO) nuevaTarifaFijo.setVisible(false);
+                }
+        
+                Button cambiarTarifaButton = new Button("Cambiar de tarifa");
+                cambiarTarifaButton.addClassName("boton-verde-secondary");
+                cambiarTarifaButton.addClickListener(event -> {
+                    Dialog editDialog = crearModalCambioTarifa();
+                    editDialog.open();
+                });
+                
+                Button bajaButton = new Button("Darse de baja");
+                bajaButton.addClassName("boton-verde-secondary");
+                bajaButton.addClickListener(event -> {
+                    Contrato_Tarifa tarifaContratada = contrato_TarifaService.findByContratoAndTarifa(((Usuario)session.getAttribute("loggedUser")).getCuentaUsuario().getContrato(), selectedTarifa.get());
+                    contratoService.deleteTarifa(tarifaContratada);
+                    contratoService.actualizarContrato(contratoService.findByCuentaUsuario(((Usuario)session.getAttribute("loggedUser")).getCuentaUsuario()));
+        
+                    UI.getCurrent().getPage().setLocation("profile/contrato");
+                });
+                
+                Button atrasButton = new Button("Volver");
+                atrasButton.addClassName("boton-naranja-primary");
+                atrasButton.addClickListener(event -> { 
+                    UI.getCurrent().navigate("profile");
+                });
+        
+                botonesLayout.add(nuevaTarifaMovil, nuevaTarifaFibra, nuevaTarifaFijo, cambiarTarifaButton, bajaButton, atrasButton);
+        
+                listaLayout.add(gridTarifa(), botonesLayout);
+        
+                add(listaLayout);
+            }
+        }
     }
 
     private Grid<Tarifa> gridTarifa() {

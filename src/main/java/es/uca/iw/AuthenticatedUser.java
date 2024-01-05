@@ -1,5 +1,6 @@
 package es.uca.iw;
 
+/*
 import java.util.Optional;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -12,7 +13,6 @@ import com.vaadin.flow.spring.security.AuthenticationContext;
 import es.uca.iw.aplication.repository.UsuarioRepository;
 import es.uca.iw.aplication.tables.usuarios.Usuario;
 
-/*
 @Component
 public class AuthenticatedUser {
     private final UsuarioRepository usuarioRepository;

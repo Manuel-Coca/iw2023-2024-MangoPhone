@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -75,22 +76,30 @@ public class ContratoFormView extends Div {
         this.emailService = emailService;
         this.cuentaUsuarioService = cuentaUsuarioService;
 
-        if(session.getAttribute("loggedUser") == null) {
-            ConfirmDialog dialog = new ConfirmDialog("Aviso", "Debes iniciar sesión", "Iniciar sesion", event1 -> {
-                UI.getCurrent().getPage().setLocation("login");;
+        if(session.getAttribute("loggedUserId") == null ) {
+            ConfirmDialog errorDialog = new ConfirmDialog("Aviso", "Inicia sesión para contratar", "Iniciar sesión", event -> { 
+                UI.getCurrent().navigate("login");
             });
-            dialog.open();
+            errorDialog.open();
         }
         else {
-            if(((Usuario)session.getAttribute("loggedUser")).getCuentaUsuario().getContrato() != null) {
+            Usuario loggedUser = usuarioService.findById(UUID.fromString(session.getAttribute("loggedUserId").toString()));
+            if(loggedUser.getActivo() == false) {
+                ConfirmDialog errorDialog = new ConfirmDialog("Error", "Debes activar tu cuenta para contratar", "Mi perfil", event -> { 
+                    UI.getCurrent().navigate("profile");
+                });
+                errorDialog.open();
+            }
+            else if(loggedUser.getCuentaUsuario().getContrato() != null) {
                 ConfirmDialog dialog = new ConfirmDialog("Aviso", "Ya tienes un contrato con nosotros", "Ver mi contrato", event1 -> {
-                UI.getCurrent().getPage().setLocation("profile/contrato");;
+                    UI.getCurrent().getPage().setLocation("profile/contrato");;
                 });
                 dialog.open();
             }
-            else add(crearContenido());
+            else {
+                add(crearContenido());
+            }
         }
-
     }
     
     private Div crearContenido() {

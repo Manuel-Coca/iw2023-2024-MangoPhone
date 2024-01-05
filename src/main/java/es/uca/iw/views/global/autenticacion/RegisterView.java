@@ -22,10 +22,10 @@ import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.RouteAlias;
+import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 import es.uca.iw.aplication.service.EmailService;
-import es.uca.iw.aplication.service.FacturaService;
 import es.uca.iw.aplication.service.TokenService;
 import es.uca.iw.aplication.service.UsuarioService;
 import es.uca.iw.aplication.tables.enumerados.Rol;
@@ -46,8 +46,19 @@ public class RegisterView extends Div {
     @Autowired
     private EmailService emailService;
 
+    private VaadinSession session = VaadinSession.getCurrent();
+
     public RegisterView() {
-        add(RegisterLayout());        
+
+        if(session.getAttribute("loggedUserId") != null) {
+            ConfirmDialog errorDialog = new ConfirmDialog("Error", "No puedes hacer el proceso de registro si has iniciado sesión. Cierra la sesión previamente", "Inicio", event -> { 
+                UI.getCurrent().navigate("home");
+            });
+            errorDialog.open();
+        }
+        else {
+            add(RegisterLayout());        
+        }
     }
 
     private VerticalLayout RegisterLayout() {
@@ -71,6 +82,7 @@ public class RegisterView extends Div {
         EmailField emailField = new EmailField("Correo electónico");
         DatePicker birthDateField = new DatePicker("Fecha de nacimiento");
         PasswordField passwordField = new PasswordField("Contraseña");
+        passwordField.setHelperText("La contraseña debe tener al menos 8 caracteres, un número y un caracter especial");
         PasswordField confirmPasswordField = new PasswordField("Confirmar contraseña");
         
         // Binding
@@ -104,8 +116,6 @@ public class RegisterView extends Div {
         binderRegister.forField(passwordField)
             .asRequired("La contraseña es obligatoria")
             //.withValidator(password1 -> password1.length() >= 8, "La contraseña debe tener al menos 8 caracteres")
-            //.withValidator(password1 -> password1.matches(".*[A-Z].*"), "La contraseña debe tener al menos una mayúscula")
-            //.withValidator(password1 -> password1.matches(".*[a-z].*"), "La contraseña debe tener al menos una minúscula")
             //.withValidator(password1 -> password1.matches(".*[0-9].*"), "La contraseña debe tener al menos un número")
             //.withValidator(password1 -> password1.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?].*"), "La contraseña debe tener al menos un caracter especial")
             //.withValidator(password1 -> password1.equals(confirmPasswordField.getValue()), "Las contraseñas no coinciden")
@@ -188,13 +198,14 @@ public class RegisterView extends Div {
             
             emailService.sendRegistartionEmail(usuario,code);
             ConfirmDialog confirmDialog = new ConfirmDialog("Registro Correcto", "Activar cuenta", "Activar", event1 -> {
-                UI.getCurrent().navigate("/activar");
+                session.setAttribute("justRegisteredUser", true);
+                UI.getCurrent().navigate("activar");
             });
             confirmDialog.open();
         }
         catch (Exception e) {
-            ConfirmDialog errorDialog = new ConfirmDialog("Error", "Error al registrar el usuario", "Aceptar", event -> { 
-                UI.getCurrent().navigate("/register");
+            ConfirmDialog errorDialog = new ConfirmDialog("Error", "Error al registrar el usuario", "Reintentar", event -> { 
+                UI.getCurrent().navigate("register");
             });
             errorDialog.open();
         }

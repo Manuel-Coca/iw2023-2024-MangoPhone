@@ -14,13 +14,11 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import es.uca.iw.views.templates.MainLayoutTrabajadores;
-import jakarta.annotation.security.RolesAllowed;
 
 @PageTitle("Marketing Home")
 @Route(value = "marketinghome", layout = MainLayoutTrabajadores.class)
 @RouteAlias(value = "marketinghome", layout = MainLayoutTrabajadores.class)
 @AnonymousAllowed
-//@RolesAllowed("CLIENTE")
 public class MarkentingHomeView extends Div {
     
     public MarkentingHomeView() { add(markentingLayout()); }

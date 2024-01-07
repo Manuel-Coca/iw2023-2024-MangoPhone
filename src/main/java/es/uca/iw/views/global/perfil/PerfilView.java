@@ -1,5 +1,6 @@
 package es.uca.iw.views.global.perfil;
 
+import java.time.LocalDate;
 import java.util.Random;
 import java.util.UUID;
 
@@ -9,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.avatar.Avatar;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.charts.model.Dial;
 import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dialog.Dialog;
@@ -18,16 +20,21 @@ import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.PasswordField;
+import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
+import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 
+import es.uca.iw.aplication.service.MensajeService;
 import es.uca.iw.aplication.service.UsuarioService;
+import es.uca.iw.aplication.tables.Mensaje;
 import es.uca.iw.aplication.tables.usuarios.Usuario;
 import es.uca.iw.views.templates.MainLayout;
 
@@ -43,11 +50,15 @@ public class PerfilView extends Div {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private MensajeService mensajeService;
+
     private VaadinSession session = VaadinSession.getCurrent();
     private Object profilePic = VaadinSession.getCurrent().getAttribute("profilePic");
 
-    public PerfilView(UsuarioService usuarioService) {
+    public PerfilView(UsuarioService usuarioService, MensajeService mensajeService) {
         this.usuarioService = usuarioService;
+        this.mensajeService = mensajeService;
 
         if(session.getAttribute("loggedUserId") == null) {
             ConfirmDialog errorDialog = new ConfirmDialog("Error", "Inicia sesión para ver tu perfil", "Iniciar sesión", event -> { 
@@ -178,7 +189,8 @@ public class PerfilView extends Div {
             Paragraph mensajesLink = new Paragraph("Ver o realizar consultas y reclamaciones");
             mensajesLink.addClassName("enlace");
             mensajesLink.addClickListener(event -> {
-                UI.getCurrent().getPage().setLocation("profile/mensajes");
+                Dialog crearMensaje = crearMensajeDialog(loggedUser);
+                crearMensaje.open();
             });
 
             Anchor listaLlamadasLink = new Anchor("/profile/llamadas", "Ver desglose de llamadas");
@@ -346,6 +358,106 @@ public class PerfilView extends Div {
         catch (Exception e) {
             ConfirmDialog errorDialog = new ConfirmDialog("Error", "Error al cambiar los datos", "Volver", event -> { 
                 UI.getCurrent().navigate("profile");
+            });
+            errorDialog.open();
+        }
+    }
+
+    private Dialog crearMensajeDialog(Usuario loggedUser) {
+        Dialog crearMensajeDialog = new Dialog();
+        // Binding
+        Binder<Mensaje> binder = new Binder<>(Mensaje.class);
+        VerticalLayout dialogLayout = new VerticalLayout();
+    
+        Select<Mensaje.Tipo> tipoMensajeField = new Select<Mensaje.Tipo>();
+        tipoMensajeField.setLabel("Tipo de mensaje");
+        tipoMensajeField.setWidthFull();
+        tipoMensajeField.setItems(Mensaje.Tipo.Consulta, Mensaje.Tipo.Reclamacion);
+        binder.forField(tipoMensajeField)
+            .asRequired("Seleccione un tipo de mensaje")
+            .bind(Mensaje::getTipo, Mensaje::setTipo);
+ 
+        TextField asuntoField = new TextField();
+        asuntoField.setLabel("Asunto");
+        asuntoField.setWidthFull();
+        binder.forField(asuntoField)
+            .asRequired("Escriba un asunto para su mensaje")
+            .bind(Mensaje::getAsunto, Mensaje::setAsunto);
+
+        
+        TextArea cuerpoField = new TextArea();
+        cuerpoField.setLabel("Mensaje");
+        cuerpoField.setWidthFull();
+        cuerpoField.setMaxHeight("300px");
+        cuerpoField.setMaxLength(1500);
+        cuerpoField.setValueChangeMode(ValueChangeMode.EAGER);
+        cuerpoField.addValueChangeListener(e -> {
+            e.getSource().setHelperText(e.getValue().length() + "/" + 1500);
+        });
+        binder.forField(cuerpoField)
+            .asRequired("Escriba un mensaje")
+            .bind(Mensaje::getCuerpo, Mensaje::setCuerpo);
+        
+        dialogLayout.add(tipoMensajeField, asuntoField, cuerpoField);
+        
+        // Botones
+        Button cerrarModal = new Button("Cerrar");
+        cerrarModal.addClassName("boton-verde-secondary");
+        cerrarModal.addClickListener(eventCerrar -> {
+            crearMensajeDialog.close();
+        });
+        Button confirmar = new Button("Enviar");
+        confirmar.addClassName("boton-naranja-primary");
+        confirmar.addClickListener(eventEnviar -> {
+            if(binder.validate().isOk()) {
+                Dialog confirmDialog = new Dialog();
+                confirmDialog.setHeaderTitle("¿Desea continuar?");
+                confirmDialog.add("¿Estás seguro de que quieres enviar el mensaje?");
+
+                Button cerrarDialog = new Button("No");
+                cerrarDialog.addClassName("boton-verde-secondary");
+                cerrarDialog.addClickListener(eventCerrar -> { confirmDialog.close(); });
+
+                Button confirmarButton = new Button("Si");
+                confirmarButton.addClassName("boton-naranja-primary");
+                confirmarButton.addClickListener(eventConfirm -> {
+                    Mensaje mensaje = new Mensaje();
+                    mensaje.setTipo(tipoMensajeField.getValue());
+                    mensaje.setEstado(Mensaje.Estado.Abierto);
+                    mensaje.setEmisor(Mensaje.Emisor.Cliente);
+                    mensaje.setFechaEmision(LocalDate.now());
+                    mensaje.setUsuario(loggedUser.getCuentaUsuario());
+                    mensaje.setAsunto(asuntoField.getValue());
+                    mensaje.setCuerpo(cuerpoField.getValue());
+
+                    validateRequest(mensaje);
+
+                    confirmDialog.close(); 
+                });
+                
+                confirmDialog.getFooter().add(cerrarDialog, confirmarButton);
+                confirmDialog.open();
+            }
+        });
+        crearMensajeDialog.getFooter().add(cerrarModal, confirmar);
+
+        crearMensajeDialog.setHeaderTitle("Enviar un mensaje");
+        crearMensajeDialog.setWidth("600px");
+        crearMensajeDialog.add(dialogLayout);
+        return crearMensajeDialog;
+    }
+
+    public void validateRequest(Mensaje mensaje) {
+        try {            
+            mensajeService.save(mensaje);
+            ConfirmDialog confirmDialog = new ConfirmDialog("Éxito", "Mensaje enviado correctamente", "Confirmar", event1 -> {
+                UI.getCurrent().getPage().setLocation("profile");
+            });
+            confirmDialog.open();
+        }
+        catch (Exception e) {
+            ConfirmDialog errorDialog = new ConfirmDialog("Error", "Error al enviar el mensaje", "Reintentar", event -> { 
+                UI.getCurrent().getPage().setLocation("profile");
             });
             errorDialog.open();
         }

@@ -23,6 +23,7 @@ import es.uca.iw.views.marketing.CrearTarifaView;
 import es.uca.iw.views.marketing.ListaTarifasView;
 import es.uca.iw.views.marketing.MarkentingHomeView;
 import es.uca.iw.views.sac.ContratosClientesView;
+import es.uca.iw.views.sac.MensajesClientesView;
 
 import java.util.UUID;
 
@@ -93,6 +94,7 @@ public class MainLayoutTrabajadores extends AppLayout {
         }
         else if(loggedUser.getRol().equals(Rol.SAC)) {
             nav.addItem(new SideNavItem("Gestionar contratos", ContratosClientesView.class, LineAwesomeIcon.SCROLL_SOLID.create()));  
+            nav.addItem(new SideNavItem("Ver mensajes", MensajesClientesView.class, LineAwesomeIcon.ENVELOPE.create()));  
             nav.addItem(new SideNavItem("Cerrar sesión", LogoutView.class, LineAwesomeIcon.USER.create()));  
         }
 

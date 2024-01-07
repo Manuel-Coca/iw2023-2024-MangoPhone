@@ -17,7 +17,7 @@ import jakarta.persistence.Table;
 @Table(name = "Mensaje")
 public class Mensaje {
     public enum Tipo { Reclamacion, Consulta };
-    public enum Estado { Abierto, Cerrado };
+    public enum Estado { Abierto, Cerrado, Proceso };
     public enum Emisor { Trabajador, Cliente };
 
     @Id

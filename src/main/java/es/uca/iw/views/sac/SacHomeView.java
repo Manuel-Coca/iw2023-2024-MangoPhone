@@ -50,9 +50,21 @@ public class SacHomeView extends Div {
         gestionarContratosCard.add(tituloContrato, descripcionContrato, botonContrato);
         gestionarContratosCard.addClassNames("card");
         cardsServicios.add(gestionarContratosCard);
+        
+        VerticalLayout verMensajesCard = new VerticalLayout();
+        H2 tituloMensaje = new H2("Ver mensajes");
+        Paragraph descripcionMensajes = new Paragraph("Visualiza y responde a los mensajes de los clientes");
+        Button botonMensajes = new Button("Entrar");
+        botonMensajes.addClassName("boton-naranja-primary");
+        botonMensajes.addClickListener(event -> {
+            UI.getCurrent().navigate("sachome/mensajes");
+        });
+        verMensajesCard.add(tituloMensaje, descripcionMensajes, botonMensajes);
+        verMensajesCard.addClassNames("card");
+        cardsServicios.add(verMensajesCard);
+        
         sacLayout.add(titleLayout, cardsServicios);
 
         return sacLayout;
     }
-    
 }

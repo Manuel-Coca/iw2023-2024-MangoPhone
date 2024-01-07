@@ -16,5 +16,6 @@ public class MensajeService {
     public MensajeService(MensajeRepository mensajeRepository) { this.mensajeRepository = mensajeRepository; }
     public List<Mensaje> findByCuentaUsuario(CuentaUsuario cuentaUsuario) { return mensajeRepository.findByCuentaUsuario(cuentaUsuario); }
 
+    public List<Mensaje> getAll() { return mensajeRepository.findAll(); }
     public void save(Mensaje mensaje) { mensajeRepository.save(mensaje); }
 }

@@ -95,6 +95,11 @@
             <version>2.1.2</version>
         </dependency>
         <dependency>
+            <groupId>org.vaadin.alejandro</groupId>
+            <artifactId>pdf-browser</artifactId>
+            <version>3.2.0</version>
+        </dependency>
+        <dependency>
             <groupId>org.vaadin.crudui</groupId>
             <artifactId>crudui</artifactId>
             <version>7.1.0</version>

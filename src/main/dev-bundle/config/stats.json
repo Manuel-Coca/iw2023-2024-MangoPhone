@@ -1,5 +1,6 @@
 {
  "packageJsonDependencies": {
+  "@lrnwebcomponents/pdf-browser-viewer": "2.7.10",
   "@polymer/polymer": "3.5.1",
   "@vaadin/a11y-base": "24.2.1",
   "@vaadin/accordion": "24.2.1",
@@ -80,8 +81,17 @@
  },
  "npmModules": {
   "@lit/reactive-element": "1.6.3",
+  "@lrnwebcomponents/pdf-browser-viewer": "2.7.10",
   "@open-wc/dedupe-mixin": "1.3.1",
   "@polymer/iron-a11y-keys-behavior": "3.0.1",
+  "@polymer/iron-behaviors": "3.0.1",
+  "@polymer/iron-flex-layout": "3.0.1",
+  "@polymer/iron-image": "3.0.2",
+  "@polymer/paper-behaviors": "3.0.1",
+  "@polymer/paper-button": "3.0.1",
+  "@polymer/paper-card": "3.0.1",
+  "@polymer/paper-ripple": "3.0.2",
+  "@polymer/paper-styles": "3.0.1",
   "@polymer/polymer": "3.5.1",
   "@vaadin/a11y-base": "24.2.1",
   "@vaadin/accordion": "24.2.1",
@@ -170,6 +180,7 @@
   "wkt-parser": "1.3.3"
  },
  "bundleImports": [
+  "@lrnwebcomponents/pdf-browser-viewer/pdf-browser-viewer.js",
   "@vaadin/accordion/theme/lumo/vaadin-accordion-panel.js",
   "@vaadin/accordion/theme/lumo/vaadin-accordion.js",
   "@vaadin/app-layout/theme/lumo/vaadin-app-layout.js",
@@ -295,7 +306,7 @@
   "mangophone": "{\n  \"lumoImports\" : [ \"typography\", \"color\", \"spacing\", \"badge\", \"utility\" ]\n}"
  },
  "entryScripts": [
-  "VAADIN/build/indexhtml-809ff1ce.js"
+  "VAADIN/build/indexhtml-2ad57007.js"
  ],
  "webComponents": [],
  "cvdlModules": {
@@ -328,8 +339,8 @@
    "version": "24.2.1"
   }
  },
- "packageJsonHash": "2e7bd93baef9fdff956517e60c164f94ccbe1c366a1098b1e4172fcce6839b96",
+ "packageJsonHash": "5cebf76d1d13b3979ce84a7a7673bf04287aa4449ecf5eafbc7b1205dcbaa535",
  "indexHtmlGenerated": [
-  "  <script type=\"module\" crossorigin src=\"./VAADIN/build/indexhtml-809ff1ce.js\"></script>"
+  "  <script type=\"module\" crossorigin src=\"./VAADIN/build/indexhtml-2ad57007.js\"></script>"
  ]
 }

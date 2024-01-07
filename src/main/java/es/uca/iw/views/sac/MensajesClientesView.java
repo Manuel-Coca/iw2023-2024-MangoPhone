@@ -152,7 +152,10 @@ public class MensajesClientesView extends Div {
         Button confirmar = new Button("Responder");
         confirmar.addClassName("boton-naranja-primary");
         confirmar.addClickListener(eventEnviar -> {
-            // Respuesta por correo
+            if(binder.validate().isOk()) {
+                // Respuesta por correo
+                // respuestaEmail(selectedMensaje, respuestField.GetValue());
+            }
         });
         crearMensajeDialog.getFooter().add(cerrarModal, confirmar);
 

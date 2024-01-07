@@ -19,6 +19,7 @@ import es.uca.iw.aplication.service.UsuarioService;
 import es.uca.iw.aplication.tables.enumerados.Rol;
 import es.uca.iw.aplication.tables.usuarios.Usuario;
 import es.uca.iw.views.global.autenticacion.LogoutView;
+import es.uca.iw.views.global.main.WelcomeView;
 import es.uca.iw.views.marketing.CrearTarifaView;
 import es.uca.iw.views.marketing.ListaTarifasView;
 import es.uca.iw.views.marketing.MarkentingHomeView;
@@ -79,26 +80,32 @@ public class MainLayoutTrabajadores extends AppLayout {
     
     private SideNav crearNavegacion() {
         VaadinSession session = VaadinSession.getCurrent();
-        
-        Usuario loggedUser = usuarioService.findById(UUID.fromString(session.getAttribute("loggedUserId").toString()));
         SideNav nav = new SideNav();
-        if(loggedUser.getRol().equals(Rol.MARKETING)) {
-            nav.addItem(new SideNavItem("Inicio", MarkentingHomeView.class, LineAwesomeIcon.HOME_SOLID.create()));
-            nav.addItem(new SideNavItem("Crear tarifa", CrearTarifaView.class, LineAwesomeIcon.PLUS_CIRCLE_SOLID.create()));
-            nav.addItem(new SideNavItem("Ver tarifas", ListaTarifasView.class, LineAwesomeIcon.LIST_SOLID.create()));
-            nav.addItem(new SideNavItem("Cerrar sesión", LogoutView.class, LineAwesomeIcon.USER.create()));  
+        
+        if(session.getAttribute("loggedUserId") == null) {
+            UI.getCurrent().getPage().setLocation("home");
+            return nav;
         }
-        else if(loggedUser.getRol().equals(Rol.FINANZAS)) {
-            //---
-            nav.addItem(new SideNavItem("Cerrar sesión", LogoutView.class, LineAwesomeIcon.USER.create()));  
-        }
-        else if(loggedUser.getRol().equals(Rol.SAC)) {
-            nav.addItem(new SideNavItem("Gestionar contratos", ContratosClientesView.class, LineAwesomeIcon.SCROLL_SOLID.create()));  
-            nav.addItem(new SideNavItem("Ver mensajes", MensajesClientesView.class, LineAwesomeIcon.ENVELOPE.create()));  
-            nav.addItem(new SideNavItem("Cerrar sesión", LogoutView.class, LineAwesomeIcon.USER.create()));  
-        }
-
-        return nav;
+        else {
+            Usuario loggedUser = usuarioService.findById(UUID.fromString(session.getAttribute("loggedUserId").toString()));
+            if(loggedUser.getRol().equals(Rol.MARKETING)) {
+                nav.addItem(new SideNavItem("Inicio", MarkentingHomeView.class, LineAwesomeIcon.HOME_SOLID.create()));
+                nav.addItem(new SideNavItem("Crear tarifa", CrearTarifaView.class, LineAwesomeIcon.PLUS_CIRCLE_SOLID.create()));
+                nav.addItem(new SideNavItem("Ver tarifas", ListaTarifasView.class, LineAwesomeIcon.LIST_SOLID.create()));
+                nav.addItem(new SideNavItem("Cerrar sesión", LogoutView.class, LineAwesomeIcon.USER.create()));  
+            }
+            else if(loggedUser.getRol().equals(Rol.FINANZAS)) {
+                //---
+                nav.addItem(new SideNavItem("Cerrar sesión", LogoutView.class, LineAwesomeIcon.USER.create()));  
+            }
+            else if(loggedUser.getRol().equals(Rol.SAC)) {
+                nav.addItem(new SideNavItem("Gestionar contratos", ContratosClientesView.class, LineAwesomeIcon.SCROLL_SOLID.create()));  
+                nav.addItem(new SideNavItem("Ver mensajes", MensajesClientesView.class, LineAwesomeIcon.ENVELOPE.create()));  
+                nav.addItem(new SideNavItem("Cerrar sesión", LogoutView.class, LineAwesomeIcon.USER.create()));  
+            }
+    
+            return nav;
+        } 
     }
 
     private Footer crearFooter() {

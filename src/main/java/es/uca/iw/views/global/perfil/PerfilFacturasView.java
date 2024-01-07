@@ -82,14 +82,21 @@ public class PerfilFacturasView extends Div {
                     ConfirmDialog confirmDialog = new ConfirmDialog("Confirmar Descarga",
                             "¿Estás seguro de que quieres descargar el archivo?",
                             "Sí", e -> {
-                                // Si el usuario hace clic en "Sí", procede con la descarga
+                                facturaService.crearFacturaPDFLocal(selectedFactura.getContrato(), selectedFactura);
                                 downloadFile();
+                                //TODO: revisar metodo eliminacion de fichero local
+                                try{ 
+                                    wait(3000); 
+                                } catch (InterruptedException ex) {
+                                    ex.printStackTrace();
+                                } 
+                                facturaService.eliminarFacturaPDFLocal(selectedFactura);
                             },
                             "Cancelar", e -> {
-                                // Si el usuario hace clic en "Cancelar", no hagas nada
                             });
                 
                     confirmDialog.open();
+                    
                 });
                 
                 Button atrasButton = new Button("Volver");
@@ -136,24 +143,25 @@ public class PerfilFacturasView extends Div {
         Anchor anchor = new Anchor(new StreamResource(selectedFactura.getfileName(), new InputStreamFactory() {
             @Override
             public InputStream createInputStream() {
-                File file = new File("doc\\recibo-facturas\\" + selectedFactura.getfileName());
+                File file = new File("docs_facturas\\" + selectedFactura.getfileName());
                 try {
                     return new FileInputStream(file);
                 } catch (FileNotFoundException e) {
-                    // TODO: Manejar FileNotFoundException de alguna manera
                     throw new RuntimeException(e);
                 }
             }
         }), "");
+        
         anchor.getElement().setAttribute("download", true);
-
-        // JavaScript para abrir en nueva pestaña
+        anchor.getElement().getStyle().set("display", "none");
+        
         anchor.getElement().executeJs("this.target='_blank'");
-
+        
         anchor.add(new Button(selectedFactura.getfileName()));
-        add(anchor);
+        
 
-        // Simula el clic en el enlace para iniciar la descarga automáticamente
         anchor.getElement().executeJs("this.click()");
+        
+        add(anchor);
     }
 }

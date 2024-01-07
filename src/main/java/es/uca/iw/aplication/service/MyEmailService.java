@@ -12,6 +12,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import es.uca.iw.aplication.tables.Factura;
+import es.uca.iw.aplication.tables.Mensaje;
 import es.uca.iw.aplication.tables.usuarios.Usuario;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -113,5 +114,26 @@ public class MyEmailService implements EmailService{
             return false;
         }
         return true;
+    }
+
+    public void sendResponseMessages(Mensaje mensaje, String respuesta) {
+        SimpleMailMessage message = new SimpleMailMessage();
+
+        String subject = "Respuesta a su mensaje";
+        String body =  "Tu mensaje:\n" 
+            + "Asunto: " + mensaje.getAsunto() + "\n" 
+            + "Cuerpo: " + mensaje.getCuerpo() + "\n"
+            + "----------------------------------------------------------------------\n"
+            + "Respuesta:\n" + respuesta;
+
+        try {
+            message.setFrom(mail);
+            message.setTo(mensaje.getUsuario().getDuennoCuenta().getCorreoElectronico());
+            message.setSubject(subject);
+            message.setText(body);
+            this.mailSender.send(message);
+        }catch(MailException ex) {
+            ex.printStackTrace();
+        }
     }
 }

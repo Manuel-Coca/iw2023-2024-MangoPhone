@@ -32,16 +32,6 @@ public class SecurityConfiguration {//extends VaadinWebSecurity {
     public PasswordEncoder passwordEncoder() { return passwordEncoder; }
     
     /*
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http
-                .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
-                .httpBasic(Customizer.withDefaults())
-                .formLogin(Customizer.withDefaults())
-                .build();
-    }
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http

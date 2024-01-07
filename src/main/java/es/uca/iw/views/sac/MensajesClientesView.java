@@ -23,6 +23,7 @@ import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 
 import es.uca.iw.aplication.service.MensajeService;
+import es.uca.iw.aplication.service.MyEmailService;
 import es.uca.iw.aplication.service.UsuarioService;
 import es.uca.iw.aplication.tables.Mensaje;
 import es.uca.iw.aplication.tables.enumerados.Rol;
@@ -40,6 +41,9 @@ public class MensajesClientesView extends Div {
 
     @Autowired
     private MensajeService mensajeService;
+
+    @Autowired
+    private MyEmailService emailService;
 
     private Mensaje selectedMensaje;
     private VaadinSession session = VaadinSession.getCurrent();
@@ -154,8 +158,7 @@ public class MensajesClientesView extends Div {
         confirmar.addClassName("boton-naranja-primary");
         confirmar.addClickListener(eventEnviar -> {
             if(binder.validate().isOk()) {
-                // Respuesta por correo
-                // respuestaEmail(selectedMensaje, respuestField.GetValue());
+                emailService.sendResponseMessages(selectedMensaje, respuestaField.getValue());
             }
         });
         crearMensajeDialog.getFooter().add(cerrarModal, confirmar);

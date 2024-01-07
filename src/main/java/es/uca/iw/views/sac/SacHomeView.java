@@ -65,7 +65,7 @@ public class SacHomeView extends Div {
         H1 globalTitle = new H1("Mango");
         globalTitle.addClassName("titulo-custom");
 
-        titleLayout.add(globalTitle, new Paragraph("Panel de control de Marketing"));
+        titleLayout.add(globalTitle, new Paragraph("Panel de control de Atención al Cliente"));
         titleLayout.setSizeFull();
         titleLayout.setAlignItems(Alignment.CENTER);
 

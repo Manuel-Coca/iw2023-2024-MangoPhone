@@ -18,12 +18,15 @@ import com.vaadin.flow.theme.lumo.LumoUtility;
 import es.uca.iw.aplication.service.UsuarioService;
 import es.uca.iw.aplication.tables.enumerados.Rol;
 import es.uca.iw.aplication.tables.usuarios.Usuario;
+import es.uca.iw.views.finanzas.FacturasClientesView;
+import es.uca.iw.views.finanzas.FinanzasHomeView;
 import es.uca.iw.views.global.autenticacion.LogoutView;
 import es.uca.iw.views.marketing.CrearTarifaView;
 import es.uca.iw.views.marketing.ListaTarifasView;
 import es.uca.iw.views.marketing.MarkentingHomeView;
 import es.uca.iw.views.sac.ContratosClientesView;
 import es.uca.iw.views.sac.MensajesClientesView;
+import es.uca.iw.views.sac.SacHomeView;
 
 import java.util.UUID;
 
@@ -93,10 +96,12 @@ public class MainLayoutTrabajadores extends AppLayout {
             nav.addItem(new SideNavItem("Cerrar sesión", LogoutView.class, LineAwesomeIcon.USER.create()));  
         }
         else if(loggedUser.getRol().equals(Rol.FINANZAS)) {
-            //---
+            nav.addItem(new SideNavItem("Inicio", FinanzasHomeView.class, LineAwesomeIcon.HOME_SOLID.create()));  
+            nav.addItem(new SideNavItem("Gestionar facturas", FacturasClientesView.class, LineAwesomeIcon.FILE_INVOICE_DOLLAR_SOLID.create()));  
             nav.addItem(new SideNavItem("Cerrar sesión", LogoutView.class, LineAwesomeIcon.USER.create()));  
         }
         else if(loggedUser.getRol().equals(Rol.SAC)) {
+            nav.addItem(new SideNavItem("Inicio", SacHomeView.class, LineAwesomeIcon.HOME_SOLID.create()));  
             nav.addItem(new SideNavItem("Gestionar contratos", ContratosClientesView.class, LineAwesomeIcon.SCROLL_SOLID.create()));  
             nav.addItem(new SideNavItem("Ver mensajes", MensajesClientesView.class, LineAwesomeIcon.ENVELOPE.create()));  
             nav.addItem(new SideNavItem("Cerrar sesión", LogoutView.class, LineAwesomeIcon.USER.create()));  

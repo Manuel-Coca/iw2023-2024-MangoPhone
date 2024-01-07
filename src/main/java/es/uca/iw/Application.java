@@ -3,6 +3,15 @@ package es.uca.iw;
 import com.vaadin.flow.component.page.AppShellConfigurator;
 import com.vaadin.flow.server.AppShellSettings;
 import com.vaadin.flow.theme.Theme;
+/*
+import es.uca.iw.endPoints.CallRecord;
+import com.github.javaparser.utils.Log;
+import java.util.logging.Logger;
+import org.hibernate.validator.internal.util.logging.LoggerFactory;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Bean;
+import org.springframework.web.client.RestTemplate;
+*/
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -22,6 +31,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @Theme(value = "mangophone")
 public class Application implements AppShellConfigurator {
 
+    //private static final Logger log = LoggerFactory.getLogger(Application.class);
+
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
@@ -31,4 +42,15 @@ public class Application implements AppShellConfigurator {
         settings.addFavIcon("icon", "/icons/mango-fruit-icon.svg", "192x192");
         settings.addLink("shortcut icon", "/icons/mango-fruit-icon.svg");
     }
+
+    /*@Bean
+    public RestTemplate restTemplate(RestTemplate builder) { return builder.build(); }
+
+    @Bean
+    public CommandLineRunner run(RestTemplate restTemplate) throws Exception {
+        return args -> {
+            CallRecord callRecord = restTemplate.getForObject("http://omr-simulator.us-east-1.elasticbeanstalk.com", callRecord.class);
+            log.info(callRecord.toString());
+        };
+    }*/
 }

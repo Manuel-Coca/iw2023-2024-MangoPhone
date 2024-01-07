@@ -2,11 +2,8 @@ package es.uca.iw.views.global.perfil;
 
 import java.time.LocalDate;
 import java.util.Random;
-import java.util.UUID;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.avatar.Avatar;
 import com.vaadin.flow.component.button.Button;

@@ -21,9 +21,9 @@ import es.uca.iw.aplication.tables.usuarios.Token;
 
 @Service
 public class UsuarioService implements UserDetailsService {
-    private final UsuarioRepository usuarioRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final TokenRepository tokenRepository;
+    private UsuarioRepository usuarioRepository;
+    private TokenRepository tokenRepository;
+    private PasswordEncoder passwordEncoder;
     private CuentaUsuarioService cuentaUsuarioService;
 
     @Autowired

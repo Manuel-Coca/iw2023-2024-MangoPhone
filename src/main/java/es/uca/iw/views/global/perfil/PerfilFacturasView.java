@@ -84,8 +84,13 @@ public class PerfilFacturasView extends Div {
                             "Sí", e -> {
                                 facturaService.crearFacturaPDFLocal(selectedFactura.getContrato(), selectedFactura);
                                 downloadFile();
-                                // TODO: Eliminar el archivo una vez que se haya realizado la descarga
-                                //facturaService.eliminarFacturaPDFLocal(selectedFactura);
+                                //TODO: revisar metodo eliminacion de fichero local
+                                try{ 
+                                    wait(3000); 
+                                } catch (InterruptedException ex) {
+                                    ex.printStackTrace();
+                                } 
+                                facturaService.eliminarFacturaPDFLocal(selectedFactura);
                             },
                             "Cancelar", e -> {
                             });

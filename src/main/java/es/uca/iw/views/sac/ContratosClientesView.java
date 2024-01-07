@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -27,6 +28,7 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
+import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 
 import es.uca.iw.aplication.service.ContratoService;
@@ -68,6 +70,8 @@ public class ContratosClientesView extends Div {
     @Autowired
     private UsuarioService usuarioService;
 
+    private VaadinSession session = VaadinSession.getCurrent();
+
     private Usuario selectedUser;
     private Tarifa selectedTarifa;
 
@@ -78,7 +82,24 @@ public class ContratosClientesView extends Div {
         this.facturaService = facturaService;
         this.emailService = emailService;
         this.cuentaUsuarioService = cuentaUsuarioService;
-        add(crearContenido());
+        
+        if(session.getAttribute("loggedUserId") == null) {
+            ConfirmDialog errorDialog = new ConfirmDialog("Error", "Inicia sesión para entrar", "Iniciar sesión", event -> { 
+                UI.getCurrent().navigate("login");
+            });
+            errorDialog.open();
+        }
+        else {
+            Usuario loggedUser = usuarioService.findById(UUID.fromString(session.getAttribute("loggedUserId").toString()));
+            if(loggedUser.getRol().equals(Rol.SAC)) add(crearContenido());
+            else {
+                ConfirmDialog errorDialog = new ConfirmDialog("Error", "No tienes permisos para entrar aquí", "Inicio", event -> { 
+                UI.getCurrent().navigate("home");
+                });
+                errorDialog.setCloseOnEsc(false);
+                errorDialog.open();
+            }
+        }
     }
     
     private VerticalLayout crearContenido() {

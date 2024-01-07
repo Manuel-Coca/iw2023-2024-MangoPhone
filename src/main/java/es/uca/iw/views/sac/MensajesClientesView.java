@@ -61,6 +61,7 @@ public class MensajesClientesView extends Div {
                 ConfirmDialog errorDialog = new ConfirmDialog("Error", "No tienes permisos para entrar aquí", "Inicio", event -> { 
                 UI.getCurrent().navigate("home");
                 });
+                errorDialog.setCloseOnEsc(false);
                 errorDialog.open();
             }
         }

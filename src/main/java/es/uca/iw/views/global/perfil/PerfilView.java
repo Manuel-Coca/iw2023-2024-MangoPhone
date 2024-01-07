@@ -176,9 +176,9 @@ public class PerfilView extends Div {
             });
 
             Paragraph mensajesLink = new Paragraph("Ver o realizar consultas y reclamaciones");
-            facturasLink.addClassName("enlace");
-            facturasLink.addClickListener(event -> {
-                UI.getCurrent().getPage().setLocation("profile/mensaje");
+            mensajesLink.addClassName("enlace");
+            mensajesLink.addClickListener(event -> {
+                UI.getCurrent().getPage().setLocation("profile/mensajes");
             });
 
             Anchor listaLlamadasLink = new Anchor("/profile/llamadas", "Ver desglose de llamadas");

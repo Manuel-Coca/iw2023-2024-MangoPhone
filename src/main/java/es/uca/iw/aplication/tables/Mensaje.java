@@ -1,10 +1,9 @@
 package es.uca.iw.aplication.tables;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.UUID;
 
 import es.uca.iw.aplication.tables.usuarios.CuentaUsuario;
-import es.uca.iw.aplication.tables.usuarios.Usuario;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -48,20 +47,19 @@ public class Mensaje {
     public CuentaUsuario getUsuario() { return cuentaUsuario; }
     public void setUsuario(CuentaUsuario cuentaUsuario) { this.cuentaUsuario = cuentaUsuario; }
 
-    @Lob
     @Column(name = "asunto")
     private String asunto;
-    public String getCuerpo() { return asunto; }
-    public void setCuerpo(String asunto) { this.asunto = asunto; }
+    public String getAsunto() { return asunto; }
+    public void setAsunto(String asunto) { this.asunto = asunto; }
+    
+    @Lob
+    @Column(name = "cuerpo")
+    private String cuerpo;
+    public String getCuerpo() { return cuerpo; }
+    public void setCuerpo(String cuerpo) { this.cuerpo = cuerpo; }
 
     @Column(name = "fechaEmision")
-    private Date fechaEmision;
-    public Date getFechaEmision() { return fechaEmision; }
-    public void setFechaEmision(Date fecha) { this.fechaEmision = fecha; }
-
-    public Mensaje(Tipo tipo, Date fecha, String asunto){
-        this.tipo = tipo;
-        this.fechaEmision = fecha;
-        this.asunto = asunto;
-    }
+    private LocalDate fechaEmision;
+    public LocalDate getFechaEmision() { return fechaEmision; }
+    public void setFechaEmision(LocalDate fecha) { this.fechaEmision = fecha; }
 }

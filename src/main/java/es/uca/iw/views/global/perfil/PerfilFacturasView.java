@@ -100,20 +100,20 @@ public class PerfilFacturasView extends Div {
         
                 botonesLayout.add(descargarButton, atrasButton);
         
-                listaLayout.add(gridFactura(), botonesLayout);
+                listaLayout.add(gridFactura(loggedUser), botonesLayout);
         
                 add(listaLayout);
             }
         }
     }
 
-    private Grid<Factura> gridFactura() {
+    private Grid<Factura> gridFactura(Usuario loggedUser) {
         Grid<Factura> gridFactura = new Grid<Factura>(Factura.class, false);
         gridFactura.addColumn(Factura::getFechaInicio).setHeader("Fecha de emisión");
         gridFactura.addColumn(Factura::getEstado).setHeader("Estado");
         gridFactura.addColumn(Factura::getfileName).setHeader("Documento");
         
-        gridFactura.setItems(getFacturas(contratoService.findByCuentaUsuario(((Usuario)session.getAttribute("loggedUser")).getCuentaUsuario())));
+        gridFactura.setItems(getFacturas(contratoService.findByCuentaUsuario(loggedUser.getCuentaUsuario())));
 
         gridFactura.addSelectionListener(selection -> {
             Optional<Factura> factura = selection.getFirstSelectedItem();
@@ -132,28 +132,28 @@ public class PerfilFacturasView extends Div {
     }
 
     // Función para descargar el archivo
-        private void downloadFile() {
-            Anchor anchor = new Anchor(new StreamResource(selectedFactura.getfileName(), new InputStreamFactory() {
-                @Override
-                public InputStream createInputStream() {
-                    File file = new File("doc\\recibo-facturas\\" + selectedFactura.getfileName());
-                    try {
-                        return new FileInputStream(file);
-                    } catch (FileNotFoundException e) {
-                        // TODO: Manejar FileNotFoundException de alguna manera
-                        throw new RuntimeException(e);
-                    }
+    private void downloadFile() {
+        Anchor anchor = new Anchor(new StreamResource(selectedFactura.getfileName(), new InputStreamFactory() {
+            @Override
+            public InputStream createInputStream() {
+                File file = new File("doc\\recibo-facturas\\" + selectedFactura.getfileName());
+                try {
+                    return new FileInputStream(file);
+                } catch (FileNotFoundException e) {
+                    // TODO: Manejar FileNotFoundException de alguna manera
+                    throw new RuntimeException(e);
                 }
-            }), "");
-            anchor.getElement().setAttribute("download", true);
+            }
+        }), "");
+        anchor.getElement().setAttribute("download", true);
 
-            // JavaScript para abrir en nueva pestaña
-            anchor.getElement().executeJs("this.target='_blank'");
+        // JavaScript para abrir en nueva pestaña
+        anchor.getElement().executeJs("this.target='_blank'");
 
-            anchor.add(new Button(selectedFactura.getfileName()));
-            add(anchor);
+        anchor.add(new Button(selectedFactura.getfileName()));
+        add(anchor);
 
-            // Simula el clic en el enlace para iniciar la descarga automáticamente
-            anchor.getElement().executeJs("this.click()");
-        }
+        // Simula el clic en el enlace para iniciar la descarga automáticamente
+        anchor.getElement().executeJs("this.click()");
+    }
 }

@@ -116,7 +116,7 @@ public class PerfilFacturasView extends Div {
 
     private Grid<Factura> gridFactura(Usuario loggedUser) {
         Grid<Factura> gridFactura = new Grid<Factura>(Factura.class, false);
-        gridFactura.addColumn(Factura::getFechaInicio).setHeader("Fecha de emisión");
+        gridFactura.addColumn(Factura::getFechaEmision).setHeader("Fecha de emisión");
         gridFactura.addColumn(Factura::getEstado).setHeader("Estado");
         gridFactura.addColumn(Factura::getfileName).setHeader("Documento");
         

@@ -26,8 +26,8 @@ public class Factura {
 
     @Column(name = "fechaEmision")
     private LocalDate fechaEmision;
-    public LocalDate getFechaInicio() { return fechaEmision; }
-    public void setFechaInicio(LocalDate fecha) { this.fechaEmision = fecha; }
+    public LocalDate getFechaEmision() { return fechaEmision; }
+    public void setFechaEmision(LocalDate fecha) { this.fechaEmision = fecha; }
 
     @Column(name = "estado")
     private Estado estado;

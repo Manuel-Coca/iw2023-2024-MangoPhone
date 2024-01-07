@@ -19,7 +19,6 @@ import es.uca.iw.aplication.service.UsuarioService;
 import es.uca.iw.aplication.tables.enumerados.Rol;
 import es.uca.iw.aplication.tables.usuarios.Usuario;
 import es.uca.iw.views.global.autenticacion.LogoutView;
-import es.uca.iw.views.global.main.WelcomeView;
 import es.uca.iw.views.marketing.CrearTarifaView;
 import es.uca.iw.views.marketing.ListaTarifasView;
 import es.uca.iw.views.marketing.MarkentingHomeView;

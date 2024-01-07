@@ -38,13 +38,19 @@ public class MainLayoutTrabajadores extends AppLayout {
     
     @Autowired
     private UsuarioService usuarioService;
+    private VaadinSession session = VaadinSession.getCurrent();
 
     public MainLayoutTrabajadores(UsuarioService usuarioService) {
         this.usuarioService = usuarioService;
-        setPrimarySection(Section.NAVBAR);
-        crearMenu();
-        crearHeader();
-        crearFooter();
+        if(session.getAttribute("loggedUserId") == null) {
+            UI.getCurrent().getPage().setLocation("home");
+        }
+        else {
+            setPrimarySection(Section.NAVBAR);
+            crearMenu();
+            crearHeader();
+            crearFooter();
+        }
     }
     
     private void crearHeader() {
@@ -79,33 +85,25 @@ public class MainLayoutTrabajadores extends AppLayout {
     }
     
     private SideNav crearNavegacion() {
-        VaadinSession session = VaadinSession.getCurrent();
         SideNav nav = new SideNav();
-        
-        if(session.getAttribute("loggedUserId") == null) {
-            UI.getCurrent().getPage().setLocation("home");
-            return nav;
+        Usuario loggedUser = usuarioService.findById(UUID.fromString(session.getAttribute("loggedUserId").toString()));
+        if(loggedUser.getRol().equals(Rol.MARKETING)) {
+            nav.addItem(new SideNavItem("Inicio", MarkentingHomeView.class, LineAwesomeIcon.HOME_SOLID.create()));
+            nav.addItem(new SideNavItem("Crear tarifa", CrearTarifaView.class, LineAwesomeIcon.PLUS_CIRCLE_SOLID.create()));
+            nav.addItem(new SideNavItem("Ver tarifas", ListaTarifasView.class, LineAwesomeIcon.LIST_SOLID.create()));
+            nav.addItem(new SideNavItem("Cerrar sesión", LogoutView.class, LineAwesomeIcon.USER.create()));  
         }
-        else {
-            Usuario loggedUser = usuarioService.findById(UUID.fromString(session.getAttribute("loggedUserId").toString()));
-            if(loggedUser.getRol().equals(Rol.MARKETING)) {
-                nav.addItem(new SideNavItem("Inicio", MarkentingHomeView.class, LineAwesomeIcon.HOME_SOLID.create()));
-                nav.addItem(new SideNavItem("Crear tarifa", CrearTarifaView.class, LineAwesomeIcon.PLUS_CIRCLE_SOLID.create()));
-                nav.addItem(new SideNavItem("Ver tarifas", ListaTarifasView.class, LineAwesomeIcon.LIST_SOLID.create()));
-                nav.addItem(new SideNavItem("Cerrar sesión", LogoutView.class, LineAwesomeIcon.USER.create()));  
-            }
-            else if(loggedUser.getRol().equals(Rol.FINANZAS)) {
-                //---
-                nav.addItem(new SideNavItem("Cerrar sesión", LogoutView.class, LineAwesomeIcon.USER.create()));  
-            }
-            else if(loggedUser.getRol().equals(Rol.SAC)) {
-                nav.addItem(new SideNavItem("Gestionar contratos", ContratosClientesView.class, LineAwesomeIcon.SCROLL_SOLID.create()));  
-                nav.addItem(new SideNavItem("Ver mensajes", MensajesClientesView.class, LineAwesomeIcon.ENVELOPE.create()));  
-                nav.addItem(new SideNavItem("Cerrar sesión", LogoutView.class, LineAwesomeIcon.USER.create()));  
-            }
+        else if(loggedUser.getRol().equals(Rol.FINANZAS)) {
+            //---
+            nav.addItem(new SideNavItem("Cerrar sesión", LogoutView.class, LineAwesomeIcon.USER.create()));  
+        }
+        else if(loggedUser.getRol().equals(Rol.SAC)) {
+            nav.addItem(new SideNavItem("Gestionar contratos", ContratosClientesView.class, LineAwesomeIcon.SCROLL_SOLID.create()));  
+            nav.addItem(new SideNavItem("Ver mensajes", MensajesClientesView.class, LineAwesomeIcon.ENVELOPE.create()));  
+            nav.addItem(new SideNavItem("Cerrar sesión", LogoutView.class, LineAwesomeIcon.USER.create()));  
+        }
     
-            return nav;
-        } 
+        return nav;
     }
 
     private Footer crearFooter() {

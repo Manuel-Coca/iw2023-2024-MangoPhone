@@ -1,7 +1,12 @@
 package es.uca.iw.views.sac;
 
+import java.util.UUID;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
@@ -12,8 +17,12 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
+import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 
+import es.uca.iw.aplication.service.UsuarioService;
+import es.uca.iw.aplication.tables.enumerados.Rol;
+import es.uca.iw.aplication.tables.usuarios.Usuario;
 import es.uca.iw.views.templates.MainLayoutTrabajadores;
 
 @PageTitle("SAC Home")
@@ -22,8 +31,31 @@ import es.uca.iw.views.templates.MainLayoutTrabajadores;
 @AnonymousAllowed
 public class SacHomeView extends Div {
 
-    public SacHomeView() {
-        add(crearContenido());
+    @Autowired
+    private UsuarioService usuarioService;
+
+    private VaadinSession session = VaadinSession.getCurrent();
+
+    public SacHomeView(UsuarioService usuarioService) {
+        this.usuarioService = usuarioService;
+
+        if(session.getAttribute("loggedUserId") == null) {
+            ConfirmDialog errorDialog = new ConfirmDialog("Error", "Inicia sesión para entrar", "Iniciar sesión", event -> { 
+                UI.getCurrent().navigate("login");
+            });
+            errorDialog.open();
+        }
+        else {
+            Usuario loggedUser = usuarioService.findById(UUID.fromString(session.getAttribute("loggedUserId").toString()));
+            if(loggedUser.getRol().equals(Rol.SAC)) add(crearContenido());
+            else {
+                ConfirmDialog errorDialog = new ConfirmDialog("Error", "No tienes permisos para entrar aquí", "Inicio", event -> { 
+                UI.getCurrent().navigate("home");
+                });
+                errorDialog.setCloseOnEsc(false);
+                errorDialog.open();
+            }
+        }
     }
 
     private VerticalLayout crearContenido() {

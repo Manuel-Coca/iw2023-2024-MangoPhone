@@ -21,11 +21,15 @@ import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
+import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 import es.uca.iw.aplication.service.TarifaService;
+import es.uca.iw.aplication.service.UsuarioService;
+import es.uca.iw.aplication.tables.enumerados.Rol;
 import es.uca.iw.aplication.tables.enumerados.Servicio;
 import es.uca.iw.aplication.tables.tarifas.Tarifa;
+import es.uca.iw.aplication.tables.usuarios.Usuario;
 import es.uca.iw.views.templates.MainLayoutTrabajadores;
 
 @PageTitle("Crear Tarifa")
@@ -36,7 +40,33 @@ public class CrearTarifaView extends Div {
     @Autowired
     private TarifaService tarifaService;
 
-    public CrearTarifaView() { add(registrarLayout()); }
+    @Autowired
+    private UsuarioService usuarioService;
+
+    private VaadinSession session = VaadinSession.getCurrent();
+
+    public CrearTarifaView(UsuarioService usuarioService, TarifaService tarifaService) { 
+        this.usuarioService = usuarioService;
+        this.tarifaService = tarifaService;
+
+        if(session.getAttribute("loggedUserId") == null) {
+            ConfirmDialog errorDialog = new ConfirmDialog("Error", "Inicia sesión para entrar", "Iniciar sesión", event -> { 
+                UI.getCurrent().navigate("login");
+            });
+            errorDialog.open();
+        }
+        else {
+            Usuario loggedUser = usuarioService.findById(UUID.fromString(session.getAttribute("loggedUserId").toString()));
+            if(loggedUser.getRol().equals(Rol.MARKETING)) add(registrarLayout()); 
+            else {
+                ConfirmDialog errorDialog = new ConfirmDialog("Error", "No tienes permisos para entrar aquí", "Inicio", event -> { 
+                UI.getCurrent().navigate("home");
+                });
+                errorDialog.setCloseOnEsc(false);
+                errorDialog.open();
+            }
+        } 
+    }
 
     private VerticalLayout registrarLayout() {
         VerticalLayout registrarLayout = new VerticalLayout();

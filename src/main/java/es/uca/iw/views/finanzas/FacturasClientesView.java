@@ -1,6 +1,6 @@
 package es.uca.iw.views.finanzas;
 
-import java.util.List;
+import java.time.LocalDate;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -26,13 +26,13 @@ import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 
+import es.uca.iw.aplication.service.ContratoService;
 import es.uca.iw.aplication.service.FacturaService;
+import es.uca.iw.aplication.service.MyEmailService;
 import es.uca.iw.aplication.service.UsuarioService;
-import es.uca.iw.aplication.tables.Contrato_Tarifa;
 import es.uca.iw.aplication.tables.Factura;
+import es.uca.iw.aplication.tables.Factura.Estado;
 import es.uca.iw.aplication.tables.enumerados.Rol;
-import es.uca.iw.aplication.tables.enumerados.Servicio;
-import es.uca.iw.aplication.tables.tarifas.Tarifa;
 import es.uca.iw.aplication.tables.usuarios.Usuario;
 import es.uca.iw.views.templates.MainLayoutTrabajadores;
 
@@ -47,13 +47,21 @@ public class FacturasClientesView extends Div {
     @Autowired
     private FacturaService facturaService;
 
+    @Autowired
+    private MyEmailService myEmailService;
+
+    @Autowired
+    private ContratoService contratoService;
+
     private VaadinSession session = VaadinSession.getCurrent();
     private Usuario selectedUser;
     private Factura selectedFactura;
 
-    public FacturasClientesView(UsuarioService usuarioService, FacturaService facturaService) {
+    public FacturasClientesView(UsuarioService usuarioService, FacturaService facturaService, MyEmailService myEmailService, ContratoService contratoService) {
         this.usuarioService = usuarioService;
         this.facturaService = facturaService;
+        this.myEmailService = myEmailService;
+        this.contratoService = contratoService;
 
         if(session.getAttribute("loggedUserId") == null) {
             ConfirmDialog errorDialog = new ConfirmDialog("Error", "Inicia sesión para entrar", "Iniciar sesión", event -> { 
@@ -103,8 +111,7 @@ public class FacturasClientesView extends Div {
                 errorDialog.setWidth("300px");
                 errorDialog.add(dialogLayout);
                 errorDialog.open();
-            }
-            else {
+            } else {
                 Dialog dialog = modalFactura();
                 dialog.open();
             }
@@ -194,7 +201,10 @@ public class FacturasClientesView extends Div {
             Button confirmarButton = new Button("Si");
             confirmarButton.addClassName("boton-naranja-primary");
             confirmarButton.addClickListener(eventConfirm -> { 
-                //enviarMail(selectedFactura); 
+                facturaService.crearFacturaPDFLocal(selectedFactura.getContrato(), selectedFactura);
+                myEmailService.sendFacturaEmail(selectedUser, selectedFactura);
+                facturaService.eliminarFacturaPDFLocal(selectedFactura);
+
                 confirmDialog.close(); 
             });
             
@@ -216,7 +226,17 @@ public class FacturasClientesView extends Div {
             Button confirmarButton = new Button("Si");
             confirmarButton.addClassName("boton-naranja-primary");
             confirmarButton.addClickListener(eventConfirm -> { 
-                //enviarMailNuevaFactura(); 
+                Factura factura = new Factura(Estado.Pagado, LocalDate.now(), selectedUser.getCuentaUsuario().getContrato(), facturaService.generarNombreFactura(selectedUser));
+                facturaService.save(factura);
+                contratoService.addFactura(selectedUser.getCuentaUsuario().getContrato(), factura);
+                contratoService.actualizarContrato(selectedUser.getCuentaUsuario().getContrato());
+
+                facturaService.crearFacturaPDFLocal(selectedUser.getCuentaUsuario().getContrato(), factura);
+                myEmailService.sendFacturaEmail(selectedUser, factura);
+                facturaService.eliminarFacturaPDFLocal(factura);
+
+                facturaService.save(factura);
+
                 confirmDialog.close(); 
             });
             

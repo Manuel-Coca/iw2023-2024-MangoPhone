@@ -63,7 +63,6 @@ public class PerfilContratoView extends Div {
     private VaadinSession session = VaadinSession.getCurrent();
     private Optional<Tarifa> selectedTarifa;
 
-
     public PerfilContratoView(CuentaUsuarioService cuentaUsuarioService, Contrato_TarifaService contrato_TarifaService, ContratoService contratoService, TarifaService tarifaService, UsuarioService usuarioService) {
         this.cuentaUsuarioService = cuentaUsuarioService;
         this.contrato_TarifaService = contrato_TarifaService;
@@ -283,8 +282,7 @@ public class PerfilContratoView extends Div {
         }
 
         binder.forField(tarifaField)
-                .asRequired("La nueva tarifa es obligatoria")
-                .bind(null, null);
+                .asRequired("La nueva tarifa es obligatoria");
 
         dialogLayout.add(tarifaField);
         

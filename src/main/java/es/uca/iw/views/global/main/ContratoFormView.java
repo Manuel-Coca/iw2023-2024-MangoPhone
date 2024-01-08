@@ -260,7 +260,6 @@ public class ContratoFormView extends Div {
                     facturaService.save(factura);
                     contratoService.addFactura(contrato, factura);
                     contratoService.actualizarContrato(contrato);
-                    
 
                     facturaService.crearFacturaPDFLocal(contrato, factura);
                     emailService.sendFacturaEmail(usuario, factura);

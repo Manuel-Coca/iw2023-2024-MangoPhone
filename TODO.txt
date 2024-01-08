@@ -1,0 +1,29 @@
+- Borrar comentarios validaciones
+    - login
+    - register
+    - cambio de datos en perfil
+
+- Borrar usuario
+    - perfil -> borrar usuario
+
+- Enviar email/crear facturas
+    - finanzas -> facturasClientesView -> botones
+
+- Enviar correo con nuevo token
+    - ActivarView
+
+- Ver llamadas / consumo de datos
+    - perfil + api
+
+- Opciones roaming, bloquear numeros ...
+    - perfil
+
+- Auditorias
+
+- Responsive
+
+- Envios de mail en segundo plano
+
+- Estilizar y comentar codigo
+
+- Despliegue + pipeline

@@ -191,10 +191,26 @@ public class PerfilView extends Div {
                 crearMensaje.open();
             });
 
-            Anchor listaLlamadasLink = new Anchor("/profile/llamadas", "Ver desglose de llamadas");
-            Anchor cerrarSesionLink = new Anchor("logout", "Cerrar sesión");
+            Paragraph listaLlamadasLink = new Paragraph("Ver desglose de llamadas");
+            listaLlamadasLink.addClassName("enlace");
+            listaLlamadasLink.addClickListener(event -> {
+                UI.getCurrent().getPage().setLocation("profile/llamadas");
+            });
+
+            Paragraph cerrarSesionLink = new Paragraph("Cerrar sesión");
+            cerrarSesionLink.addClassName("enlace");
+            cerrarSesionLink.addClickListener(event -> {
+                UI.getCurrent().getPage().setLocation("logout");
+            });
+
+            Paragraph borrarCuentaLink = new Paragraph("Borrar tu cuenta");
+            borrarCuentaLink.addClassName("enlace");
+            borrarCuentaLink.addClickListener(event -> {
+                Dialog borrarCuentaDialog = borrarCuentaDialog();
+                borrarCuentaDialog.open();
+            });
     
-            globalVerticalLayout.add(datosPersonalesLink, passwordLink, contratoLink, facturasLink, listaLlamadasLink, mensajesLink, cerrarSesionLink);
+            globalVerticalLayout.add(datosPersonalesLink, passwordLink, contratoLink, facturasLink, listaLlamadasLink, mensajesLink, cerrarSesionLink, borrarCuentaLink);
     
             globalDiv.add(globalVerticalLayout);
             return globalDiv;
@@ -459,5 +475,34 @@ public class PerfilView extends Div {
             });
             errorDialog.open();
         }
+    }
+
+    public Dialog borrarCuentaDialog() {
+        Dialog borrarCuentaDialog = new Dialog();
+        VerticalLayout dialogLayout = new VerticalLayout();
+
+        Paragraph infoParagraph = new Paragraph("Si borras la cuenta, cancelarás y borrarás tu contrato, se borrarán las facturas asociadas a tu cuenta y, " 
+         + "si deseas volver, deberás empezar todo el proceso de nuevo. ¿Estás seguro de continuar?");
+
+        // Botones
+        Button cerrarModal = new Button("No");
+        cerrarModal.addClassName("boton-verde-secondary");
+        cerrarModal.addClickListener(eventCerrar -> {
+            borrarCuentaDialog.close();
+        });
+        Button confirmar = new Button("Si");
+        confirmar.addClassName("boton-naranja-primary");
+        confirmar.addClickListener(eventEnviar -> {
+            // BORRAR TODO EL USUARIO
+            UI.getCurrent().getPage().setLocation("home");
+        });
+
+        dialogLayout.add(infoParagraph);
+        borrarCuentaDialog.getFooter().add(cerrarModal, confirmar);
+
+        borrarCuentaDialog.setHeaderTitle("¿Borrar la cuenta?");
+        borrarCuentaDialog.setWidth("600px");
+        borrarCuentaDialog.add(dialogLayout);
+        return borrarCuentaDialog;
     }
 }

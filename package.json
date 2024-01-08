@@ -3,6 +3,7 @@
   "license": "UNLICENSED",
   "type": "module",
   "dependencies": {
+    "@lrnwebcomponents/pdf-browser-viewer": "2.7.10",
     "@polymer/polymer": "3.5.1",
     "@vaadin/a11y-base": "24.2.1",
     "@vaadin/accordion": "24.2.1",
@@ -100,6 +101,7 @@
   },
   "vaadin": {
     "dependencies": {
+      "@lrnwebcomponents/pdf-browser-viewer": "2.7.10",
       "@polymer/polymer": "3.5.1",
       "@vaadin/a11y-base": "24.2.1",
       "@vaadin/accordion": "24.2.1",
@@ -195,7 +197,7 @@
       "workbox-core": "7.0.0",
       "workbox-precaching": "7.0.0"
     },
-    "hash": "2e7bd93baef9fdff956517e60c164f94ccbe1c366a1098b1e4172fcce6839b96"
+    "hash": "5cebf76d1d13b3979ce84a7a7673bf04287aa4449ecf5eafbc7b1205dcbaa535"
   },
   "overrides": {
     "@vaadin/bundles": "$@vaadin/bundles",
@@ -274,6 +276,7 @@
     "@vaadin/vaadin-themable-mixin": "$@vaadin/vaadin-themable-mixin",
     "date-fns": "$date-fns",
     "mobile-drag-drop": "$mobile-drag-drop",
-    "@xpertsea/paper-slider": "$@xpertsea/paper-slider"
+    "@xpertsea/paper-slider": "$@xpertsea/paper-slider",
+    "@lrnwebcomponents/pdf-browser-viewer": "$@lrnwebcomponents/pdf-browser-viewer"
   }
 }

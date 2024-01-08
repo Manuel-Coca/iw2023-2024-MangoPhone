@@ -4,17 +4,22 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import com.vaadin.flow.component.ItemLabelGenerator;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
+import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
 import com.vaadin.flow.component.orderedlayout.FlexComponent.JustifyContentMode;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.data.binder.Binder;
@@ -26,8 +31,11 @@ import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 
+import es.uca.iw.aplication.service.EmailService;
 import es.uca.iw.aplication.service.UsuarioService;
 import es.uca.iw.aplication.tables.enumerados.Rol;
+import es.uca.iw.aplication.tables.enumerados.Servicio;
+import es.uca.iw.aplication.tables.tarifas.Tarifa;
 import es.uca.iw.aplication.tables.usuarios.Usuario;
 
 @PageTitle("Inicio Sesión")
@@ -42,9 +50,14 @@ public class LoginView extends Div {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private EmailService emailService;
+
     //private final AuthenticatedUser authUser;
 
-    public LoginView() {
+    public LoginView(EmailService emailService, UsuarioService usuarioService) {
+        this.emailService = emailService;
+        this.usuarioService = usuarioService;
         VaadinSession session = VaadinSession.getCurrent();
         
         if(session.getAttribute("loggedUserId") == null ) {
@@ -100,8 +113,13 @@ public class LoginView extends Div {
         });
         
         // Enlace "Olvidar contraseña"
-        Anchor forgotPwText = new Anchor("home", "¿Olvidaste tu contraseña?");
+        Paragraph forgotPwText = new Paragraph("¿Olvidaste tu contraseña?");
         forgotPwText.addClassName(LumoUtility.Margin.Bottom.LARGE);
+        forgotPwText.addClassName("enlace");
+        forgotPwText.addClickListener(event -> {
+            Dialog newPassDialog = crearModalNuevaContraseña();
+            newPassDialog.open();
+        });
         
         // Texto "Nuevo cliente"
         Text question = new Text("¿Eres un nuevo cliente?");
@@ -111,7 +129,7 @@ public class LoginView extends Div {
         registerButton.addClassName("boton-naranja-secondary");
         registerButton.addClickListener(event -> {
             // Cambiar a ir a registro
-            UI.getCurrent().navigate("register");        
+            UI.getCurrent().getPage().setLocation("register");        
         });
 
         // Enlace "Ir a inicio"
@@ -138,45 +156,99 @@ public class LoginView extends Div {
                 if(usuario.getRol().equals(Rol.CLIENTE)) {
                     session.setAttribute("loggedUserId", usuario.getId().toString());
                     ConfirmDialog dialogBienvenida = new ConfirmDialog("Bienvenido", "Hola de vuelta, " + usuario.getNombre() + ". Eres un cliente.", "Entrar", event -> {
-                        UI.getCurrent().navigate("profile"); //Perfil de cliente
+                        UI.getCurrent().getPage().setLocation("profile"); //Perfil de cliente
                     });
                     dialogBienvenida.open();
                 } 
                 else if(usuario.getRol().equals(Rol.SAC)) {
                     session.setAttribute("loggedUserId", usuario.getId().toString());
                     ConfirmDialog dialogBienvenida = new ConfirmDialog("Bienvenido", "Hola de vuelta, " + usuario.getNombre() + ". Eres un trabajador de SAC.", "Entrar", event -> {
-                        UI.getCurrent().navigate("sachome"); //Perfil de SAC
+                        UI.getCurrent().getPage().setLocation("sachome"); //Perfil de SAC
                     });
                     dialogBienvenida.open();
                 } 
                 else if(usuario.getRol().equals(Rol.MARKETING)) {
                     session.setAttribute("loggedUserId", usuario.getId().toString());
                     ConfirmDialog dialogBienvenida = new ConfirmDialog("Bienvenido", "Hola de vuelta, " + usuario.getNombre() + ". Eres un trabajador de Marketing.", "Entrar", event -> {
-                        UI.getCurrent().navigate("marketinghome"); //Perfil de Marketing
+                        UI.getCurrent().getPage().setLocation("marketinghome"); //Perfil de Marketing
                     });
                     dialogBienvenida.open();
                 } 
                 else if(usuario.getRol().equals(Rol.FINANZAS)) {
                     session.setAttribute("loggedUserId", usuario.getId().toString());
                     ConfirmDialog dialogBienvenida = new ConfirmDialog("Bienvenido", "Hola de vuelta, " + usuario.getNombre() + ". Eres un trabajador de Finanzas.", "Entrar", event -> {
-                        UI.getCurrent().navigate("/home"); //Cambiar por perfil de Finanzas
+                        UI.getCurrent().getPage().setLocation("finanzashome"); //Perfil de Finanzas
                     });
                     dialogBienvenida.open();
                 }
             }
             else {
                 ConfirmDialog errorDialog = new ConfirmDialog("Error", "El correo o la contraseña son incorrectos", "Reintentar", event -> {
-                        UI.getCurrent().navigate("/login");
+                        UI.getCurrent().getPage().setLocation("login");
                     });
                 errorDialog.open();
             }
         } 
         catch(Exception e) {
             ConfirmDialog errorDialog = new ConfirmDialog("Error", "No se ha conseguido realizar la peticion", "Reintentar", event -> {
-                UI.getCurrent().navigate("/login");
+                UI.getCurrent().getPage().setLocation("/login");
             });
             errorDialog.open();
         }
+    }
+
+    private Dialog crearModalNuevaContraseña() {
+        Dialog newPassDialog = new Dialog();
+        // Binding
+        Binder<Usuario> binder = new Binder<>(Usuario.class);
+        VerticalLayout dialogLayout = new VerticalLayout();
+    
+        EmailField correoField = new EmailField("Correo electrónico");
+        correoField.setWidthFull();
+        correoField.setPlaceholder("Introduce tu correo electrónico");
+        binder.forField(correoField)
+                .asRequired("El correo es obligatorio")
+                .bind(Usuario::getCorreoElectronico, Usuario::setCorreoElectronico);
+
+        Paragraph infoParagraph = new Paragraph("Se le enviará a su correo una nueva contraseña. Úsela para iniciar sesión. No olvide cambiarla en su perfil cuando entre.");
+
+        dialogLayout.add(infoParagraph, correoField);
+        
+        // Botones
+        Button cerrarModal = new Button("Cerrar");
+        cerrarModal.addClassName("boton-verde-secondary");
+        cerrarModal.addClickListener(event1 -> {
+            newPassDialog.close();
+        });
+
+        Button confirmar = new Button("Enviar");
+        confirmar.addClassName("boton-naranja-primary");
+        confirmar.addClickListener(event2 -> {
+            if(binder.validate().isOk()) {
+                try {
+                    Usuario user = usuarioService.buscarEmail(correoField.getValue());
+                    String newPass = UUID.randomUUID().toString().substring(0, 5);
+    
+                    user.setContrasena(newPass);
+                    usuarioService.updateUsuarioOnlyPass(user);
+                    emailService.sendNewPassEmail(user, newPass);
+    
+                    UI.getCurrent().getPage().setLocation("login");
+                }
+                catch(Exception e) { 
+                    ConfirmDialog errorDialog = new ConfirmDialog("Error", "El usuario no existe", "Reintentar", event3 -> {
+                        UI.getCurrent().getPage().setLocation("login");
+                    });
+                    errorDialog.open();
+                }
+            }
+        });
+        newPassDialog.getFooter().add(cerrarModal, confirmar);
+
+        newPassDialog.setHeaderTitle("Olvido de contraseña");
+        newPassDialog.setWidth("600px");
+        newPassDialog.add(dialogLayout);
+        return newPassDialog;
     }
 
     /*

@@ -274,16 +274,17 @@ public class PerfilContratoView extends Div {
         if(servicio == Servicio.FIJO) {
             tarifaField.setItemLabelGenerator((ItemLabelGenerator<Tarifa>) tarifa ->
                 "Capacidad: " + tarifa.getCapacidad() + " min/mes -- Precio: " + tarifa.getPrecio() + "€/mes"    
-            );    
+            );
         }
         else {
             tarifaField.setItemLabelGenerator((ItemLabelGenerator<Tarifa>) tarifa ->
                 "Capacidad: " + tarifa.getCapacidad() + " GB/mes -- Precio: " + tarifa.getPrecio() + "€/mes"    
-            ); 
+            );
         }
 
         binder.forField(tarifaField)
-                .asRequired("La nueva tarifa es obligatoria");
+                .asRequired("La nueva tarifa es obligatoria")
+                .bind(null, null);
 
         dialogLayout.add(tarifaField);
         

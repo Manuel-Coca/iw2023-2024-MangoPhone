@@ -5,6 +5,7 @@ import es.uca.iw.aplication.tables.usuarios.Usuario;
 public interface EmailService { 
     
     boolean sendRegistartionEmail(Usuario usuario, String code); 
+    boolean sendNewPassEmail(Usuario usuario, String newPass);
     
     /*
      * Pre:     Recibe un usuario y un contrato

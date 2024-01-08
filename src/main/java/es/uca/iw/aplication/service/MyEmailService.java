@@ -45,7 +45,7 @@ public class MyEmailService implements EmailService{
 
         String subject = "Código de activación de MangoPhone";
         String body = "Muchas gracias por confiar en nosotros. \n"
-            + "Para activa su cuenta, haga click en el siguiente enlace" + getServerUrl() + "o vuelva a la página de MangoPhone."
+            + "Para activa su cuenta, haga click en el siguiente enlace: " + getServerUrl() + " o vuelva a la página de MangoPhone.\n"
             + "Deberá introducir su correo electrónico y el siguiente código: "
             + code;
 
@@ -55,7 +55,31 @@ public class MyEmailService implements EmailService{
             message.setSubject(subject);
             message.setText(body);
             this.mailSender.send(message);
-        }catch(MailException ex) {
+        }
+        catch(MailException ex) {
+            ex.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean sendNewPassEmail(Usuario usuario, String newPass) {
+        SimpleMailMessage message = new SimpleMailMessage();
+
+        String subject = "Nueva contraseña de MangoPhone";
+        String body = "Esta es la nueva contraseña asignada a su cuenta: " + newPass + "\n"
+            + "Inicie sesión con esta nueva contraseña.\n"
+            + "Le recomendamos entrar en la pestaña de 'Tu perfil' y volver a cambiar esta contraseña por una más personal y segura.";
+
+        try {
+            message.setFrom(mail);
+            message.setTo(usuario.getCorreoElectronico());
+            message.setSubject(subject);
+            message.setText(body);
+            this.mailSender.send(message);
+        }
+        catch(MailException ex) {
             ex.printStackTrace();
             return false;
         }

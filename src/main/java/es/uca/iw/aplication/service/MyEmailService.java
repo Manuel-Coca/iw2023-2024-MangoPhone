@@ -86,6 +86,28 @@ public class MyEmailService implements EmailService{
         return true;
     }
 
+    @Override
+    public boolean sendNewToken(Usuario usuario, String token) {
+        SimpleMailMessage message = new SimpleMailMessage();
+
+        String subject = "Nueva código de activación";
+        String body = "Este es el nuevo código que debe usar para activar su perfil: " + token;
+
+        try {
+            message.setFrom(mail);
+            message.setTo(usuario.getCorreoElectronico());
+            message.setSubject(subject);
+            message.setText(body);
+            this.mailSender.send(message);
+        }
+        catch(MailException ex) {
+            ex.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+
     /*
      * Pre:         Recibe un usuario y un contrato
      * Post:        Crea un mensaje personalizado, junto a la factura asociada al contrato. Despues de enviar el correo elimina el fichero en el sistema

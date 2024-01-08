@@ -5,7 +5,6 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.vaadin.flow.component.ItemLabelGenerator;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.UI;
@@ -19,7 +18,6 @@ import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
 import com.vaadin.flow.component.orderedlayout.FlexComponent.JustifyContentMode;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.data.binder.Binder;
@@ -34,8 +32,7 @@ import com.vaadin.flow.theme.lumo.LumoUtility;
 import es.uca.iw.aplication.service.EmailService;
 import es.uca.iw.aplication.service.UsuarioService;
 import es.uca.iw.aplication.tables.enumerados.Rol;
-import es.uca.iw.aplication.tables.enumerados.Servicio;
-import es.uca.iw.aplication.tables.tarifas.Tarifa;
+
 import es.uca.iw.aplication.tables.usuarios.Usuario;
 
 @PageTitle("Inicio Sesión")

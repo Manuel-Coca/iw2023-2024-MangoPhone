@@ -6,6 +6,7 @@ public interface EmailService {
     
     boolean sendRegistartionEmail(Usuario usuario, String code); 
     boolean sendNewPassEmail(Usuario usuario, String newPass);
+    boolean sendNewToken(Usuario usuario, String token);
     
     /*
      * Pre:     Recibe un usuario y un contrato

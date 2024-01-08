@@ -95,7 +95,7 @@ public class MainLayout extends AppLayout {
             nav.addItem(new SideNavItem("Cerrar sesión", LogoutView.class, LineAwesomeIcon.USER.create()));  
             
             Usuario loggedUser = usuarioService.findById(UUID.fromString(session.getAttribute("loggedUserId").toString()));
-            if(loggedUser.getCuentaUsuario().getContrato() == null) nav.addItem(new SideNavItem("Contrata", ContratoFormView.class, LineAwesomeIcon.PLUS_CIRCLE_SOLID.create()));
+            if(loggedUser.getCuentaUsuario() == null || loggedUser.getCuentaUsuario().getContrato() == null) nav.addItem(new SideNavItem("Contrata", ContratoFormView.class, LineAwesomeIcon.PLUS_CIRCLE_SOLID.create()));
             else nav.addItem(new SideNavItem("Tu contrato", PerfilContratoView.class, LineAwesomeIcon.SCROLL_SOLID.create()));
         }
         return nav;

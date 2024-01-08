@@ -20,9 +20,6 @@
 - Enviar email/crear facturas
     - finanzas -> facturasClientesView -> botones
 
-- Enviar correo con nuevo token
-    - ActivarView
-
 - Ver llamadas / consumo de datos
     - perfil + api
 

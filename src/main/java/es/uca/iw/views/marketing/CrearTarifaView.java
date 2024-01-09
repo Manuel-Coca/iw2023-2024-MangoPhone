@@ -22,7 +22,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.server.VaadinSession;
-import com.vaadin.flow.server.auth.AnonymousAllowed;
+
 import com.vaadin.flow.theme.lumo.LumoUtility;
 import es.uca.iw.aplication.service.TarifaService;
 import es.uca.iw.aplication.service.UsuarioService;
@@ -35,7 +35,7 @@ import es.uca.iw.views.templates.MainLayoutTrabajadores;
 @PageTitle("Crear Tarifa")
 @Route(value = "crearTarifa", layout = MainLayoutTrabajadores.class)
 @RouteAlias(value = "crearTarifa", layout = MainLayoutTrabajadores.class)
-@AnonymousAllowed
+
 public class CrearTarifaView extends Div {
     @Autowired
     private TarifaService tarifaService;

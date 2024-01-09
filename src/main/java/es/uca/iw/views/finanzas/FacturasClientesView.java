@@ -24,7 +24,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.server.VaadinSession;
-import com.vaadin.flow.server.auth.AnonymousAllowed;
+
 
 import es.uca.iw.aplication.service.ContratoService;
 import es.uca.iw.aplication.service.FacturaService;
@@ -39,7 +39,7 @@ import es.uca.iw.views.templates.MainLayoutTrabajadores;
 @PageTitle("Facturas Clientes")
 @Route(value = "finanzashome/facturas", layout = MainLayoutTrabajadores.class)
 @RouteAlias(value = "finanzashome/facturas", layout = MainLayoutTrabajadores.class)
-@AnonymousAllowed
+
 public class FacturasClientesView extends Div {
     @Autowired
     private UsuarioService usuarioService;

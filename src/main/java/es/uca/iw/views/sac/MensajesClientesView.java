@@ -20,7 +20,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.server.VaadinSession;
-import com.vaadin.flow.server.auth.AnonymousAllowed;
+
 
 import es.uca.iw.aplication.service.MensajeService;
 import es.uca.iw.aplication.service.MyEmailService;
@@ -33,7 +33,7 @@ import es.uca.iw.views.templates.MainLayoutTrabajadores;
 @PageTitle("Mensajes clientes")
 @Route(value = "sachome/mensajes", layout = MainLayoutTrabajadores.class)
 @RouteAlias(value = "sachome/mensajes", layout = MainLayoutTrabajadores.class)
-@AnonymousAllowed
+
 public class MensajesClientesView extends Div {
 
     @Autowired

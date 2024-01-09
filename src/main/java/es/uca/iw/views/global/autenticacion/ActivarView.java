@@ -20,7 +20,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.server.VaadinSession;
-import com.vaadin.flow.server.auth.AnonymousAllowed;
+
 
 import es.uca.iw.aplication.service.MyEmailService;
 import es.uca.iw.aplication.service.TokenService;
@@ -31,7 +31,7 @@ import es.uca.iw.aplication.tables.usuarios.Usuario;
 @PageTitle("Activar Usuario")
 @Route(value = "activar")
 @RouteAlias(value = "activar")
-@AnonymousAllowed
+
 public class ActivarView extends Div {
 
     @Autowired

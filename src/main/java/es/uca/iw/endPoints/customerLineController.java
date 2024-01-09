@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 import es.uca.iw.aplication.tables.usuarios.Usuario;
 import reactor.core.publisher.Mono;
 
-//@AnonymousAllowed
+//
 @RestController
 //@RequestMapping("/CustomerLine")
 public class customerLineController {
@@ -15,13 +15,13 @@ public class customerLineController {
 
     
     /*@GetMapping("/Phones")
-    @AnonymousAllowed
+    
     public List<CustomerLine> getAllLines() { return customerLineService.getAllLines(); }*/
 
     public List<CustomerLine> getAllLines() { return customerLineService.getAllLines(); }
 
     /*@GetMapping("/post")
-    @AnonymousAllowed
+    
     public void lineReg() { 
         CustomerLine customerLine = new CustomerLine();
         customerLine.setName("Juan");
@@ -41,7 +41,7 @@ public class customerLineController {
     }
 
     /*@GetMapping("/OnePhone")
-    @AnonymousAllowed
+    
     public CustomerLine getOneLine() { 
         String id = "aa636a3e-a0ae-4485-8053-8012ee2e7975";
         return customerLineService.getOneLine(id);
@@ -53,7 +53,7 @@ public class customerLineController {
     }
 
     /*@GetMapping("/deleteLine")
-    @AnonymousAllowed
+    
     public void deleteLine() { 
         String id = "aa636a3e-a0ae-4485-8053-8012ee2e7975";
         customerLineService.deleteLine(id);
@@ -65,7 +65,7 @@ public class customerLineController {
     }
 
     /*@GetMapping("/modifyLine")
-    @AnonymousAllowed
+    
     public Mono<CustomerLine> modifyLine() { 
         String id = "aa636a3e-a0ae-4485-8053-8012ee2e7975";
         CustomerLine customerLine = new CustomerLine();
@@ -87,7 +87,7 @@ public class customerLineController {
     }
 
     /*@PatchMapping("/dataUsage")
-    @AnonymousAllowed
+    
     public List<DataUsageRecord> dataUsageLine() {
         String id = "ce2476ee-cf17-44b8-98ff-0aba52bfcd6f";
         String startDate = ""; 
@@ -101,7 +101,7 @@ public class customerLineController {
     }
 
     /*@GetMapping("/callRecord")
-    @AnonymousAllowed
+    
     public List<CallRecord> callRecordLine() {
         String id = "aa636a3e-a0ae-4485-8053-8012ee2e7975";
         String startDate = "2024-01-02"; 
@@ -115,7 +115,7 @@ public class customerLineController {
     }
 
     /*@GetMapping("/PhoneLine")
-    @AnonymousAllowed
+    
     public CustomerLine getOneLineByPhoneNumber() {
         String phoneNumber = "111223344"; 
         return customerLineService.getOneLineByPhoneNumber(phoneNumber);

@@ -26,7 +26,7 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.server.VaadinSession;
-import com.vaadin.flow.server.auth.AnonymousAllowed;
+
 import com.vaadin.flow.theme.lumo.LumoUtility;
 
 import es.uca.iw.aplication.service.EmailService;
@@ -38,7 +38,7 @@ import es.uca.iw.aplication.tables.usuarios.Usuario;
 @PageTitle("Inicio Sesión")
 @Route(value = "login")
 @RouteAlias(value = "login")
-@AnonymousAllowed
+
 public class LoginView extends Div {
 
     @Autowired

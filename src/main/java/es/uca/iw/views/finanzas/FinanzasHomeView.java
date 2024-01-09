@@ -18,7 +18,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.server.VaadinSession;
-import com.vaadin.flow.server.auth.AnonymousAllowed;
+
 
 import es.uca.iw.aplication.service.UsuarioService;
 import es.uca.iw.aplication.tables.enumerados.Rol;
@@ -28,7 +28,7 @@ import es.uca.iw.views.templates.MainLayoutTrabajadores;
 @PageTitle("Finanzas Home")
 @Route(value = "finanzashome", layout = MainLayoutTrabajadores.class)
 @RouteAlias(value = "finanzashome", layout = MainLayoutTrabajadores.class)
-@AnonymousAllowed
+
 public class FinanzasHomeView extends Div {
     
     @Autowired

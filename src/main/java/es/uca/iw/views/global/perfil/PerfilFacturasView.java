@@ -25,7 +25,7 @@ import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.server.InputStreamFactory;
 import com.vaadin.flow.server.StreamResource;
 import com.vaadin.flow.server.VaadinSession;
-import com.vaadin.flow.server.auth.AnonymousAllowed;
+
 
 import es.uca.iw.aplication.service.ContratoService;
 import es.uca.iw.aplication.service.FacturaService;
@@ -38,7 +38,7 @@ import es.uca.iw.views.templates.MainLayout;
 @PageTitle("Tus facturas")
 @Route(value = "profile/facturas", layout = MainLayout.class)
 @RouteAlias(value = "profile/facturas", layout = MainLayout.class)
-@AnonymousAllowed
+
 public class PerfilFacturasView extends Div {
     
     @Autowired

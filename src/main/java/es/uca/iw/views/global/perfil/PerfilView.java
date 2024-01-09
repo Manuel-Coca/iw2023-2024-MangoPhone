@@ -28,7 +28,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.server.VaadinSession;
-import com.vaadin.flow.server.auth.AnonymousAllowed;
+
 
 import es.uca.iw.aplication.service.MensajeService;
 import es.uca.iw.aplication.service.UsuarioService;
@@ -39,7 +39,7 @@ import es.uca.iw.views.templates.MainLayout;
 @PageTitle("Tu perfil")
 @Route(value = "profile", layout = MainLayout.class)
 @RouteAlias(value = "profile", layout = MainLayout.class)
-@AnonymousAllowed
+
 public class PerfilView extends Div {
 
     @Autowired

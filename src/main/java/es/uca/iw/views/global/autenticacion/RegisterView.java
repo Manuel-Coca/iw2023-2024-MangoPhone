@@ -23,7 +23,7 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.server.VaadinSession;
-import com.vaadin.flow.server.auth.AnonymousAllowed;
+
 import com.vaadin.flow.theme.lumo.LumoUtility;
 import es.uca.iw.aplication.service.EmailService;
 import es.uca.iw.aplication.service.TokenService;
@@ -36,7 +36,7 @@ import es.uca.iw.aplication.tables.usuarios.Usuario;
 @PageTitle("Crear Cuenta")
 @Route(value = "register")
 @RouteAlias(value = "register")
-@AnonymousAllowed
+
 public class RegisterView extends Div {
 
     @Autowired

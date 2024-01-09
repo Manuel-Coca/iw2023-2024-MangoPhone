@@ -25,7 +25,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.server.VaadinSession;
-import com.vaadin.flow.server.auth.AnonymousAllowed;
+
 
 import es.uca.iw.aplication.service.ContratoService;
 import es.uca.iw.aplication.service.Contrato_TarifaService;
@@ -42,7 +42,7 @@ import es.uca.iw.views.templates.MainLayout;
 @PageTitle("Tu contrato")
 @Route(value = "profile/contrato", layout = MainLayout.class)
 @RouteAlias(value = "profile/contrato", layout = MainLayout.class)
-@AnonymousAllowed
+
 public class PerfilContratoView extends Div {
 
     @Autowired

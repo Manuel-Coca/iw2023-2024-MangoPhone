@@ -28,7 +28,7 @@ import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
-import com.vaadin.flow.server.auth.AnonymousAllowed;
+
 
 import es.uca.iw.aplication.tables.usuarios.Token;
 import es.uca.iw.aplication.tables.usuarios.Usuario;
@@ -39,7 +39,7 @@ import es.uca.iw.aplication.tables.tarifas.Tarifa;
 @PageTitle("Admin")
 @Route(value = "adminhome")
 @RouteAlias(value = "adminhome")
-@AnonymousAllowed
+
 public class AdminHomeView extends Div {
 
     @Value("${admin.user}")

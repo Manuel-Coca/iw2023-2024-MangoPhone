@@ -29,7 +29,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.server.VaadinSession;
-import com.vaadin.flow.server.auth.AnonymousAllowed;
+
 
 import es.uca.iw.aplication.service.ContratoService;
 import es.uca.iw.aplication.service.Contrato_TarifaService;
@@ -52,7 +52,7 @@ import es.uca.iw.views.templates.MainLayoutTrabajadores;
 @PageTitle("Contratos clientes")
 @Route(value = "sachome/contratos", layout = MainLayoutTrabajadores.class)
 @RouteAlias(value = "sachome/contratos", layout = MainLayoutTrabajadores.class)
-@AnonymousAllowed
+
 public class ContratosClientesView extends Div {    
     
     @Autowired

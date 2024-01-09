@@ -162,7 +162,7 @@ public class RegisterView extends Div {
         loginButton.addClassName("boton-naranja-secondary");
         loginButton.addClickListener(event -> {
             // Cambiar a ir a registro
-            UI.getCurrent().navigate("login");        
+            UI.getCurrent().getPage().setLocation("login");        
         });
 
         // Enlace "Ir a inicio"

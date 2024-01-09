@@ -45,4 +45,10 @@ Una vez que el fichero JAR esté construido, lo puedes lanzar usando
   - Complementos: [vaadin.com/directory](https://vaadin.com/directory).
 
 - Spring
-  - Documentación: 
+  - Documentación: [spring.com/docs](https://docs.spring.io/spring-data/jpa/reference/#repositories)
+
+
+## Contribuidores
+- [Juan Garcia Candon](https://github.com/juuangarciac)
+- [Manuel Coca Alba](https://github.com/Manuel-Coca)
+- [Rafael Leal Pardo](https://github.com/falilp)

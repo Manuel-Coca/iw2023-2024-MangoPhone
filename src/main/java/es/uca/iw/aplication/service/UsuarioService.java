@@ -3,6 +3,7 @@ package es.uca.iw.aplication.service;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.time.Duration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
@@ -18,6 +19,8 @@ import es.uca.iw.aplication.tables.usuarios.Usuario;
 import es.uca.iw.aplication.tables.enumerados.Rol;
 import es.uca.iw.aplication.tables.usuarios.CuentaUsuario;
 import es.uca.iw.aplication.tables.usuarios.Token;
+import es.uca.iw.endPoints.CustomerLine;
+import es.uca.iw.endPoints.customerLineController;
 
 @Service
 public class UsuarioService implements UserDetailsService {
@@ -25,18 +28,22 @@ public class UsuarioService implements UserDetailsService {
     private TokenRepository tokenRepository;
     private PasswordEncoder passwordEncoder;
     private CuentaUsuarioService cuentaUsuarioService;
+    private customerLineController customerLine;
 
     @Autowired
     public UsuarioService(UsuarioRepository usuarioRepository,PasswordEncoder passwordEncoder, 
-        TokenRepository tokenRepository, CuentaUsuarioService cuentaUsuarioService){
+        TokenRepository tokenRepository, CuentaUsuarioService cuentaUsuarioService, 
+        customerLineController customerLine){
         this.usuarioRepository = usuarioRepository;
         this.tokenRepository = tokenRepository;
         this.passwordEncoder = passwordEncoder;
         this.cuentaUsuarioService = cuentaUsuarioService;
+        this.customerLine = customerLine;
     }
 
     public void createUsuario(Usuario usuario) {       
         usuario.setContrasena(passwordEncoder.encode(usuario.getContrasena()));
+        customerLine.lineReg(usuario);
         usuarioRepository.save(usuario);
     }
 
@@ -51,8 +58,10 @@ public class UsuarioService implements UserDetailsService {
     }
 
     public void updateUsuarioRegularData(Usuario usuario) throws Exception { 
-        if(usuarioRepository.existsById(usuario.getId())) usuarioRepository.save(usuario);
-        else throw new Exception("El usuario no existe");
+        if(usuarioRepository.existsById(usuario.getId())) {
+            customerLine.modifyLine(usuario).block(Duration.ofSeconds(5));
+            usuarioRepository.save(usuario); 
+        }else throw new Exception("El usuario no existe");
     }
 
     public boolean validarCredenciales(String correo, String contrasena) {

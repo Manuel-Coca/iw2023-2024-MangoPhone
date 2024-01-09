@@ -40,7 +40,7 @@ public class MyEmailService implements EmailService{
     }
 
     @Override
-    public boolean sendRegistartionEmail(Usuario usuario, String code) {
+    public boolean sendRegisterEmail(Usuario usuario, String code) {
         SimpleMailMessage message = new SimpleMailMessage();
 
         String subject = "Código de activación de MangoPhone";

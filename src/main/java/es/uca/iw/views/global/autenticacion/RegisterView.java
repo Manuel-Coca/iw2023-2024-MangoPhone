@@ -196,7 +196,7 @@ public class RegisterView extends Div {
             token.setDate(token.calculateExpiryDate(token.expiracion));
             tokenService.createToken(token);
             
-            emailService.sendRegistartionEmail(usuario,code);
+            emailService.sendRegisterEmail(usuario,code);
             ConfirmDialog confirmDialog = new ConfirmDialog("Registro Correcto", "Activar cuenta", "Activar", event1 -> {
                 session.setAttribute("justRegisteredUser", true);
                 UI.getCurrent().navigate("activar");

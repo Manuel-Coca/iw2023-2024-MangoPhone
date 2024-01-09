@@ -116,13 +116,11 @@ public class CustomerLineService {
     }
 
     private boolean validarFechaYFormato(String fecha, String formato) {
-        try {
+        try{
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern(formato);
             LocalDate.parse(fecha, formatter);
             return true;
-        } catch (DateTimeParseException e) {
-            return false;
-        }
+        }catch(DateTimeParseException e){return false;}
     }
 
     /**

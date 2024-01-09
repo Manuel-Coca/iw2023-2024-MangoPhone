@@ -27,8 +27,6 @@
 - Opciones roaming, bloquear numeros ...
     - perfil
 
-- Panel de control del admin
-
 - Auditorias
 
 - Responsive

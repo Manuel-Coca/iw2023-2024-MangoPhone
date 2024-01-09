@@ -10,6 +10,27 @@ escribe `mvnw` (Windows), o `./mvnw` (Mac & Linux) y luego abre http://localhost
 Puedes importar el proyecto al IDE de tu elección tal y como lo harías con cualquier proyecto Maven.
 Aprende más en: [cómo importar un proyecto Maven en distintos IDEs](https://vaadin.com/docs/latest/guide/step-by-step/importing) (Eclipse, IntelliJ IDEA, NetBeans, y VS Code).
 
+## Rutas
+El conjunto de rutas que componen la aplicación serían: 
+- `/home` Página de bienvenida de la aplicación web.
+- `/login` Inicio de sesión.
+- `/register` que redirige a la vista `/activar` que una vez completado el formulario, reenviará al usuario al login.
+- `/logout` Cerrar sesión.
+- `/aboutUs` Información sobre el equipo tras Mangophone.
+- `/servicesInfo` Información sobre los servicios que ofrece MangoPhone.
+- `/contratar` Crea el primer contrato del cliente.
+- `/profile` Información personal del cliente.
+- `/profile/contrato` Información sobre el contrato del cliente.
+- `/profile/facturas` Histórico de facturas del cliente.
+- `/profile/llamadas`Histórico de llamadas.
+- `/profile/consumo` Consumo de datos móviles.
+- - `/marketingHome` Home de marketing
+- `/crearTarifa` Permite crear tarifas (Restringido a personal de BackOffice)
+- `/listarTarifas` Muestra una lista de las tarifas existentes (Restringido a personal de BackOffice)
+- `sachome`
+- `sachome/contratos`
+- `sachome/mensajes`
+
 ## Despliegue a producción
 
 Para crear una build de producción, escribe `mvnw clean package -Pproduction` (Windows), o `./mvnw clean package -Pproduction` (Mac & Linux).

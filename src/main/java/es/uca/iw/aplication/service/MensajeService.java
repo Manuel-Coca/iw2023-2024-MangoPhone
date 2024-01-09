@@ -18,4 +18,5 @@ public class MensajeService {
 
     public List<Mensaje> getAll() { return mensajeRepository.findAll(); }
     public void save(Mensaje mensaje) { mensajeRepository.save(mensaje); }
+    public void delete(Mensaje mensaje) { mensajeRepository.delete(mensaje); }
 }

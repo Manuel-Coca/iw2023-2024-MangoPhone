@@ -40,6 +40,8 @@ public class UsuarioService implements UserDetailsService {
         usuarioRepository.save(usuario);
     }
 
+    public void delete(Usuario usuario) { usuarioRepository.delete(usuario); }
+
     public void updateUsuarioOnlyPass(Usuario usuario) throws Exception { 
         if(usuarioRepository.existsById(usuario.getId())) {
             usuario.setContrasena(passwordEncoder.encode(usuario.getContrasena()));

@@ -16,4 +16,6 @@ public class TokenService {
     public void createToken(Token token) { tokenRepository.save(token); }
 
     public Token buscarToken(Usuario usuario) { return tokenRepository.findByUsuario(usuario); }
+
+    public void delete(Token token) { tokenRepository.delete(token); }
 }

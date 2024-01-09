@@ -2,6 +2,7 @@
     - login
     - register
     - cambio de datos en perfil
+    - admin creacion usuario
 
 - Borrar usuario
     - perfil -> borrar usuario

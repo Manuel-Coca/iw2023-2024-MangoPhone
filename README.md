@@ -46,6 +46,8 @@ Una vez que el fichero JAR esté construido, lo puedes lanzar usando
 
 - Spring
   - Documentación: [spring.com/docs](https://docs.spring.io/spring-data/jpa/reference/#repositories)
+  - Tutorial básico: [docs.spring.io/spring-data/jpa/reference/jpa/getting-started.html](https://docs.spring.io/spring-data/jpa/reference/jpa/getting-started.html)
+  - Wiki: [github.com/spring-projects/spring-data-commons/wiki](https://github.com/spring-projects/spring-data-commons/wiki)
 
 
 ## Contribuidores

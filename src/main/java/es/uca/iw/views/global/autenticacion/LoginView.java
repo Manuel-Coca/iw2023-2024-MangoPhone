@@ -49,9 +49,7 @@ public class LoginView extends Div {
 
     @Autowired
     private EmailService emailService;
-
-    //private final AuthenticatedUser authUser;
-
+    
     public LoginView(EmailService emailService, UsuarioService usuarioService) {
         this.emailService = emailService;
         this.usuarioService = usuarioService;

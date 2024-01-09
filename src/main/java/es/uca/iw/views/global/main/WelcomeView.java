@@ -118,7 +118,7 @@ public class WelcomeView extends Div {
         contratarFibraButton.addClassName("boton-contratar");
         contratarFibraButton.addClickListener(event -> {  
             if(session.getAttribute("Rol") == null) UI.getCurrent().navigate("login");
-            else UI.getCurrent().navigate("aboutUs"); // Cambiar por vista de contratar
+            else UI.getCurrent().getPage().setLocation("contratar");; // Cambiar por vista de contratar
         });
 
         Div fibraCard = new Div();
@@ -134,7 +134,7 @@ public class WelcomeView extends Div {
         contratarMovilButton.addClassName("boton-contratar");
         contratarMovilButton.addClickListener(event -> {  
             if(session.getAttribute("Rol") == null) UI.getCurrent().navigate("login");
-            else UI.getCurrent().navigate("aboutUs"); // Cambiar por vista de contratar
+            else UI.getCurrent().getPage().setLocation("contratar");; // Cambiar por vista de contratar
         });
 
         Div movilCard = new Div();
@@ -149,7 +149,7 @@ public class WelcomeView extends Div {
         contratarFijoButton.addClassName("boton-contratar");
         contratarFijoButton.addClickListener(event -> {  
             if(session.getAttribute("Rol") == null) UI.getCurrent().navigate("login");
-            else UI.getCurrent().navigate("aboutUs"); // Cambiar por vista de contratar
+            else UI.getCurrent().getPage().setLocation("contratar");; // Cambiar por vista de contratar
         });
 
         Div fijoCard = new Div();

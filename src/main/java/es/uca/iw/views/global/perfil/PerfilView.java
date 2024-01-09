@@ -197,13 +197,19 @@ public class PerfilView extends Div {
                 UI.getCurrent().getPage().setLocation("profile/llamadas");
             });
 
+            Paragraph listaDatosLink = new Paragraph("Ver desglose de consumo de datos");
+            listaDatosLink.addClassName("enlace");
+            listaDatosLink.addClickListener(event -> {
+                UI.getCurrent().getPage().setLocation("profile/consumo");
+            });
+
             Paragraph cerrarSesionLink = new Paragraph("Cerrar sesión");
             cerrarSesionLink.addClassName("enlace");
             cerrarSesionLink.addClickListener(event -> {
                 UI.getCurrent().getPage().setLocation("logout");
             });
     
-            globalVerticalLayout.add(datosPersonalesLink, passwordLink, contratoLink, facturasLink, listaLlamadasLink, mensajesLink, cerrarSesionLink);
+            globalVerticalLayout.add(datosPersonalesLink, passwordLink, contratoLink, facturasLink, listaLlamadasLink, listaDatosLink, mensajesLink, cerrarSesionLink);
     
             globalDiv.add(globalVerticalLayout);
             return globalDiv;

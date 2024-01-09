@@ -21,9 +21,6 @@
 - Enviar email/crear facturas
     - finanzas -> facturasClientesView -> botones
 
-- Ver llamadas / consumo de datos
-    - perfil + api
-
 - Opciones roaming, bloquear numeros ...
     - perfil
 

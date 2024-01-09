@@ -13,6 +13,6 @@ public class CallRecord {
     public void setSeconds(int seconds) { this.seconds = seconds; }
 
     private String dateTime;
-    public String getDateTime() { return dateTime; }
+    public String getDateTime() { return dateTime.substring(0, 10) + " - " + dateTime.substring(11, 16); }
     public void setDateTime(String dateTime) { this.dateTime = dateTime; }
 }

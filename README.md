@@ -20,7 +20,7 @@ Una vez que el fichero JAR esté construido, lo puedes lanzar usando
 `java -jar target/mangophone-1.0-SNAPSHOT.jar`
 
 ## Estructura del proyecto
-
+### Frontend
 - El directorio `views` en `src/main/java/es/uca/iw` contiene todas las vistas de la aplicación.
   - El directorio `global` contiene las vistas generales de la app. Estas son, entre otras, el inicio de sesión y registro, la bienvenida o el apartado "sobre nosotros".
   - El directorio `marketing` contiene las vistas que verán aquellos usuarios cuya sesión corresponda a los empleados del departamento de Marketing.
@@ -29,6 +29,11 @@ Una vez que el fichero JAR esté construido, lo puedes lanzar usando
   - El directorio `templates` contiene las plantillas de la aplicación, entre ellas, `MainLayout.java`.
 - El directorio `themes` en `frontend/` contiene los estilos CSS personalizados.
 
+### Backend
+- El directorio `aplication` en `src\main\java\es\uca\iw\aplication` contiene la lógica de la aplicación.
+  - El directorio `tables` en `src\main\java\es\uca\iw\aplication\tables` contiene las entidades de la aplicación.
+  - El directorio `serive` en `src\main\java\es\uca\iw\aplication\service` contiene los servicios usados para realizar las operaciones sobre las diferentes entidades de la app.
+  - El directorio `repository` en `src\main\java\es\uca\iw\aplication\repository` contiene los repositorios que usarán los servicios para realizar operaciones lectura y escritura sobre la Base de datos.
 ## Enlaces útiles
 
 - Vaadin

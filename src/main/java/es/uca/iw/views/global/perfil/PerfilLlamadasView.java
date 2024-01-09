@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
+import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -64,12 +65,30 @@ public class PerfilLlamadasView extends Div{
         VerticalLayout listaLayout = new VerticalLayout();
         HorizontalLayout botonesLayout = new HorizontalLayout();
 
+        Button volumenButton = new Button("Consultar volumen mensual");
+        volumenButton.addClassName("boton-verde-secondary");
+        volumenButton.addClickListener(event -> { 
+            Dialog volumenDialog = new Dialog();
+            
+            Button atrasButton = new Button("Cerrar");
+            atrasButton.addClassName("boton-naranja-primary");
+            atrasButton.addClickListener(event1 -> { 
+                volumenDialog.close();
+            });
+
+            volumenDialog.getFooter().add(atrasButton);
+            volumenDialog.setHeaderTitle("Volumen mensual de llamadas");
+            volumenDialog.add("Has llamado un total de: " + customerLineController.volumenMensualLlamadas(loggedUser) +" segundos este mes");
+            volumenDialog.setWidth("400px");
+            volumenDialog.open();
+        });
+
         Button atrasButton = new Button("Volver");
         atrasButton.addClassName("boton-naranja-primary");
         atrasButton.addClickListener(event -> { 
             UI.getCurrent().navigate("profile");
         });
-        botonesLayout.add(atrasButton);
+        botonesLayout.add(volumenButton,atrasButton);
 
         listaLayout.add(gridLlamadas(loggedUser), botonesLayout);
         add(listaLayout);

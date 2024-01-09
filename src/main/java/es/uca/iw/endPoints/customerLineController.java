@@ -1,5 +1,7 @@
 package es.uca.iw.endPoints;
 
+import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,10 +17,10 @@ public class customerLineController {
     public customerLineController(CustomerLineService customerLineService) { this.customerLineService = customerLineService; }
 
     
-    /*@GetMapping("/Phones")
-    public List<CustomerLine> getAllLines() { return customerLineService.getAllLines(); }*/
-
+    @GetMapping("/Phones")
     public List<CustomerLine> getAllLines() { return customerLineService.getAllLines(); }
+
+    //public List<CustomerLine> getAllLines() { return customerLineService.getAllLines(); }
 
     /*@GetMapping("/post")
     public void lineReg() { 
@@ -88,26 +90,54 @@ public class customerLineController {
         return customerLineService.realizarSolicitudPatch(id, customerLine);
     }
 
-    /*@PatchMapping("/dataUsage")
+    @GetMapping("/dataUsage")
     public List<DataUsageRecord> dataUsageLine() {
         String id = "ce2476ee-cf17-44b8-98ff-0aba52bfcd6f";
         String startDate = ""; 
         String endDate = "";
         return customerLineService.dataUsageCustomer(id, startDate, endDate);
-    }*/
+    }
+
+    public int volumenMensualConsumoDatos(Usuario usuario) {
+        String id = getOneLineByPhoneNumber(usuario).getId();
+        int valor = 0;
+        
+        LocalDate date = LocalDate.now();
+        String startDate = date.getYear() + "-" + date.getMonthValue() + "-01"; 
+        String endDate = date.with(TemporalAdjusters.lastDayOfMonth()).toString();
+        
+        List<DataUsageRecord> volume = customerLineService.dataUsageCustomer(id, startDate, endDate);
+        for(DataUsageRecord datos : volume) valor += datos.getMegBytes();
+
+        return valor;
+    }
 
     public List<DataUsageRecord> dataUsageLine(Usuario usuario, String startDate, String endDate) { 
         String id = getOneLineByPhoneNumber(usuario).getId();
         return customerLineService.dataUsageCustomer(id, startDate, endDate);
     }
 
-    /*@GetMapping("/callRecord")
+    @GetMapping("/callRecord")
     public List<CallRecord> callRecordLine() {
-        String id = "aa636a3e-a0ae-4485-8053-8012ee2e7975";
-        String startDate = "2024-01-02"; 
-        String endDate = "2024-01-03";
+        String id = "180b1a25-e840-4394-8dae-852b31a0679a";
+        String startDate = ""; 
+        String endDate = "";
         return customerLineService.callRecordCustomer(id, startDate, endDate);
-    }*/
+    }
+
+    public int volumenMensualLlamadas(Usuario usuario) {
+        String id = getOneLineByPhoneNumber(usuario).getId();
+        int valor = 0;
+        
+        LocalDate date = LocalDate.now();
+        String startDate = date.getYear() + "-" + date.getMonthValue() + "-01"; 
+        String endDate = date.with(TemporalAdjusters.lastDayOfMonth()).toString();
+        
+        List<CallRecord> volume = customerLineService.callRecordCustomer(id, startDate, endDate);
+        for(CallRecord llamada : volume) valor += llamada.getSeconds();
+
+        return valor;
+    }
 
     public List<CallRecord> callRecordLine(Usuario usuario, String startDate, String endDate) { 
         String id = getOneLineByPhoneNumber(usuario).getId();

@@ -26,7 +26,7 @@ El conjunto de rutas que componen la aplicación serían:
 - `/login` Inicio de sesión.
 - `/register` que redirige a la vista `/activar` que una vez completado el formulario, reenviará al usuario al login.
 - `/logout` Cerrar sesión.
-- `/aboutUs` Información sobre el equipo tras Mangophone.
+- `/aboutus` Información sobre el equipo tras Mangophone.
 - `/servicesInfo` Información sobre los servicios que ofrece MangoPhone.
 - `/contratar` Crea el primer contrato del cliente.
 - `/profile` Información personal del cliente.
@@ -35,14 +35,14 @@ El conjunto de rutas que componen la aplicación serían:
 - `/profile/llamadas`Histórico de llamadas.
 - `/profile/consumo` Consumo de datos móviles.
 -  `/marketingHome` Home de marketing
-- `/crearTarifa` Permite crear tarifas (Restringido a personal de BackOffice)
-- `/listarTarifas` Muestra una lista de las tarifas existentes (Restringido a personal de BackOffice)
+- `/creartarifa` Permite crear tarifas (Restringido a personal de BackOffice)
+- `/listartarifas` Muestra una lista de las tarifas existentes (Restringido a personal de BackOffice)
 - `/sachome`
-- `/sachome/contratos`
-- `/sachome/mensajes`
-- `/finanzasHome`
-- `/finanzashome/facturas`
-- 
+- `/sachome/contratos` El personal del atención al cliente puede modificar cualquier contrato de cualquier usuario.
+- `/sachome/mensajes` Personal de Atención al Cliente tiene acceso a una lista de mensajes a los cuales puede responder.
+- `/finanzashome`  
+- `/finanzashome/facturas` Personal de finanzas puede emitir una nueva factura, o enviarla por correo.
+  
 ## Jerarquía de directorios
 - El directorio `views` en `src/main/java/es/uca/iw` contiene todas las vistas de la aplicación.
   - El directorio `global` contiene las vistas generales de la app. Estas son, entre otras, el inicio de sesión y registro, la bienvenida o el apartado "sobre nosotros".

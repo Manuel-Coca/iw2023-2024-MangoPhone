@@ -11,6 +11,7 @@ F:\Proyectos\Github\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\aplication\re
 F:\Proyectos\Github\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\views\global\autenticacion\LoginView.java
 F:\Proyectos\Github\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\views\global\main\WelcomeView.java
 F:\Proyectos\Github\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\views\finanzas\FinanzasHomeView.java
+F:\Proyectos\Github\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\views\global\perfil\PerfilConsumoView.java
 F:\Proyectos\Github\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\aplication\service\ContratoService.java
 F:\Proyectos\Github\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\views\marketing\CrearTarifaView.java
 F:\Proyectos\Github\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\aplication\service\FacturaService.java
@@ -59,6 +60,7 @@ F:\Proyectos\Github\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\views\finanza
 F:\Proyectos\Github\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\aplication\service\CuentaUsuarioService.java
 F:\Proyectos\Github\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\aplication\repository\Contrato_TarifaRepository.java
 F:\Proyectos\Github\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\AuthenticatedUser.java
+F:\Proyectos\Github\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\views\global\perfil\PerfilLlamadasView.java
 F:\Proyectos\Github\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\aplication\service\EmailService.java
 F:\Proyectos\Github\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\views\global\perfil\PerfilFacturasView.java
 F:\Proyectos\Github\iw2023-2024-MangoPhone\src\main\java\es\uca\iw\views\templates\MainLayout.java

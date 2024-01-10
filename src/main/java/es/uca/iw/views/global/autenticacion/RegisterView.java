@@ -201,6 +201,7 @@ public class RegisterView extends Div {
                 session.setAttribute("justRegisteredUser", true);
                 UI.getCurrent().navigate("activar");
             });
+            confirmDialog.setCloseOnEsc(false);
             confirmDialog.open();
         }
         catch (Exception e) {

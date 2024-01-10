@@ -445,7 +445,6 @@ public class ContratosClientesView extends Div {
 
             facturaService.crearFacturaPDFLocal(contrato, factura);
             emailService.sendFacturaEmail(selectedUser, factura);
-            facturaService.eliminarFacturaPDFLocal(factura);
 
             facturaService.save(factura);
         }

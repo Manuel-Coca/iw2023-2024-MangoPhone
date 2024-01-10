@@ -76,13 +76,12 @@ public class PerfilFacturasView extends Div {
                 VerticalLayout listaLayout = new VerticalLayout();
                 HorizontalLayout botonesLayout = new HorizontalLayout();
         
-                Button descargarButton = new Button("Seleccionar factura");
+                Button descargarButton = new Button("Descargar factura");
                 descargarButton.addClassName("boton-verde-secondary");
                 descargarButton.addClickListener(event -> {
                     ConfirmDialog confirmDialog = new ConfirmDialog("Confirmar Descarga",
                             "¿Estás seguro de que quieres descargar el archivo?",
                             "Sí", e -> {
-                                facturaService.crearFacturaPDFLocal(selectedFactura.getContrato(), selectedFactura);
                                 downloadFile();
                                 //TODO: revisar metodo eliminacion de fichero local
                                 try{ 
@@ -90,7 +89,7 @@ public class PerfilFacturasView extends Div {
                                 } catch (InterruptedException ex) {
                                     ex.printStackTrace();
                                 } 
-                                facturaService.eliminarFacturaPDFLocal(selectedFactura);
+
                             },
                             "Cancelar", e -> {
                             });

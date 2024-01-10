@@ -27,7 +27,7 @@ El conjunto de rutas que componen la aplicación serían:
 - `/register` que redirige a la vista `/activar` que una vez completado el formulario, reenviará al usuario al login.
 - `/logout` Cerrar sesión.
 - `/aboutus` Información sobre el equipo tras Mangophone.
-- `/servicesInfo` Información sobre los servicios que ofrece MangoPhone.
+- `/servicesinfo` Información sobre los servicios que ofrece MangoPhone.
 - `/contratar` Crea el primer contrato del cliente.
 - `/profile` Información personal del cliente.
 - `/profile/contrato` Información sobre el contrato del cliente.

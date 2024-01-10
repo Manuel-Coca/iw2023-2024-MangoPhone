@@ -50,7 +50,7 @@ El conjunto de rutas que componen la aplicación serían:
   - El directorio `sac` contiene las vistas que verán aquellos usuarios cuya sesión corresponda a los empleados del departamento de Atención al cliente.
   - El directorio `finanzas` contiene las vistas que verán aquellos usuarios cuya sesión corresponda a los empleados del departamento de Finanzas.
   - El directorio `templates` contiene las plantillas de la aplicación, entre ellas, `MainLayout.java`.
-- El directorio `themes` en `frontend/` contiene los estilos CSS personalizados.
+- El directorio `frontend/themes` contiene los estilos CSS personalizados.
 
 - El directorio `aplication` en `src\main\java\es\uca\iw\aplication` contiene la lógica de la aplicación.
   - El directorio `tables` en `src\main\java\es\uca\iw\aplication\tables` contiene las entidades de la aplicación.

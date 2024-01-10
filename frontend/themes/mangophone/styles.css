@@ -121,7 +121,7 @@
     display: flex;
     flex-direction: column;
 
-    background-image: url("images/esi-bg.png");
+    background-image: url("esi-bg.png");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -164,7 +164,7 @@
     flex: 1;
     width: 100%;
     height: 600px;
-    background-image: url("..\..\..\src\main\resources\META-INF\resources\images\stock1.jpg");
+    background-image: url("stock1.jpg");
     background-size: cover;
     background-repeat: no-repeat;
 }
@@ -188,7 +188,7 @@
     flex: 1;
     width: 100%;
     height: 600px;
-    background-image: url("..\..\..\src\main\resources\META-INF\resources\images\stock2.jpg");
+    background-image: url("stock2.jpg");
     background-size: cover;
     background-repeat: no-repeat;
 }
@@ -227,7 +227,7 @@
     flex: 1;
     width: 100%;
     height: 600px;
-    background-image: url("..\..\..\src\main\resources\META-INF\resources\images\stock3.jpg");
+    background-image: url("stock3.jpg");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;

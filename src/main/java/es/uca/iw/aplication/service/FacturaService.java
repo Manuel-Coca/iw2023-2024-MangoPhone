@@ -55,7 +55,7 @@ public class FacturaService {
     
     /*************************************************************************** Interfaz Personalizada ************************************************************************************/
 
-    @Scheduled(cron = "0 49 18 * * *")
+    @Scheduled(cron = "0 0 1 * * *")
     public void generarFacturaMensual() {
         List<Usuario> todosUsuarios = usuarioService.findAll();
         for(Usuario usuario : todosUsuarios) {

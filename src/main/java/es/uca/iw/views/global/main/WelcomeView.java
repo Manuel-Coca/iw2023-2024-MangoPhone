@@ -13,8 +13,6 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
-import com.vaadin.flow.server.VaadinSession;
-
 
 import es.uca.iw.views.templates.MainLayout;
 
@@ -23,8 +21,6 @@ import es.uca.iw.views.templates.MainLayout;
 @RouteAlias(value = "", layout = MainLayout.class)
 
 public class WelcomeView extends Div {
-
-    private VaadinSession session = VaadinSession.getCurrent();
 
     public WelcomeView() {
         add(crearCarrusel(), crearContenido());
@@ -113,12 +109,11 @@ public class WelcomeView extends Div {
         // Fibra
         H2 fibraTitle = new H2("Fibra");
         Paragraph fibraDescription = new Paragraph("La fibra más rápida del mercado");
-        Paragraph fibraPrice = new Paragraph("Desde 15€ / mes"); // Cambiar por llamada a base datos
+        Paragraph fibraPrice = new Paragraph("Desde 15€ / mes");
         Button contratarFibraButton = new Button("¡Contratar!");
         contratarFibraButton.addClassName("boton-contratar");
         contratarFibraButton.addClickListener(event -> {  
-            if(session.getAttribute("Rol") == null) UI.getCurrent().navigate("login");
-            else UI.getCurrent().getPage().setLocation("contratar");; // Cambiar por vista de contratar
+            UI.getCurrent().getPage().setLocation("contratar");
         });
 
         Div fibraCard = new Div();
@@ -129,12 +124,11 @@ public class WelcomeView extends Div {
         // Movil
         H2 movilTitle = new H2("Movil");
         Paragraph movilDescription = new Paragraph("Las llamadas con mejor audio del planeta");
-        Paragraph movilPrice = new Paragraph("Desde 7.99€ / mes"); // Cambiar por llamada a base datos
+        Paragraph movilPrice = new Paragraph("Desde 7.99€ / mes");
         Button contratarMovilButton = new Button("¡Contratar!");
         contratarMovilButton.addClassName("boton-contratar");
         contratarMovilButton.addClickListener(event -> {  
-            if(session.getAttribute("Rol") == null) UI.getCurrent().navigate("login");
-            else UI.getCurrent().getPage().setLocation("contratar");; // Cambiar por vista de contratar
+            UI.getCurrent().getPage().setLocation("contratar");
         });
 
         Div movilCard = new Div();
@@ -144,12 +138,11 @@ public class WelcomeView extends Div {
         // Fijo
         H2 fijoTitle = new H2("Fijo");
         Paragraph fijoDescription = new Paragraph("El télefono fijo sigue siendo una realidad");
-        Paragraph fijoPrice = new Paragraph("Desde 2.50€ / mes"); // Cambiar por llamada a base datos
+        Paragraph fijoPrice = new Paragraph("Desde 2.50€ / mes");
         Button contratarFijoButton = new Button("¡Contratar!");
         contratarFijoButton.addClassName("boton-contratar");
         contratarFijoButton.addClickListener(event -> {  
-            if(session.getAttribute("Rol") == null) UI.getCurrent().navigate("login");
-            else UI.getCurrent().getPage().setLocation("contratar");; // Cambiar por vista de contratar
+            UI.getCurrent().getPage().setLocation("contratar");
         });
 
         Div fijoCard = new Div();
@@ -171,7 +164,7 @@ public class WelcomeView extends Div {
         Button conocenosButton = new Button("Sobre nosotros");
         conocenosButton.setClassName("boton-conocenos");
         conocenosButton.addClickListener(event -> {
-            UI.getCurrent().navigate("aboutUs");
+            UI.getCurrent().navigate("aboutus");
         });
         
         Div bloqueConocenosLayout = new Div();

@@ -34,7 +34,7 @@ El conjunto de rutas que componen la aplicación serían:
 - `/profile/facturas` Histórico de facturas del cliente.
 - `/profile/llamadas`Histórico de llamadas.
 - `/profile/consumo` Consumo de datos móviles.
--  `/marketingHome` Home de marketing
+-  `/marketinghome` Home de marketing
 - `/creartarifa` Permite crear tarifas (Restringido a personal de BackOffice)
 - `/listartarifas` Muestra una lista de las tarifas existentes (Restringido a personal de BackOffice)
 - `/sachome`

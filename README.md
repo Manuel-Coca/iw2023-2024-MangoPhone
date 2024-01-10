@@ -10,6 +10,16 @@ escribe `mvnw` (Windows), o `./mvnw` (Mac & Linux) y luego abre http://localhost
 Puedes importar el proyecto al IDE de tu elección tal y como lo harías con cualquier proyecto Maven.
 Aprende más en: [cómo importar un proyecto Maven en distintos IDEs](https://vaadin.com/docs/latest/guide/step-by-step/importing) (Eclipse, IntelliJ IDEA, NetBeans, y VS Code).
 
+## Despliegue a producción
+
+Para crear una build de producción, escribe `mvnw clean package -Pproduction` (Windows), o `./mvnw clean package -Pproduction` (Mac & Linux).
+Esto constuirá un fichero JAR con todas las depencias y los recursos del front-end listo para ser desplegado. El fichero se puede encontrar en 
+el directorio `target` después de que la construcción se complete. 
+
+Una vez que el fichero JAR esté construido, lo puedes lanzar usando
+`java -jar target/mangophone-1.0-SNAPSHOT.jar`
+
+## Estructura del proyecto
 ## Rutas
 El conjunto de rutas que componen la aplicación serían: 
 - `/home` Página de bienvenida de la aplicación web.
@@ -31,16 +41,6 @@ El conjunto de rutas que componen la aplicación serían:
 - `sachome/contratos`
 - `sachome/mensajes`
 
-## Despliegue a producción
-
-Para crear una build de producción, escribe `mvnw clean package -Pproduction` (Windows), o `./mvnw clean package -Pproduction` (Mac & Linux).
-Esto constuirá un fichero JAR con todas las depencias y los recursos del front-end listo para ser desplegado. El fichero se puede encontrar en 
-el directorio `target` después de que la construcción se complete. 
-
-Una vez que el fichero JAR esté construido, lo puedes lanzar usando
-`java -jar target/mangophone-1.0-SNAPSHOT.jar`
-
-## Estructura del proyecto
 ### Frontend
 - El directorio `views` en `src/main/java/es/uca/iw` contiene todas las vistas de la aplicación.
   - El directorio `global` contiene las vistas generales de la app. Estas son, entre otras, el inicio de sesión y registro, la bienvenida o el apartado "sobre nosotros".

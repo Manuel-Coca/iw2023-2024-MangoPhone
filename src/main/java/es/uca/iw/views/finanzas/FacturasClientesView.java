@@ -139,7 +139,7 @@ public class FacturasClientesView extends Div {
             }
         });
 
-        GridListDataView<Usuario> dataView = gridUsuario.setItems(usuarioService.findAll());
+        GridListDataView<Usuario> dataView = gridUsuario.setItems(usuarioService.findByRol(Rol.CLIENTE));
 
         TextField searchField = new TextField();
         searchField.setPlaceholder("Buscar");

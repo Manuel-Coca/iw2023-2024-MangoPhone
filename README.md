@@ -40,7 +40,7 @@ El conjunto de rutas que componen la aplicación serían:
 - `sachome`
 - `sachome/contratos`
 - `sachome/mensajes`
-
+## Jerarquía de directorios
 ### Frontend
 - El directorio `views` en `src/main/java/es/uca/iw` contiene todas las vistas de la aplicación.
   - El directorio `global` contiene las vistas generales de la app. Estas son, entre otras, el inicio de sesión y registro, la bienvenida o el apartado "sobre nosotros".

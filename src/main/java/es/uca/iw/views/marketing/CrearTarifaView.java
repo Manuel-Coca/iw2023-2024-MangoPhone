@@ -33,8 +33,8 @@ import es.uca.iw.aplication.tables.usuarios.Usuario;
 import es.uca.iw.views.templates.MainLayoutTrabajadores;
 
 @PageTitle("Crear Tarifa")
-@Route(value = "crearTarifa", layout = MainLayoutTrabajadores.class)
-@RouteAlias(value = "crearTarifa", layout = MainLayoutTrabajadores.class)
+@Route(value = "marketinghome/crearTarifa", layout = MainLayoutTrabajadores.class)
+@RouteAlias(value = "marketinghome/crearTarifa", layout = MainLayoutTrabajadores.class)
 
 public class CrearTarifaView extends Div {
     @Autowired

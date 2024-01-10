@@ -24,8 +24,8 @@ import es.uca.iw.aplication.tables.usuarios.Usuario;
 import es.uca.iw.views.templates.MainLayoutTrabajadores;
 
 @PageTitle("Lista de Tarifas")
-@Route(value = "listaTarifas", layout = MainLayoutTrabajadores.class)
-@RouteAlias(value = "listaTarifas", layout = MainLayoutTrabajadores.class)
+@Route(value = "marketinghome/listatarifas", layout = MainLayoutTrabajadores.class)
+@RouteAlias(value = "marketinghome/listatarifas", layout = MainLayoutTrabajadores.class)
 
 public class ListaTarifasView extends Div {
 

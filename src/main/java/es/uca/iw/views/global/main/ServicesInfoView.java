@@ -10,8 +10,8 @@ import es.uca.iw.views.templates.MainLayout;
 
 
 @PageTitle("Nuestros servicios")
-@Route(value = "servicesInfo", layout = MainLayout.class)
-@RouteAlias(value = "servicesInfo", layout = MainLayout.class)
+@Route(value = "servicesinfo", layout = MainLayout.class)
+@RouteAlias(value = "servicesinfo", layout = MainLayout.class)
 
 public class ServicesInfoView extends HorizontalLayout{
     

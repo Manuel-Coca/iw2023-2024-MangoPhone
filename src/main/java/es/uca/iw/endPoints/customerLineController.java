@@ -52,11 +52,13 @@ public class customerLineController {
         return customerLineService.getOneLine(id);
     }
 
+    /*
     @GetMapping("/deleteLine")
     public void deleteLine() { 
-        String id = "aa636a3e-a0ae-4485-8053-8012ee2e7975";
+        String id = "c75343df-bd2e-47c8-8af5-3164e0162818";
         customerLineService.deleteLine(id);
     }
+    */
 
     public void deleteLine(Usuario usuario) { 
         String id = getOneLineByPhoneNumber(usuario).getId();

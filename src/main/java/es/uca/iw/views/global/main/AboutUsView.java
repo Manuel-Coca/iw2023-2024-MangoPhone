@@ -11,8 +11,8 @@ import com.vaadin.flow.router.RouteAlias;
 import es.uca.iw.views.templates.MainLayout;
 
 @PageTitle("Sobre Nosotros")
-@Route(value = "aboutUs", layout = MainLayout.class)
-@RouteAlias(value = "aboutUs", layout = MainLayout.class)
+@Route(value = "aboutus", layout = MainLayout.class)
+@RouteAlias(value = "aboutus", layout = MainLayout.class)
 
 public class AboutUsView extends VerticalLayout {
     public AboutUsView() {

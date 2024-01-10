@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +55,7 @@ public class FacturaService {
     
     /*************************************************************************** Interfaz Personalizada ************************************************************************************/
 
-    @Scheduled(cron = "0 0 1 * * *")
+    @Scheduled(cron = "0 49 18 * * *")
     public void generarFacturaMensual() {
         List<Usuario> todosUsuarios = usuarioService.findAll();
         for(Usuario usuario : todosUsuarios) {
@@ -68,7 +69,6 @@ public class FacturaService {
                     
                     crearFacturaPDFLocal(usuario.getCuentaUsuario().getContrato(), factura);
                     mEmailService.sendFacturaEmail(usuario, factura);
-                    eliminarFacturaPDFLocal(factura);
                     save(factura);
                 }
             }
@@ -79,6 +79,13 @@ public class FacturaService {
         // Version simplificada del estandar de la expedicion de facturas de la Agencia Estatal de Administración Tributaria (AEAT)
         return LocalDateTime.now().getYear() + "_" + LocalDateTime.now().getMonth().getValue() + "_" + usuario.getDNI() + "@" + usuario.getNombre() + ".pdf";
     }
+
+    public String generarNombreFacturaFinanzas(Usuario usuario) {
+        // Version simplificada del estandar de la expedicion de facturas de la Agencia Estatal de Administración Tributaria (AEAT)
+        Random random = new Random(LocalDateTime.now().getNano());
+        return LocalDateTime.now().getYear() + "_" + LocalDateTime.now().getMonth().getValue() + "_" + usuario.getDNI() + "@" + usuario.getNombre() + "_reenvio" + random.nextInt(1000) + ".pdf";
+    }
+
 
     /*
      * Pre: Recibe un usuario y un contrato

@@ -78,7 +78,7 @@ public class MarkentingHomeView extends Div {
         Button anadirButton = new Button("Crear");
         anadirButton.addClassName("boton-naranja-primary");
         anadirButton.addClickListener(event -> {
-            UI.getCurrent().navigate("marketinghome/crearTarifa");
+            UI.getCurrent().navigate("marketinghome/creartarifa");
         });
         anadirServiciosCard.add(crearTitulo, crearDescription, anadirButton);
         anadirServiciosCard.addClassNames("card");
@@ -88,7 +88,7 @@ public class MarkentingHomeView extends Div {
         Button consultarButton = new Button("Consultar");
         consultarButton.addClassName("boton-verde-primary");
         consultarButton.addClickListener(event -> { 
-            UI.getCurrent().navigate("marketinghome/listaTarifas");
+            UI.getCurrent().navigate("marketinghome/listatarifas");
         });
         consultarServiciosCard.add(consultarTitulo, consultarDescription, consultarButton);
         consultarServiciosCard.addClassNames("card");

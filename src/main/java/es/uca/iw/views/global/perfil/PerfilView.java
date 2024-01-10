@@ -240,9 +240,9 @@ public class PerfilView extends Div {
 
             binderRegister.forField(newPassField)
                 .asRequired("La nueva contraseña es obligatoria")
-                //.withValidator(password1 -> password1.length() >= 8, "La contraseña debe tener al menos 8 caracteres")
-                //.withValidator(password1 -> password1.matches(".*[0-9].*"), "La contraseña debe tener al menos un número")
-                //.withValidator(password1 -> password1.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?].*"), "La contraseña debe tener al menos un caracter especial")
+                .withValidator(password1 -> password1.length() >= 8, "La contraseña debe tener al menos 8 caracteres")
+                .withValidator(password1 -> password1.matches(".*[0-9].*"), "La contraseña debe tener al menos un número")
+                .withValidator(password1 -> password1.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?].*"), "La contraseña debe tener al menos un caracter especial")
                 .bind(Usuario::getContrasena, Usuario::setContrasena);
 
             // Botones
@@ -307,13 +307,13 @@ public class PerfilView extends Div {
             
             binderRegister.forField(dateField)
                 .asRequired("La fecha de nacimiento es obligatoria")
-                //.withValidator(birthDate1 -> birthDate1.isBefore((java.time.LocalDate.now().minusYears(18).plusDays(1))), "El Usuario ha de ser mayor de edad")
+                .withValidator(birthDate1 -> birthDate1.isBefore((java.time.LocalDate.now().minusYears(18).plusDays(1))), "El Usuario ha de ser mayor de edad")
                 .bind(Usuario::getFechaNacimiento, Usuario::setFechaNacimiento);
             
     
             binderRegister.forField(mailField)
                 .asRequired("El correo electrónico es obligatorio")
-                //.withValidator(email1 -> email1.matches("^[A-Za-z0-9+_.-]+@(.+)$"), "El correo electrónico no es válido")
+                .withValidator(email1 -> email1.matches("^[A-Za-z0-9+_.-]+@(.+)$"), "El correo electrónico no es válido")
                 .bind(Usuario::getCorreoElectronico, Usuario::setCorreoElectronico);
             
             // Botones

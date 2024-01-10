@@ -83,7 +83,6 @@ public class PerfilFacturasView extends Div {
                             "¿Estás seguro de que quieres descargar el archivo?",
                             "Sí", e -> {
                                 downloadFile();
-                                //TODO: revisar metodo eliminacion de fichero local
                                 try{ 
                                     wait(3000); 
                                 } catch (InterruptedException ex) {

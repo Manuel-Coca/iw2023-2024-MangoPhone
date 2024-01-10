@@ -98,8 +98,8 @@ public class RegisterView extends Div {
                 
         binderRegister.forField(dniField)
             .asRequired("El DNI es obligatorio")
-            //.withValidator(dni1 -> dni1.length() == 9, "El DNI debe tener 9 caracteres")
-            //.withValidator(dni1 -> dni1.matches("[0-9]{8}[A-Za-z]"), "El DNI debe tener 8 números y una letra")
+            .withValidator(dni1 -> dni1.length() == 9, "El DNI debe tener 9 caracteres")
+            .withValidator(dni1 -> dni1.matches("[0-9]{8}[A-Za-z]"), "El DNI debe tener 8 números y una letra")
             .bind(Usuario::getDNI, Usuario::setDNI);
         
         binderRegister.forField(phoneNumberField)
@@ -109,26 +109,26 @@ public class RegisterView extends Div {
         
         binderRegister.forField(birthDateField)
             .asRequired("La fecha de nacimiento es obligatoria")
-            //.withValidator(birthDate1 -> birthDate1.isBefore((java.time.LocalDate.now().minusYears(18).plusDays(1))), "El Usuario ha de ser mayor de edad")
+            .withValidator(birthDate1 -> birthDate1.isBefore((java.time.LocalDate.now().minusYears(18).plusDays(1))), "El Usuario ha de ser mayor de edad")
             .bind(Usuario::getFechaNacimiento, Usuario::setFechaNacimiento);
         
         
         binderRegister.forField(passwordField)
             .asRequired("La contraseña es obligatoria")
-            //.withValidator(password1 -> password1.length() >= 8, "La contraseña debe tener al menos 8 caracteres")
-            //.withValidator(password1 -> password1.matches(".*[0-9].*"), "La contraseña debe tener al menos un número")
-            //.withValidator(password1 -> password1.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?].*"), "La contraseña debe tener al menos un caracter especial")
-            //.withValidator(password1 -> password1.equals(confirmPasswordField.getValue()), "Las contraseñas no coinciden")
+            .withValidator(password1 -> password1.length() >= 8, "La contraseña debe tener al menos 8 caracteres")
+            .withValidator(password1 -> password1.matches(".*[0-9].*"), "La contraseña debe tener al menos un número")
+            .withValidator(password1 -> password1.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?].*"), "La contraseña debe tener al menos un caracter especial")
+            .withValidator(password1 -> password1.equals(confirmPasswordField.getValue()), "Las contraseñas no coinciden")
             .bind(Usuario::getContrasena, Usuario::setContrasena);
 
         binderRegister.forField(confirmPasswordField)
             .asRequired("La confirmación de la contraseña es obligatoria")
-            //.withValidator(password1 -> password1.equals(confirmPasswordField.getValue()), "Las contraseñas no coinciden")
+            .withValidator(password1 -> password1.equals(confirmPasswordField.getValue()), "Las contraseñas no coinciden")
             .bind(Usuario::getContrasena, Usuario::setContrasena);
 
         binderRegister.forField(emailField)
             .asRequired("El correo electrónico es obligatorio")
-            //.withValidator(email1 -> email1.matches("^[A-Za-z0-9+_.-]+@(.+)$"), "El correo electrónico no es válido")
+            .withValidator(email1 -> email1.matches("^[A-Za-z0-9+_.-]+@(.+)$"), "El correo electrónico no es válido")
             .bind(Usuario::getCorreoElectronico, Usuario::setCorreoElectronico);
         
         // Boton register

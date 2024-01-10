@@ -245,14 +245,4 @@ public class LoginView extends Div {
         newPassDialog.add(dialogLayout);
         return newPassDialog;
     }
-
-    /*
-    @Override
-    public void beforeEnter(BeforeEnterEvent event) {
-        if(authUser.get().isPresent()) {
-            //setOpened(false);
-            event.forwardTo("");
-        }
-    }
-     */
 }

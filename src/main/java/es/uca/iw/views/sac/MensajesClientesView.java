@@ -82,6 +82,14 @@ public class MensajesClientesView extends Div {
             verMensajeDialog = verMensajeDialog();
             verMensajeDialog.open();
         });
+        
+        Button cerrarMensaje = new Button("Marcar como cerrado");
+        cerrarMensaje.addClassName("boton-verde-secondary");
+        cerrarMensaje.addClickListener(eventEnviar -> {
+            selectedMensaje.setEstado(Mensaje.Estado.Cerrado);
+            mensajeService.save(selectedMensaje);
+            UI.getCurrent().getPage().setLocation("sachome/mensajes");
+        });
 
         Button atrasButton = new Button("Volver");
         atrasButton.addClassName("boton-naranja-primary");
@@ -89,7 +97,7 @@ public class MensajesClientesView extends Div {
             UI.getCurrent().getPage().setLocation("sachome");
         });
 
-        botonesLayout.add(verMensaje, atrasButton);
+        botonesLayout.add(verMensaje, cerrarMensaje, atrasButton);
 
         listaLayout.add(gridMensajes(), botonesLayout);
 
@@ -146,7 +154,6 @@ public class MensajesClientesView extends Div {
         respuestaField.setMaxHeight("300px");
         binder.forField(respuestaField).asRequired("Introduce tu respuesta").bind(Mensaje::getCuerpo, Mensaje::setCuerpo);
         
-        dialogLayout.add(tipoMensajeField, asuntoField, cuerpoField, respuestaField);
         
         // Botones
         Button cerrarModal = new Button("Cerrar");
@@ -159,10 +166,27 @@ public class MensajesClientesView extends Div {
         confirmar.addClickListener(eventEnviar -> {
             if(binder.validate().isOk()) {
                 emailService.sendResponseMessages(selectedMensaje, respuestaField.getValue());
+                selectedMensaje.setEstado(Mensaje.Estado.Proceso);
+                mensajeService.save(selectedMensaje);
             }
         });
-        crearMensajeDialog.getFooter().add(cerrarModal, confirmar);
-
+        Button reAbrir = new Button("Reabrir conversación");
+        reAbrir.addClassName("boton-naranja-primary");
+        reAbrir.addClickListener(eventReAbrir -> {
+            selectedMensaje.setEstado(Mensaje.Estado.Abierto);
+            mensajeService.save(selectedMensaje);
+            UI.getCurrent().getPage().setLocation("sachome/mensajes");
+        });
+        
+        if(selectedMensaje.getEstado().equals(Mensaje.Estado.Cerrado)) {
+            dialogLayout.add(tipoMensajeField, asuntoField, cuerpoField);
+            crearMensajeDialog.getFooter().add(cerrarModal, reAbrir);
+        }
+        else {
+            dialogLayout.add(tipoMensajeField, asuntoField, cuerpoField, respuestaField);
+            crearMensajeDialog.getFooter().add(cerrarModal, confirmar);
+        }
+        
         crearMensajeDialog.setHeaderTitle("Responder al mensaje");
         crearMensajeDialog.setWidth("600px");
         crearMensajeDialog.add(dialogLayout);

@@ -139,7 +139,7 @@ public class FacturasClientesView extends Div {
             }
         });
 
-        GridListDataView<Usuario> dataView = gridUsuario.setItems(usuarioService.findByRol(Rol.CLIENTE));
+        GridListDataView<Usuario> dataView = gridUsuario.setItems(usuarioService.findAll());
 
         TextField searchField = new TextField();
         searchField.setPlaceholder("Buscar");
@@ -201,9 +201,7 @@ public class FacturasClientesView extends Div {
             Button confirmarButton = new Button("Si");
             confirmarButton.addClassName("boton-naranja-primary");
             confirmarButton.addClickListener(eventConfirm -> { 
-                facturaService.crearFacturaPDFLocal(selectedFactura.getContrato(), selectedFactura);
                 myEmailService.sendFacturaEmail(selectedUser, selectedFactura);
-                facturaService.eliminarFacturaPDFLocal(selectedFactura);
 
                 confirmDialog.close(); 
             });
@@ -226,14 +224,13 @@ public class FacturasClientesView extends Div {
             Button confirmarButton = new Button("Si");
             confirmarButton.addClassName("boton-naranja-primary");
             confirmarButton.addClickListener(eventConfirm -> { 
-                Factura factura = new Factura(Estado.Pagado, LocalDate.now(), selectedUser.getCuentaUsuario().getContrato(), facturaService.generarNombreFactura(selectedUser));
+                Factura factura = new Factura(Estado.Pagado, LocalDate.now(), selectedUser.getCuentaUsuario().getContrato(), facturaService.generarNombreFacturaFinanzas(selectedUser));
                 facturaService.save(factura);
                 contratoService.addFactura(selectedUser.getCuentaUsuario().getContrato(), factura);
                 contratoService.actualizarContrato(selectedUser.getCuentaUsuario().getContrato());
 
                 facturaService.crearFacturaPDFLocal(selectedUser.getCuentaUsuario().getContrato(), factura);
                 myEmailService.sendFacturaEmail(selectedUser, factura);
-                facturaService.eliminarFacturaPDFLocal(factura);
 
                 facturaService.save(factura);
 

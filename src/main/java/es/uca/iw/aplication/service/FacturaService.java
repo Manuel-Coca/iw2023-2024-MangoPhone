@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +55,7 @@ public class FacturaService {
     
     /*************************************************************************** Interfaz Personalizada ************************************************************************************/
 
-    @Scheduled(cron = "0 0 1 * * *")
+    @Scheduled(cron = "0 49 18 * * *")
     public void generarFacturaMensual() {
         List<Usuario> todosUsuarios = usuarioService.findAll();
         for(Usuario usuario : todosUsuarios) {
@@ -68,51 +69,23 @@ public class FacturaService {
                     
                     crearFacturaPDFLocal(usuario.getCuentaUsuario().getContrato(), factura);
                     mEmailService.sendFacturaEmail(usuario, factura);
-                    eliminarFacturaPDFLocal(factura);
                     save(factura);
                 }
             }
         }
     }
 
-    /*
-     * Pre: Recibe un documento
-     * Post: Devuelve el documento un vector de bytes
-     */
-    public byte[] pdfToBinary(Document document) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        byte[] pdfAsBytes = baos.toByteArray();
-        return pdfAsBytes;
-    }
-
-    // A LO MEJOR SOBRA
-    public void rescatarFacturaPDF(Factura factura){
-        String nombreFichero = factura.getfileName();
-        String path = "docs_facturas\\" + nombreFichero;
-        FileInputStream fileInputStream = null;
-		File file = new File(path);
-		byte[] fileArray = new byte[(int) file.length()];
-
-		try {
-			// Con este código se obtienen los bytes del archivo.
-			fileInputStream = new FileInputStream(file);
-			fileInputStream.read(fileArray);
-			fileInputStream.close();
-
-			// Con este código se agregan los bytes al archivo.
-			FileOutputStream fileOuputStream = new FileOutputStream(path);
-			fileOuputStream.write(fileArray);
-			fileOuputStream.close();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-    }
-
     public String generarNombreFactura(Usuario usuario) {
         // Version simplificada del estandar de la expedicion de facturas de la Agencia Estatal de Administración Tributaria (AEAT)
         return LocalDateTime.now().getYear() + "_" + LocalDateTime.now().getMonth().getValue() + "_" + usuario.getDNI() + "@" + usuario.getNombre() + ".pdf";
     }
+
+    public String generarNombreFacturaFinanzas(Usuario usuario) {
+        // Version simplificada del estandar de la expedicion de facturas de la Agencia Estatal de Administración Tributaria (AEAT)
+        Random random = new Random(LocalDateTime.now().getNano());
+        return LocalDateTime.now().getYear() + "_" + LocalDateTime.now().getMonth().getValue() + "_" + usuario.getDNI() + "@" + usuario.getNombre() + "_reenvio" + random.nextInt(1000) + ".pdf";
+    }
+
 
     /*
      * Pre: Recibe un usuario y un contrato

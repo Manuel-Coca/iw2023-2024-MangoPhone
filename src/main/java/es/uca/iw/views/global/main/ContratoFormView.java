@@ -263,7 +263,6 @@ public class ContratoFormView extends Div {
 
                     facturaService.crearFacturaPDFLocal(contrato, factura);
                     emailService.sendFacturaEmail(usuario, factura);
-                    facturaService.eliminarFacturaPDFLocal(factura);
 
                     facturaService.save(factura);
                 }

@@ -71,6 +71,11 @@ public class PerfilFacturasView extends Div {
                     UI.getCurrent().navigate("profile");
                 });
                 errorDialog.open();
+            }else if(loggedUser.getCuentaUsuario().getContrato() == null) {
+                ConfirmDialog errorDialog = new ConfirmDialog("Error", "No tienes un contrato", "Volver", event -> { 
+                    UI.getCurrent().navigate("profile");
+                });
+                errorDialog.open();
             }
             else {
                 VerticalLayout listaLayout = new VerticalLayout();

@@ -208,9 +208,12 @@ public class PerfilView extends Div {
             cerrarSesionLink.addClickListener(event -> {
                 UI.getCurrent().getPage().setLocation("logout");
             });
-    
-            globalVerticalLayout.add(datosPersonalesLink, passwordLink, contratoLink, facturasLink, listaLlamadasLink, listaDatosLink, mensajesLink, cerrarSesionLink);
-    
+            
+            if(loggedUser.getCuentaUsuario().getContrato() != null)
+                globalVerticalLayout.add(datosPersonalesLink, passwordLink, contratoLink, facturasLink, listaLlamadasLink, listaDatosLink, mensajesLink, cerrarSesionLink);
+            else
+                globalVerticalLayout.add(datosPersonalesLink, passwordLink, mensajesLink, cerrarSesionLink);
+            
             globalDiv.add(globalVerticalLayout);
             return globalDiv;
         }

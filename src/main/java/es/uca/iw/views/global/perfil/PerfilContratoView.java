@@ -79,7 +79,12 @@ public class PerfilContratoView extends Div {
         else {
             Usuario loggedUser = usuarioService.findById(UUID.fromString(session.getAttribute("loggedUserId").toString()));
             if(loggedUser.getActivo() == false) {
-                ConfirmDialog errorDialog = new ConfirmDialog("Error", "Debes activar tu cuenta para ver tu contrato", "profile", event -> { 
+                ConfirmDialog errorDialog = new ConfirmDialog("Error", "Debes activar tu cuenta para ver tu contrato", "Volver", event -> { 
+                    UI.getCurrent().navigate("profile");
+                });
+                errorDialog.open();
+            }else if(loggedUser.getCuentaUsuario().getContrato() == null) {
+                ConfirmDialog errorDialog = new ConfirmDialog("Error", "No tienes un contrato", "Volver", event -> { 
                     UI.getCurrent().navigate("profile");
                 });
                 errorDialog.open();
